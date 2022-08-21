@@ -21,7 +21,7 @@
                 </svg>
                 <a target="_blank" href="{data.writer.link}">{data.writer.name}</a>
             </div>
-            <p class="article-info">{data.articleInfo}</p>
+            <p class="article-info">{data.date}</p>
         </div>
         
         <div class="article-content">

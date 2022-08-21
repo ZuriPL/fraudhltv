@@ -30,19 +30,19 @@
                 <a href="{article.link}" class="article">
                     <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
                     <p class="article-title">{article.title}</p>
-                    <p class="article-comments">{article.commentsNum} comments</p>
+                    <p class="article-date">{article.date}</p>
                 </a>
-            {/each}
+                {/each}
         </div>
     </div>
     <div class="news">
         <h2>Previous news</h2>
         <div class="list">
             {#each newsOther as article}
-                <a href="{article.link}" class="article">
-                    <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
-                    <p class="article-title">{article.title}</p>
-                    <p class="article-comments">{article.commentsNum} comments</p>
+            <a href="{article.link}" class="article">
+                <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
+                <p class="article-title">{article.title}</p>
+                <p class="article-date">{article.date}</p>
                 </a>
             {/each}
         </div>
@@ -52,8 +52,8 @@
 
 <style>
     .controls > div {
-        width: 8px;
-        height: 8px;
+        width: 12px;
+        height: 12px;
         border: 1px solid white;
         border-radius: 100%;
         position: relative;
@@ -61,7 +61,7 @@
     .controls > div[active="true"]::after {
         content: '';
         position: absolute;
-        inset: 2px;
+        inset: 3px;
         background-color: white;
     }
     .carousel > button {
@@ -85,7 +85,7 @@
     }
     .carousel > .controls {
         display: flex;
-        gap: 0.25rem;
+        gap: 0.5rem;
         left: 50%;
         transform: translateX(-50%);
         bottom: 0;
@@ -111,7 +111,7 @@
         display: block;
         max-width: 800px;
         width: 100%;
-        height: 300px;
+        aspect-ratio: 8 / 3;
         object-fit: cover;
     }
     .news {
@@ -148,7 +148,7 @@
     .article-title {
         font-weight: 600;
     }
-    .article-comments {
+    .article-date {
         font-size: 0.75rem;
         color: #838a92;
         margin-left: auto;
@@ -159,28 +159,65 @@
 </style>
 
 <script>
+    import { marked } from 'marked'
+    function formatDate(date) {
+        let res =
+            date.getDate() +
+            '/' +
+            (date.getMonth() + 1) +
+            '/' +
+            date.getFullYear() +
+            ' - ' +
+            date.getHours() +
+            ':' +
+            date.getMinutes();
+
+        return res;
+    }
+
     let counter = 0
     let newsToday = [
         {
-            title: 'Test1',
+            title: 'Test11',
             flag: 'PL',
-            commentsNum: 12,
-            link: '/post/1',
+            article: marked.parse(
+			    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
+		    ),
+            writer: {
+                name: 'zuriii',
+                link: 'https://twitter.com/ZuriPOL'
+            },
+            date: formatDate(new Date('August 19, 1975 23:15')),
+            link: '/post/0',
             img: 'https://img-cdn.hltv.org/gallerypicture/VRt95V-yzaFsJhYUxqw1F8.png?ixlib=java-2.1.0&w=500&s=5642cb822ca66ea684c080f1f946e6d0'
         },
         {
-            title: 'Test2',
+            title: 'Test22',
             flag: 'EU',
-            commentsNum: 13,
-            link: '/post/2',
+            article: marked.parse(
+			    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
+		    ),
+            writer: {
+                name: 'zuriii',
+                link: 'https://twitter.com/ZuriPOL'
+            },
+            date: formatDate(new Date('August 19, 1975 23:15')),
+            link: '/post/1',
             img: 'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
         },
         {
-            title: 'Test3',
+            title: 'Test33',
             flag: 'CIS',
-            commentsNum: 131,
-            link: '/post/3',
-            img: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-Khsj2P67UklRd4cJ5nqfC893wiVHhqUM4Z2ugJNWXdANrNF_XqwXqkrruh5a76c-YziNr6yRw-z-DyPIgs_3X/256fx256f'
+            article: marked.parse(
+			    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
+		    ),
+            writer: {
+                name: 'zuriii',
+                link: 'https://twitter.com/ZuriPOL'
+            },
+            date: formatDate(new Date('August 19, 1975 23:15')),
+            link: '/post/2',
+            img: 'https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large'
         },
     ]    
     let newsOther = []
