@@ -4,6 +4,11 @@
 
 <svelte:head>
     <title>{data.title} | FraudHLTV</title>
+    <meta name="twitter:title" content="{data.title} | FraudHLTV" />
+    <meta name="twitter:description" content="{data.title} | FraudHLTV" />
+    <meta name="twitter:site" content="@fraudhltv" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="{data.image}" />
 </svelte:head>
 
 <main>    
