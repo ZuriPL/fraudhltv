@@ -3,21 +3,30 @@
 </svelte:head>
 <main>
     <div class="carousel">
-        <img src="{image}" alt="banner">
+        <a class="banner-link" href="{newsToday[counter].link}">
+            <img src="{newsToday[counter].img}" alt="banner">
+        </a>
         <div class="controls">
-            {#each news.map(el => el.img) as img, idx}
+            {#each newsToday.map(el => el.img) as img, idx}
                 <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
             {/each}
-            <!-- {news.map(el => el.img).length} -->
         </div>  
-        <button class="left" on:click="{_ => counter == 0 ? counter = news.length - 1 : counter--}">⬅</button>
-        <button class="right" on:click="{_ => counter ==  news.length - 1 ? counter = 0 : counter++}">➡</button>
+        <button class="left" on:click="{_ => counter == 0 ? counter = newsToday.length - 1 : counter--}">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+            </svg>
+        </button>
+        <button class="right" on:click="{_ => counter ==  newsToday.length - 1 ? counter = 0 : counter++}">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+            </svg>
+        </button>
     </div>
 
     <div class="news">
         <h2>Today's news</h2>
         <div class="list">
-            {#each news as article}
+            {#each newsToday as article}
                 <a href="{article.link}" class="article">
                     <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
                     <p class="article-title">{article.title}</p>
@@ -29,7 +38,7 @@
     <div class="news">
         <h2>Previous news</h2>
         <div class="list">
-            {#each news as article}
+            {#each newsOther as article}
                 <a href="{article.link}" class="article">
                     <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
                     <p class="article-title">{article.title}</p>
@@ -37,6 +46,7 @@
                 </a>
             {/each}
         </div>
+        <a href="/archive">See more</a>
     </div>
 </main>
 
@@ -57,8 +67,15 @@
     .carousel > button {
         all: unset;
         position: absolute;
+        display: grid;
+        place-items: center;
         top: 50%;
         transform: translateY(-50%);
+        padding: 1rem 0.25rem;
+        background-color: rgb(0, 0, 0, 75%);
+    }
+    .carousel > button:hover {
+        background-color: rgb(0, 0, 0, 90%);
     }
     .carousel > button.left {
         left: 0;
@@ -73,7 +90,7 @@
         transform: translateX(-50%);
         bottom: 0;
         padding: 0.5rem 1rem;
-        background-color: rgb(0, 0, 0, 80%);
+        background-color: rgb(0, 0, 0, 75%);
         position: absolute;
     }
     main {
@@ -87,16 +104,19 @@
         width: calc(100% - 2rem);
         max-width: 800px;
         position: relative;
+        margin-top: 1.5rem;
+        overflow: hidden;
     }
-    .carousel > img {
+    .carousel img {
         display: block;
+        max-width: 800px;
         width: 100%;
-        height: 100%;
+        height: 300px;
+        object-fit: cover;
     }
     .news {
         max-width: 800px;
         width: calc(100% - 2rem);
-        padding: 0 1rem;
     }
     .news > h2 {
         font-weight: 500;
@@ -136,14 +156,11 @@
     .article:last-child {
         margin-left: auto;
     }
-    .carousel {
-        margin-top: 1.5rem;
-    }
 </style>
 
 <script>
     let counter = 0
-    let news = [
+    let newsToday = [
         {
             title: 'Test1',
             flag: 'PL',
@@ -157,8 +174,15 @@
             commentsNum: 13,
             link: '/post/2',
             img: 'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
-        }
+        },
+        {
+            title: 'Test3',
+            flag: 'CIS',
+            commentsNum: 131,
+            link: '/post/3',
+            img: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf3qr3czxb49KzgL-Khsj2P67UklRd4cJ5nqfC893wiVHhqUM4Z2ugJNWXdANrNF_XqwXqkrruh5a76c-YziNr6yRw-z-DyPIgs_3X/256fx256f'
+        },
     ]    
-    let image
-    $: image = news[counter].img
+    let newsOther = []
+    newsOther = newsToday.concat(newsToday)
 </script>

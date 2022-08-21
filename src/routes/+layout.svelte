@@ -11,6 +11,12 @@
     :global(*) {
         margin: 0;
         font-family: 'Open Sans', sans-serif;
+        box-sizing: border-box;
+    }
+    :global(a) {
+        text-decoration: none;
+        color: #87a3bf;
+        font-weight: 600;
     }
     :global(body) {
         background-color: #1b1f23;
@@ -20,6 +26,6 @@
         display: none;
     }
     :root {
-        --text-color: #929a9e;
+        --text-color: #b9bdbf;
     }
 </style>
