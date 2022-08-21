@@ -28,7 +28,8 @@ let news = [
 		},
 		date: formatDate(new Date('August 19, 1975 23:15')),
 		link: '/post/0',
-		img: 'https://img-cdn.hltv.org/gallerypicture/VRt95V-yzaFsJhYUxqw1F8.png?ixlib=java-2.1.0&w=500&s=5642cb822ca66ea684c080f1f946e6d0'
+		image:
+			'https://img-cdn.hltv.org/gallerypicture/VRt95V-yzaFsJhYUxqw1F8.png?ixlib=java-2.1.0&w=500&s=5642cb822ca66ea684c080f1f946e6d0'
 	},
 	{
 		title: 'Test22',
@@ -42,7 +43,8 @@ let news = [
 		},
 		date: formatDate(new Date('August 19, 1975 23:15')),
 		link: '/post/1',
-		img: 'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
+		image:
+			'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
 	},
 	{
 		title: 'Test33',
@@ -56,7 +58,7 @@ let news = [
 		},
 		date: formatDate(new Date('August 19, 1975 23:15')),
 		link: '/post/2',
-		img: 'https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large'
+		image: 'https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large'
 	}
 ];
 
