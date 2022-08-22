@@ -30,7 +30,7 @@
                 <a href="/post/{article?.id}" class="article">
                     <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
                     <p class="article-title">{article?.attributes.title}</p>
-                    <p class="article-date">{article?.attributes.date}</p>
+                    <p class="article-date">{article?.attributes.timeAgo}</p>
                 </a>
                 {/each}
         </div>
@@ -38,11 +38,11 @@
     <div class="news">
         <h2>Previous news</h2>
         <div class="list">
-            {#each newsOther as article}
+            {#each otherNews as article}
             <a href="/post/{article?.id}" class="article">
                 <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
                 <p class="article-title">{article?.attributes.title}</p>
-                <p class="article-date">{article?.attributes.date}</p>
+                <p class="article-date">{article?.attributes.timeAgo}</p>
                 </a>
             {/each}
         </div>
@@ -173,14 +173,24 @@
 
     //     return res;
     // }
-    let counter = 0    
 
-    let newsToday = [];
-    (async () => {
-        let res = await fetch('http://127.0.0.1:1337/api/posts?populate=*');
-        newsToday = (await res.json()).data;
-    })();
+    // time ago
+    
 
-    let newsOther = [];
-    $: newsOther = newsToday.concat(newsToday)
+    let counter = 0  
+    export let data
+    let news = Object.keys(data).map(key => data[key])
+
+    const date = new Date()
+
+    let newsToday = news.filter(el => 
+        new Date(el.attributes.createdAt).getFullYear() === date.getFullYear() &&
+        new Date(el.attributes.createdAt).getMonth() === date.getMonth() &&
+        new Date(el.attributes.createdAt).getDate() === date.getDate()
+    )
+    let otherNews = news.filter(el => 
+        new Date(el.attributes.createdAt).getFullYear() !== date.getFullYear() ||
+        new Date(el.attributes.createdAt).getMonth() !== date.getMonth() ||
+        new Date(el.attributes.createdAt).getDate() !== date.getDate()
+    )
 </script>

@@ -19,6 +19,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"javascript-time-ago": "^2.5.7",
 		"marked": "^4.0.19"
 	}
 }
