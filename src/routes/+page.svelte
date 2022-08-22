@@ -2,41 +2,47 @@
     <title>CS:GO Tier 50 News</title>
 </svelte:head>
 <main>
-    <div class="carousel">
-        <a class="banner-link" href="/post/{newsToday[counter]?.id}">
-            <img src="http://localhost:1337{newsToday[counter]?.attributes.image.data.attributes.url}" alt="banner">
-        </a>
-        <div class="controls">
-            {#each newsToday.map(el => el?.attributes.image.data.attributes.url) as img, idx}
-                <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
-            {/each}
-        </div>  
-        <button class="left" on:click="{_ => counter == 0 ? counter = newsToday.length - 1 : counter--}">
-            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-            </svg>
-        </button>
-        <button class="right" on:click="{_ => counter ==  newsToday.length - 1 ? counter = 0 : counter++}">
-            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-            </svg>
-        </button>
-    </div>
+    {#if newsToday.length !== 0}
+        <div class="carousel">
+            <a class="banner-link" href="/post/{newsToday[counter]?.id}">
+                <img src="http://localhost:1337{newsToday[counter]?.attributes.image.data.attributes.url}" alt="banner">
+            </a>
+            <div class="controls">
+                {#each newsToday.map(el => el?.attributes.image.data.attributes.url) as img, idx}
+                    <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
+                {/each}
+            </div>  
+            <button class="left" on:click="{_ => counter == 0 ? counter = newsToday.length - 1 : counter--}">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+                </svg>
+            </button>
+            <button class="right" on:click="{_ => counter ==  newsToday.length - 1 ? counter = 0 : counter++}">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                </svg>
+            </button>
+        </div>
+    {:else}
+        <h1 class="welcome">Welcome to FraudHLTV</h1>
+    {/if}
+    {#if newsToday.length !== 0}
+        <div class="news">
+            <h1>Today's news</h1>
+            <div class="list">
+                {#each newsToday as article}
+                    <a href="/post/{article?.id}" class="article">
+                        <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
+                        <p class="article-title">{article?.attributes.title}</p>
+                        <p class="article-date">{article?.attributes.timeAgo}</p>
+                    </a>
+                {/each}
+            </div>
+        </div>
+    {/if}
 
     <div class="news">
-        <h2>Today's news</h2>
-        <div class="list">
-            {#each newsToday as article}
-                <a href="/post/{article?.id}" class="article">
-                    <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
-                    <p class="article-title">{article?.attributes.title}</p>
-                    <p class="article-date">{article?.attributes.timeAgo}</p>
-                </a>
-                {/each}
-        </div>
-    </div>
-    <div class="news">
-        <h2>Previous news</h2>
+        <h1>{newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
         <div class="list">
             {#each otherNews as article}
             <a href="/post/{article?.id}" class="article">
@@ -51,6 +57,13 @@
 </main>
 
 <style>
+    .welcome {
+        color: var(--text-color);
+        font-size: 3rem;
+        height: 150px;
+        display: grid;
+        place-items: center;
+    }
     .controls > div {
         width: 12px;
         height: 12px;
@@ -99,12 +112,12 @@
         align-items: center;
         width: 100vw;
         gap: 1.5rem;
+        padding-top: 1.5rem;
     }
     .carousel {
         width: calc(100% - 2rem);
         max-width: 800px;
         position: relative;
-        margin-top: 1.5rem;
         overflow: hidden;
     }
     .carousel img {
@@ -118,7 +131,7 @@
         max-width: 800px;
         width: calc(100% - 2rem);
     }
-    .news > h2 {
+    .news > h1 {
         font-weight: 500;
         color: var(--text-color);
         margin-bottom: 0.5rem;
@@ -192,5 +205,5 @@
         new Date(el.attributes.createdAt).getFullYear() !== date.getFullYear() ||
         new Date(el.attributes.createdAt).getMonth() !== date.getMonth() ||
         new Date(el.attributes.createdAt).getDate() !== date.getDate()
-    )
+    ).slice(0, 10)
 </script>
