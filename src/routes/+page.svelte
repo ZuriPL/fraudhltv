@@ -159,72 +159,28 @@
 </style>
 
 <script>
-    import { onMount } from 'svelte'
-    import { marked } from 'marked';
-    function formatDate(date) {
-        let res =
-            date.getDate() +
-            '/' +
-            (date.getMonth() + 1) +
-            '/' +
-            date.getFullYear() +
-            ' - ' +
-            date.getHours() +
-            ':' +
-            date.getMinutes();
+    // function formatDate(date) {
+    //     let res =
+    //         date.getDate() +
+    //         '/' +
+    //         (date.getMonth() + 1) +
+    //         '/' +
+    //         date.getFullYear() +
+    //         ' - ' +
+    //         date.getHours() +
+    //         ':' +
+    //         date.getMinutes();
 
-        return res;
-    }
+    //     return res;
+    // }
+    let counter = 0    
 
-    let counter = 0
-    // let newsToday = [
-    //     {
-    //         title: 'Test11',
-    //         flag: 'PL',
-    //         article: marked.parse(
-	// 		    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
-	// 	    ),
-    //         writer: {
-    //             name: 'zuriii',
-    //             link: 'https://twitter.com/ZuriPOL'
-    //         },
-    //         date: formatDate(new Date('August 19, 1975 23:15')),
-    //         link: '/post/0',
-    //         img: 'https://img-cdn.hltv.org/gallerypicture/VRt95V-yzaFsJhYUxqw1F8.png?ixlib=java-2.1.0&w=500&s=5642cb822ca66ea684c080f1f946e6d0'
-    //     },
-    //     {
-    //         title: 'Test22',
-    //         flag: 'EU',
-    //         article: marked.parse(
-	// 		    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
-	// 	    ),
-    //         writer: {
-    //             name: 'zuriii',
-    //             link: 'https://twitter.com/ZuriPOL'
-    //         },
-    //         date: formatDate(new Date('August 19, 1975 23:15')),
-    //         link: '/post/1',
-    //         img: 'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
-    //     },
-    //     {
-    //         title: 'Test33',
-    //         flag: 'CIS',
-    //         article: marked.parse(
-	// 		    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
-	// 	    ),
-    //         writer: {
-    //             name: 'zuriii',
-    //             link: 'https://twitter.com/ZuriPOL'
-    //         },
-    //         date: formatDate(new Date('August 19, 1975 23:15')),
-    //         link: '/post/2',
-    //         img: 'https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large'
-    //     },
-    // ]    
+    let newsToday = [];
+    (async () => {
+        let res = await fetch('http://127.0.0.1:1337/api/posts?populate=*');
+        newsToday = (await res.json()).data;
+    })();
 
-    let newsToday = []
-    onMount(_ => fetch('http://localhost:1337/api/posts?populate=*').then(res => res.json()).then(data => newsToday = data.data))
-
-    let newsOther = []
+    let newsOther = [];
     $: newsOther = newsToday.concat(newsToday)
 </script>
