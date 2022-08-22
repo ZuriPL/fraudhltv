@@ -3,11 +3,11 @@
 </svelte:head>
 <main>
     <div class="carousel">
-        <a class="banner-link" href="{newsToday[counter].link}">
-            <img src="{newsToday[counter].img}" alt="banner">
+        <a class="banner-link" href="/post/{newsToday[counter]?.id}">
+            <img src="http://localhost:1337{newsToday[counter]?.attributes.image.data.attributes.url}" alt="banner">
         </a>
         <div class="controls">
-            {#each newsToday.map(el => el.img) as img, idx}
+            {#each newsToday.map(el => el?.attributes.image.data.attributes.url) as img, idx}
                 <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
             {/each}
         </div>  
@@ -27,10 +27,10 @@
         <h2>Today's news</h2>
         <div class="list">
             {#each newsToday as article}
-                <a href="{article.link}" class="article">
-                    <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
-                    <p class="article-title">{article.title}</p>
-                    <p class="article-date">{article.date}</p>
+                <a href="/post/{article?.id}" class="article">
+                    <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
+                    <p class="article-title">{article?.attributes.title}</p>
+                    <p class="article-date">{article?.attributes.date}</p>
                 </a>
                 {/each}
         </div>
@@ -39,10 +39,10 @@
         <h2>Previous news</h2>
         <div class="list">
             {#each newsOther as article}
-            <a href="{article.link}" class="article">
-                <img src="https://www.hltv.org/img/static/flags/30x20/{article.flag}.gif" alt="{article.flag} flag">
-                <p class="article-title">{article.title}</p>
-                <p class="article-date">{article.date}</p>
+            <a href="/post/{article?.id}" class="article">
+                <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
+                <p class="article-title">{article?.attributes.title}</p>
+                <p class="article-date">{article?.attributes.date}</p>
                 </a>
             {/each}
         </div>
@@ -159,7 +159,8 @@
 </style>
 
 <script>
-    import { marked } from 'marked'
+    import { onMount } from 'svelte'
+    import { marked } from 'marked';
     function formatDate(date) {
         let res =
             date.getDate() +
@@ -176,50 +177,54 @@
     }
 
     let counter = 0
-    let newsToday = [
-        {
-            title: 'Test11',
-            flag: 'PL',
-            article: marked.parse(
-			    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
-		    ),
-            writer: {
-                name: 'zuriii',
-                link: 'https://twitter.com/ZuriPOL'
-            },
-            date: formatDate(new Date('August 19, 1975 23:15')),
-            link: '/post/0',
-            img: 'https://img-cdn.hltv.org/gallerypicture/VRt95V-yzaFsJhYUxqw1F8.png?ixlib=java-2.1.0&w=500&s=5642cb822ca66ea684c080f1f946e6d0'
-        },
-        {
-            title: 'Test22',
-            flag: 'EU',
-            article: marked.parse(
-			    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
-		    ),
-            writer: {
-                name: 'zuriii',
-                link: 'https://twitter.com/ZuriPOL'
-            },
-            date: formatDate(new Date('August 19, 1975 23:15')),
-            link: '/post/1',
-            img: 'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
-        },
-        {
-            title: 'Test33',
-            flag: 'CIS',
-            article: marked.parse(
-			    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
-		    ),
-            writer: {
-                name: 'zuriii',
-                link: 'https://twitter.com/ZuriPOL'
-            },
-            date: formatDate(new Date('August 19, 1975 23:15')),
-            link: '/post/2',
-            img: 'https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large'
-        },
-    ]    
+    // let newsToday = [
+    //     {
+    //         title: 'Test11',
+    //         flag: 'PL',
+    //         article: marked.parse(
+	// 		    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
+	// 	    ),
+    //         writer: {
+    //             name: 'zuriii',
+    //             link: 'https://twitter.com/ZuriPOL'
+    //         },
+    //         date: formatDate(new Date('August 19, 1975 23:15')),
+    //         link: '/post/0',
+    //         img: 'https://img-cdn.hltv.org/gallerypicture/VRt95V-yzaFsJhYUxqw1F8.png?ixlib=java-2.1.0&w=500&s=5642cb822ca66ea684c080f1f946e6d0'
+    //     },
+    //     {
+    //         title: 'Test22',
+    //         flag: 'EU',
+    //         article: marked.parse(
+	// 		    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
+	// 	    ),
+    //         writer: {
+    //             name: 'zuriii',
+    //             link: 'https://twitter.com/ZuriPOL'
+    //         },
+    //         date: formatDate(new Date('August 19, 1975 23:15')),
+    //         link: '/post/1',
+    //         img: 'https://img-cdn.hltv.org/gallerypicture/J--URvt7Fis8tk1jUS4XaD.png?ixlib=java-2.1.0&w=500&s=88fefdf4d9cfebffcc2019f04f674fab'
+    //     },
+    //     {
+    //         title: 'Test33',
+    //         flag: 'CIS',
+    //         article: marked.parse(
+	// 		    `Degster: "When people make jokes about me I take it personally.”\n\n![Image](https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large)\n\n“My friend kept saying that I get no women. He had no clue I had date plans with his mother for that very evening.”\n\nIt’s been reported that degster also has date plans with the mother of fellow CS pro, Hades.`
+	// 	    ),
+    //         writer: {
+    //             name: 'zuriii',
+    //             link: 'https://twitter.com/ZuriPOL'
+    //         },
+    //         date: formatDate(new Date('August 19, 1975 23:15')),
+    //         link: '/post/2',
+    //         img: 'https://pbs.twimg.com/media/FahX7ylXwAEaqFT?format=jpg&name=large'
+    //     },
+    // ]    
+
+    let newsToday = []
+    onMount(_ => fetch('http://localhost:1337/api/posts?populate=*').then(res => res.json()).then(data => newsToday = data.data))
+
     let newsOther = []
-    newsOther = newsToday.concat(newsToday)
+    $: newsOther = newsToday.concat(newsToday)
 </script>
