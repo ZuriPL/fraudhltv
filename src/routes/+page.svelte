@@ -1,6 +1,7 @@
 <svelte:head>
     <title>CS:GO Tier 50 News</title>
 </svelte:head>
+
 <main>
     {#if newsToday.length !== 0}
         <div class="carousel">
@@ -172,25 +173,8 @@
 </style>
 
 <script>
-    // function formatDate(date) {
-    //     let res =
-    //         date.getDate() +
-    //         '/' +
-    //         (date.getMonth() + 1) +
-    //         '/' +
-    //         date.getFullYear() +
-    //         ' - ' +
-    //         date.getHours() +
-    //         ':' +
-    //         date.getMinutes();
-
-    //     return res;
-    // }
-
-    // time ago
-    
-
     let counter = 0  
+
     export let data
     let news = Object.keys(data).map(key => data[key])
 
@@ -201,6 +185,7 @@
         new Date(el.attributes.createdAt).getMonth() === date.getMonth() &&
         new Date(el.attributes.createdAt).getDate() === date.getDate()
     )
+    
     let otherNews = news.filter(el => 
         new Date(el.attributes.createdAt).getFullYear() !== date.getFullYear() ||
         new Date(el.attributes.createdAt).getMonth() !== date.getMonth() ||

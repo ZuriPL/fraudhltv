@@ -29,6 +29,7 @@
         display: block;
         color: #929a9e;
         text-decoration: none;
+        font-weight: 500;
         flex: 1;
         display: grid;
         place-items: center;
