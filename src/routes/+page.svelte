@@ -7,7 +7,6 @@
         document.addEventListener('DOMContentLoaded', e => {
             document.body.classList.add('show-carousel');
         });
-        
     </script>
     {#if data?.newsToday.length !== 0}
         <div class="carousel">
@@ -64,17 +63,11 @@
 </main>
 
 <script>
-    import { onMount } from "svelte";
-
     export let data
     
     let counter = 0
+    
 
-    // onMount(_ => {
-    //     document.addEventListener('DOMContentLoaded', e => {
-    //         console.log(e)
-    //     });
-    // })
 </script>
 
 <style>

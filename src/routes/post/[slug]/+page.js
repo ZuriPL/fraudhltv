@@ -21,8 +21,10 @@ export async function load({ params, fetch }) {
 
 	let data = await res.json();
 	let news = data.data[0].attributes;
+
 	news.article = marked.parse(news.article);
 	news.createdAt = formatDate(new Date(news.createdAt));
+
 	return news;
 }
 
