@@ -11,7 +11,7 @@
     {#if data?.newsToday.length !== 0}
         <div class="carousel">
             <a class="banner-link" href="/post/{data?.newsToday[counter]?.attributes.slug}">
-                <img src="http://localhost:1337{data?.newsToday[counter]?.attributes.image.data?.attributes.url}" alt="banner">
+                <img src="https://fraudhltv.herokuapp.com{data?.newsToday[counter]?.attributes.image.data?.attributes.url}" alt="banner">
             </a>
             <div class="controls">
                 {#each data?.newsToday.map(el => el?.attributes.image.data?.attributes.url) as img, idx}
