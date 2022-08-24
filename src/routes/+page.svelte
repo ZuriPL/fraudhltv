@@ -7,23 +7,24 @@
         document.addEventListener('DOMContentLoaded', e => {
             document.body.classList.add('show-carousel');
         });
+        
     </script>
-    {#if data.newsToday.length !== 0}
+    {#if data?.newsToday.length !== 0}
         <div class="carousel">
-            <a class="banner-link" href="/post/{data.newsToday[counter]?.attributes.slug}">
-                <img src="http://localhost:1337{data.newsToday[counter]?.attributes.image.data.attributes.url}" alt="banner">
+            <a class="banner-link" href="/post/{data?.newsToday[counter]?.attributes.slug}">
+                <img src="http://localhost:1337{data?.newsToday[counter]?.attributes.image.data?.attributes.url}" alt="banner">
             </a>
             <div class="controls">
-                {#each data.newsToday.map(el => el?.attributes.image.data.attributes.url) as img, idx}
+                {#each data?.newsToday.map(el => el?.attributes.image.data?.attributes.url) as img, idx}
                     <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
                 {/each}
             </div>  
-            <button class="left" on:click="{_ => counter == 0 ? counter = data.newsToday.length - 1 : counter--}">
+            <button class="left" on:click="{_ => counter == 0 ? counter = data?.newsToday.length - 1 : counter--}">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
                 </svg>
             </button>
-            <button class="right" on:click="{_ => counter ==  data.newsToday.length - 1 ? counter = 0 : counter++}">
+            <button class="right" on:click="{_ => counter ==  data?.newsToday.length - 1 ? counter = 0 : counter++}">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
                 </svg>
@@ -32,11 +33,11 @@
     {/if}
     <h1 class="welcome">Welcome to FraudHLTV</h1>
 
-    {#if data.newsToday.length !== 0}
+    {#if data?.newsToday.length !== 0}
         <div class="news">
             <h1>Today's news</h1>
             <div class="list">
-                {#each data.newsToday as article}
+                {#each data?.newsToday as article}
                     <a href="/post/{article?.attributes.slug}" class="article">
                         <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
                         <p class="article-title">{article?.attributes.title}</p>
@@ -48,9 +49,9 @@
     {/if}
 
     <div class="news">
-        <h1>{data.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
+        <h1>{data?.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
         <div class="list">
-            {#each data.otherNews as article}
+            {#each data?.otherNews as article}
             <a href="/post/{article?.attributes.slug}" class="article">
                 <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
                 <p class="article-title">{article?.attributes.title}</p>
