@@ -3,36 +3,41 @@
 </svelte:head>
 
 <main>
-    {#if newsToday.length !== 0}
+    <script>
+        document.addEventListener('DOMContentLoaded', e => {
+            document.body.classList.add('show-carousel');
+        });
+    </script>
+    {#if data.newsToday.length !== 0}
         <div class="carousel">
-            <a class="banner-link" href="/post/{newsToday[counter]?.id}">
-                <img src="http://localhost:1337{newsToday[counter]?.attributes.image.data.attributes.url}" alt="banner">
+            <a class="banner-link" href="/post/{data.newsToday[counter]?.attributes.slug}">
+                <img src="http://localhost:1337{data.newsToday[counter]?.attributes.image.data.attributes.url}" alt="banner">
             </a>
             <div class="controls">
-                {#each newsToday.map(el => el?.attributes.image.data.attributes.url) as img, idx}
+                {#each data.newsToday.map(el => el?.attributes.image.data.attributes.url) as img, idx}
                     <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
                 {/each}
             </div>  
-            <button class="left" on:click="{_ => counter == 0 ? counter = newsToday.length - 1 : counter--}">
+            <button class="left" on:click="{_ => counter == 0 ? counter = data.newsToday.length - 1 : counter--}">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
                 </svg>
             </button>
-            <button class="right" on:click="{_ => counter ==  newsToday.length - 1 ? counter = 0 : counter++}">
+            <button class="right" on:click="{_ => counter ==  data.newsToday.length - 1 ? counter = 0 : counter++}">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
                 </svg>
             </button>
         </div>
-    {:else}
-        <h1 class="welcome">Welcome to FraudHLTV</h1>
     {/if}
-    {#if newsToday.length !== 0}
+    <h1 class="welcome">Welcome to FraudHLTV</h1>
+
+    {#if data.newsToday.length !== 0}
         <div class="news">
             <h1>Today's news</h1>
             <div class="list">
-                {#each newsToday as article}
-                    <a href="/post/{article?.id}" class="article">
+                {#each data.newsToday as article}
+                    <a href="/post/{article?.attributes.slug}" class="article">
                         <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
                         <p class="article-title">{article?.attributes.title}</p>
                         <p class="article-date">{article?.attributes.timeAgo}</p>
@@ -43,10 +48,10 @@
     {/if}
 
     <div class="news">
-        <h1>{newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
+        <h1>{data.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
         <div class="list">
-            {#each otherNews as article}
-            <a href="/post/{article?.id}" class="article">
+            {#each data.otherNews as article}
+            <a href="/post/{article?.attributes.slug}" class="article">
                 <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
                 <p class="article-title">{article?.attributes.title}</p>
                 <p class="article-date">{article?.attributes.timeAgo}</p>
@@ -57,13 +62,59 @@
     </div>
 </main>
 
+<script>
+    import { onMount } from "svelte";
+
+    export let data
+    
+    let counter = 0
+
+    // onMount(_ => {
+    //     document.addEventListener('DOMContentLoaded', e => {
+    //         console.log(e)
+    //     });
+    // })
+</script>
+
 <style>
+    main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100vw;
+        gap: 1.5rem;
+        padding-top: 1.5rem;
+    }
     .welcome {
         color: var(--text-color);
         font-size: 3rem;
         height: 150px;
         display: grid;
         place-items: center;
+    }
+    .carousel {
+        display: none;
+        width: calc(100% - 2rem);
+        max-width: 800px;
+        position: relative;
+        overflow: hidden;
+    }
+    .carousel img {
+        display: block;
+        max-width: 800px;
+        width: 100%;
+        aspect-ratio: 8 / 3;
+        object-fit: cover;
+    }
+    .carousel > .controls {
+        display: flex;
+        gap: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        padding: 0.5rem 1rem;
+        background-color: rgb(0, 0, 0, 75%);
+        position: absolute;
     }
     .controls > div {
         width: 12px;
@@ -97,37 +148,13 @@
     .carousel > button.right {
         right: 0;
     }
-    .carousel > .controls {
-        display: flex;
-        gap: 0.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 0;
-        padding: 0.5rem 1rem;
-        background-color: rgb(0, 0, 0, 75%);
-        position: absolute;
-    }
-    main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100vw;
-        gap: 1.5rem;
-        padding-top: 1.5rem;
-    }
-    .carousel {
-        width: calc(100% - 2rem);
-        max-width: 800px;
-        position: relative;
-        overflow: hidden;
-    }
-    .carousel img {
+    :global(.show-carousel) .carousel {
         display: block;
-        max-width: 800px;
-        width: 100%;
-        aspect-ratio: 8 / 3;
-        object-fit: cover;
     }
+    :global(.show-carousel) .welcome {
+        display: none;
+    }
+
     .news {
         max-width: 800px;
         width: calc(100% - 2rem);
@@ -171,24 +198,3 @@
         margin-left: auto;
     }
 </style>
-
-<script>
-    let counter = 0  
-
-    export let data
-    let news = Object.keys(data).map(key => data[key])
-
-    const date = new Date()
-
-    let newsToday = news.filter(el => 
-        new Date(el.attributes.createdAt).getFullYear() === date.getFullYear() &&
-        new Date(el.attributes.createdAt).getMonth() === date.getMonth() &&
-        new Date(el.attributes.createdAt).getDate() === date.getDate()
-    )
-    
-    let otherNews = news.filter(el => 
-        new Date(el.attributes.createdAt).getFullYear() !== date.getFullYear() ||
-        new Date(el.attributes.createdAt).getMonth() !== date.getMonth() ||
-        new Date(el.attributes.createdAt).getDate() !== date.getDate()
-    ).slice(0, 10)
-</script>

@@ -9,5 +9,26 @@ export async function load({ fetch }) {
 		el.attributes.timeAgo = timeAgo(new Date(el.attributes.createdAt));
 	});
 
-	return news;
+	const date = new Date();
+
+	let newsToday = news
+		.filter(
+			(el) =>
+				new Date(el.attributes.createdAt).getFullYear() === date.getFullYear() &&
+				new Date(el.attributes.createdAt).getMonth() === date.getMonth() &&
+				new Date(el.attributes.createdAt).getDate() === date.getDate()
+		)
+		.reverse();
+
+	let otherNews = news
+		.filter(
+			(el) =>
+				new Date(el.attributes.createdAt).getFullYear() !== date.getFullYear() ||
+				new Date(el.attributes.createdAt).getMonth() !== date.getMonth() ||
+				new Date(el.attributes.createdAt).getDate() !== date.getDate()
+		)
+		.slice(0, 10)
+		.reverse();
+
+	return { newsToday, otherNews };
 }

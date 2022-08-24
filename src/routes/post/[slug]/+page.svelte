@@ -1,22 +1,5 @@
 <script>
-    import { marked } from 'marked';
-
     export let data
-
-    function formatDate(date) {
-        let res =
-            date.getDate().toString().padStart(2, '0') +
-            '/' +
-            (date.getMonth() + 1).toString().padStart(2, '0') +
-            '/' +
-            date.getFullYear() +
-            ' - ' +
-            date.getHours() +
-            ':' +
-            date.getMinutes().toString().padStart(2, '0');
-
-        return res;
-    }
 </script>
 
 <svelte:head>
@@ -38,11 +21,11 @@
                 </svg>
                 <a target="_blank" href="{data?.author?.data.attributes.link}">{data?.author?.data.attributes.username}</a>
             </div>
-            <p class="article-info">{formatDate(new Date(data?.createdAt))}</p>
+            <p class="article-info">{data?.createdAt}</p>
         </div>
         
         <div class="article-content">
-            {@html marked.parse(data?.article)}
+            {@html data?.article}
         </div>
     </article>
 </main>
@@ -52,7 +35,7 @@
         display: flex;
         justify-content: space-between;
         font-size: 0.8rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
     }
     :global(img) {
         width: 100%;
