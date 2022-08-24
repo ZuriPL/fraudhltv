@@ -16,7 +16,7 @@ function formatDate(date) {
 
 export async function load({ params, fetch }) {
 	let res = await fetch(
-		`http://127.0.0.1:1337/api/posts/?filters[slug][$eq]=${params.slug}&populate=*`
+		`https://fraudhltv.herokuapp.com/api/posts/?filters[slug][$eq]=${params.slug}&populate=*`
 	); // find by slug
 
 	let data = await res.json();
