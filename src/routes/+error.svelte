@@ -1,6 +1,6 @@
 <main>
-    <h2>404</h2>
-    <p>This page doesn't exist or has been deleted</p>
+    <h2>:(</h2>
+    <p>This page doesn't exist or an internal error occured</p>
     <a href="/">Go home</a>
 </main>
 
