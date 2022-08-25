@@ -142,13 +142,12 @@
     .carousel > button.right {
         right: 0;
     }
-    :global(.show-carousel) .carousel {
+    :global(.show-carousel) .carousel  {
         display: block;
     }
-    :global(.show-carousel) .welcome {
+    :global(.show-carousel) .carousel ~ .welcome  {
         display: none;
     }
-
     .news {
         max-width: 800px;
         width: calc(100% - 2rem);
