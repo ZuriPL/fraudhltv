@@ -23,7 +23,7 @@
     }
     :global(a) {
         text-decoration: none;
-        color: #87a3bf;
+        color: var(--link-color);
         font-weight: 600;
     }
     :global(body) {
@@ -35,5 +35,6 @@
     }
     :root {
         --text-color: #b9bdbf;
+        --link-color: #87a3bf;
     }
 </style>
