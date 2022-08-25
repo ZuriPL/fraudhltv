@@ -7,7 +7,7 @@
     <meta name="twitter:title" content="{data?.title} | FraudHLTV" />
     <meta name="twitter:site" content="@fraudhltv" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://fraudhltv.herokuapp.com{data?.image?.data?.attributes?.url}" />
+    <meta name="twitter:image" content="{data?.image?.data?.attributes?.url}" />
 </svelte:head>
 
 <main>    
