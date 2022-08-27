@@ -29,6 +29,7 @@
     :global(body) {
         background-color: #1b1f23;
         color: white;
+        overflow-x: hidden;
     }
     :global(.hidden) {
         display: none;
