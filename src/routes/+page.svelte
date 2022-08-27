@@ -6,10 +6,10 @@
     {#if data?.newsToday?.length !== 0}
         <div class="carousel">
             <a class="banner-link" href="/post/{data?.newsToday[counter]?.slug}">
-                <img src="{data?.newsToday[counter]?.image.data?.url}" alt="banner">
+                <img src="{data?.newsToday[counter]?.image}" alt="banner">
             </a>
             <div class="controls">
-                {#each data?.newsToday.map(el => el?.image.data?.url) as img, idx}
+                {#each data?.newsToday.map(el => el?.image) as img, idx}
                     <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
                 {/each}
             </div>  
