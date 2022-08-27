@@ -16,31 +16,17 @@ function formatDate(date) {
 	return res;
 }
 
-export async function load({ params, fetch }) {
-	const { data, error } = await supabase.from('Posts').select().eq('slug', params.slug).single();
-	// let res = await fetch(
-	// 	`https://fraudhltv.herokuapp.com/api/posts/?filters[slug][$eq]=${params.slug}&populate=*`
-	// ); // find by slug
+export async function load({ params }) {
+	// asign data to news
+	const { data: news } = await supabase
+		.from('Posts')
+		.select(`title, article, created_at, image, author ( name, link)`) // perform a `join`
+		.eq('slug', params.slug) // select the article based on the slug
+		.single();
 
-	// let data = await res.json();
-	// let news = data.data[0].attributes;
-
-	let news = {
-		title: 'test',
-		flag: 'WORLD',
-		createdAt: '01-01-2022 09:00',
-		article: '# hello world',
-		author: {
-			data: {
-				attributes: {
-					username: 'zuriii',
-					link: 'https://twitter.com/ZuriPOL'
-				}
-			}
-		}
-	};
-
-	news = data;
+	const { data: image, error } = await supabase.storage.from('fraudhltv-pictures').list();
+	console.log(image);
+	console.log(error);
 
 	news.article = marked.parse(news.article);
 	news.createdAt = formatDate(new Date(news.created_at));
