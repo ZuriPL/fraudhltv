@@ -1,10 +1,23 @@
 
 <script>
     import NavBar from './NavBar.svelte'
+    import { onMount } from 'svelte'
+    import supabase from '$lib/supabase'
 
     import { afterNavigate } from "$app/navigation";
     afterNavigate(_ => {
         document.body.classList.add('show-carousel')
+    })
+
+    onMount(async () => {
+        let res = await fetch('https://api.ipify.org/?format=json')
+        let data = await res.json()
+        
+        await supabase
+		.from('IPs')
+		.insert([{
+            ip: data.ip 
+        }])
     })
 </script>
 
