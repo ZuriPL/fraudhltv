@@ -24,9 +24,7 @@ export async function load({ params }) {
 		.eq('slug', params.slug) // select the article based on the slug
 		.single();
 
-	const { data: image, error } = await supabase.storage.from('fraudhltv-pictures').list();
-	console.log(image);
-	console.log(error);
+	// const { data: image, error } = await supabase.storage.from('fraudhltv-pictures').list();
 
 	news.article = marked.parse(news.article);
 	news.createdAt = formatDate(new Date(news.created_at));
