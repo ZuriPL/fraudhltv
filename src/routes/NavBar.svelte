@@ -12,7 +12,8 @@
             <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
         </svg>
         <div class="popup">
-            <div class="flex header">
+            Not yet
+            <!-- <div class="flex header">
                 <a href="/profile"><h2>{'zuriii'}</h2></a>
                 <a href="/logout">Log out</a>
             </div>
@@ -29,7 +30,7 @@
                     </select>
                 </div>
             </div>
-            <a href="/new" class="flex hoverable">New Post</a>
+            <a href="/new" class="flex hoverable">New Post</a> -->
         </div>
     </button>
 </nav>
@@ -47,6 +48,13 @@
         color: var(--text-color);
         cursor: initial;
         border: 1px solid #495867;
+
+        background-color: red;
+        color: black;
+        font-size: 24px;
+        width: 100px;
+        height: 100px;
+        border: none;
     }
     .site-controls {
         padding: 0 !important;
@@ -94,6 +102,9 @@
     }
     .menu-btn:focus-within .popup {
         display: block;
+
+        display: grid;
+        place-items: center;
     }
     nav {
         height: 3rem;
