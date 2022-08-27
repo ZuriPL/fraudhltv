@@ -3,18 +3,13 @@
 </svelte:head>
 
 <main>
-    <script>
-        document.addEventListener('DOMContentLoaded', e => {
-            document.body.classList.add('show-carousel');
-        });
-    </script>
-    {#if data?.newsToday.length !== 0}
+    {#if data?.newsToday?.length !== 0}
         <div class="carousel">
-            <a class="banner-link" href="/post/{data?.newsToday[counter]?.attributes.slug}">
-                <img src="{data?.newsToday[counter]?.attributes.image.data?.attributes.url}" alt="banner">
+            <a class="banner-link" href="/post/{data?.newsToday[counter]?.slug}">
+                <img src="{data?.newsToday[counter]?.image.data?.url}" alt="banner">
             </a>
             <div class="controls">
-                {#each data?.newsToday.map(el => el?.attributes.image.data?.attributes.url) as img, idx}
+                {#each data?.newsToday.map(el => el?.image.data?.url) as img, idx}
                     <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
                 {/each}
             </div>  
@@ -37,10 +32,10 @@
             <h1>Today's news</h1>
             <div class="list">
                 {#each data?.newsToday as article}
-                    <a href="/post/{article?.attributes.slug}" class="article">
-                        <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
-                        <p class="article-title">{article?.attributes.title}</p>
-                        <p class="article-date">{article?.attributes.timeAgo}</p>
+                    <a href="/post/{article?.slug}" class="article">
+                        <img src="https://www.hltv.org/img/static/flags/30x20/{article?.flag}.gif" alt="{article?.flag} flag">
+                        <p class="article-title">{article?.title}</p>
+                        <p class="article-date">{article?.timeAgo}</p>
                     </a>
                 {/each}
             </div>
@@ -51,10 +46,10 @@
         <h1>{data?.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
         <div class="list">
             {#each data?.otherNews as article}
-            <a href="/post/{article?.attributes.slug}" class="article">
-                <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
-                <p class="article-title">{article?.attributes.title}</p>
-                <p class="article-date">{article?.attributes.timeAgo}</p>
+            <a href="/post/{article?.slug}" class="article">
+                <img src="https://www.hltv.org/img/static/flags/30x20/{article?.flag}.gif" alt="{article?.flag} flag">
+                <p class="article-title">{article?.title}</p>
+                <p class="article-date">{article?.timeAgo}</p>
                 </a>
             {/each}
         </div>
@@ -64,10 +59,8 @@
 
 <script>
     export let data
-    
+   
     let counter = 0
-    
-
 </script>
 
 <style>

@@ -1,6 +1,6 @@
 <nav>
+    <a class="logo-anchor" href="/"><img src="/favicon.png" alt="Logo"></a>
     <div class="scroll-wrapper">
-        <a class="logo-anchor" href="/"><img src="/favicon.png" alt="Logo"></a>
         <a href="/">News</a>
         <a href="/rankings">Rankings</a>
         <a href="/matches">Matches</a>
@@ -110,12 +110,21 @@
         overflow-y: hidden;
         width: 100%;
     }
+    .scroll-wrapper::-webkit-scrollbar {
+        height: 4px;
+        background-color: transparent;
+    }
+    .scroll-wrapper::-webkit-scrollbar-thumb {
+        border-radius: 50px;
+        background-color: var(--link-color);
+    }
     img {
         height: 100%;
         aspect-ratio: 1 / 1;
     }
     .logo-anchor {
         width: 3rem;
+        flex-shrink: 0 !important;
     }
     .scroll-wrapper > a:not(.logo-anchor), nav > button {
         display: block;
@@ -123,6 +132,7 @@
         text-decoration: none;
         font-weight: 500;
         flex: 1;
+        padding: 0 24px;
         display: grid;
         place-items: center;
         border: none;

@@ -1,4 +1,6 @@
 import { marked } from 'marked';
+import supabase from '$lib/supabase';
+
 function formatDate(date) {
 	let res =
 		date.getDate().toString().padStart(2, '0') +
@@ -15,15 +17,33 @@ function formatDate(date) {
 }
 
 export async function load({ params, fetch }) {
-	let res = await fetch(
-		`https://fraudhltv.herokuapp.com/api/posts/?filters[slug][$eq]=${params.slug}&populate=*`
-	); // find by slug
+	const { data, error } = await supabase.from('Posts').select().eq('slug', params.slug).single();
+	// let res = await fetch(
+	// 	`https://fraudhltv.herokuapp.com/api/posts/?filters[slug][$eq]=${params.slug}&populate=*`
+	// ); // find by slug
 
-	let data = await res.json();
-	let news = data.data[0].attributes;
+	// let data = await res.json();
+	// let news = data.data[0].attributes;
+
+	let news = {
+		title: 'test',
+		flag: 'WORLD',
+		createdAt: '01-01-2022 09:00',
+		article: '# hello world',
+		author: {
+			data: {
+				attributes: {
+					username: 'zuriii',
+					link: 'https://twitter.com/ZuriPOL'
+				}
+			}
+		}
+	};
+
+	news = data;
 
 	news.article = marked.parse(news.article);
-	news.createdAt = formatDate(new Date(news.createdAt));
+	news.createdAt = formatDate(new Date(news.created_at));
 
 	return news;
 }

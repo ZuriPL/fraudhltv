@@ -20,6 +20,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/supabase-js": "^1.35.6",
+		"dotenv": "^16.0.1",
 		"javascript-time-ago": "^2.5.7",
 		"marked": "^4.0.19"
 	}
