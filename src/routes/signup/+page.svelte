@@ -1,6 +1,11 @@
+<svelte:head>
+    <title>Sign up for FraudHLTV</title>
+</svelte:head>
+
 <main>
     <form on:submit|preventDefault="{loginHandle}">
         <h1>Create an account</h1>
+        <hr>
         <div class="grid">
             <div>
                 <label for="name">Username</label>
@@ -46,6 +51,7 @@
                 </select>
             </label>
         </div>
+        <hr>
         <button>Sign up</button>
     </form>
 </main>
@@ -78,23 +84,30 @@
 </script>
 
 <style>
+    main {
+        color: var(--text-color);
+    }
     input {
         display: block;
         width: 100%;
         background-color: transparent;
-        border: 1px solid #495867;
+        border: 1px solid #435971;
         font-size: 16px;
         color: var(--text-color);
     }
     button {
-        padding: 0.75rem 4rem;
+        padding: 0.75rem 0;
+        width: calc(calc(800px - 4rem) / 3);
         border: none;
         background-color: #435971;
         color: var(--text-color);
         font-size: 1rem;
         font-weight: 600;
-        grid-column: 1 / span 2;
-        margin-top: 1.5rem;
+        margin: 0 auto;
+        display: block;
+    }
+    button:hover {
+        background-color: #59728e;
     }
     main {
         width: 100%;
@@ -105,7 +118,7 @@
         width: 800px;
         background-color: #2d3844;
         margin-top: 2rem;
-        padding: 16px;
+        padding: 1rem;
     }
     .grid {
         display: grid;
@@ -120,6 +133,11 @@
     }
     select {
         width: 100%;
+        background-color: transparent;
+        color: var(--text-color);
+    }
+    option {
+        color: black;
     }
     .grid label {
         margin-bottom: 0.25rem;
@@ -130,6 +148,7 @@
     }
     hr {
         margin: 1.5rem 0;
+        border: 1px solid #495867;
     }
     h1 {
         margin-bottom: 1rem;
