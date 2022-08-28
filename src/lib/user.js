@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
 
-let user = writable(true);
+let user = writable();
 
 export default user;
