@@ -1,8 +1,8 @@
 
 <script>
     import NavBar from './NavBar.svelte'
-
     import { afterNavigate } from "$app/navigation";
+
     afterNavigate(_ => {
         document.body.classList.add('show-carousel')
     })
