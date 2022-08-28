@@ -8,8 +8,6 @@
     })
 </script>
 
-<svelte:window on:DOMContentLoaded="{_ => document.body.classList.add('show-carousel')}"/>
-
 <NavBar/>
 <slot></slot>
 
