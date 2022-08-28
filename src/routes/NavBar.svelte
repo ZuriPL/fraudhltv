@@ -8,20 +8,15 @@
         <a href="/fantasy">Fantasy</a>
     </div>
     {#if $user}
-        <button class="menu-btn">
+        <button class="menu-btn" on:click="{toggleMenu}">
             <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
             </svg>
-            <div class="popup">
-                <div class="flex header">
-                    <a href="/profile"><h2>{'zuriii'}</h2></a>
+            <div class="popup" bind:this="{popup}">
+                <div class="top-section flex">
+                    <p>{$user.name}</p>
                     <a href="/logout">Log out</a>
                 </div>
-                <button class="hoverable">Profile settings </button>
-                <div class="site-controls">
-                    <div class="flex hoverable">Theme <input type="checkbox" id="theme-toggle"></div>
-                </div>
-                <a href="/new" class="flex hoverable">New Post</a>
             </div>
         </button>
     {:else}
@@ -31,9 +26,21 @@
 
 <script>
     import user from '$lib/user'
+
+    let popup
+
+    function toggleMenu() {
+        console.log(1)
+        popup.classList.toggle('show')
+    }
 </script>
 
 <style>
+    .flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
     .signin-link {
         color: var(--link-color) !important;
         font-size: 0.9rem;
@@ -58,50 +65,8 @@
         cursor: initial;
         border: 1px solid #495867;
     }
-    .site-controls {
-        padding: 0 !important;
-        margin: 0;
-    }
-    .popup button {
-        background-color: transparent;
-        text-align: left;
-        padding: 0;
-        border: none;
-        color: inherit;
-        display: block;
-        width: 100%;
-        color: var(--link-color);
-        font-weight: 600;
-    }
-    .hoverable:hover {
-        background-color: #45515f;
-    }
-    .popup > div, .popup > button, .popup > a {
-        padding: 0.75rem 0.5rem;
-        border-top: 1px solid #495867;
-    }
-    .site-controls > div {
-        padding: 0.75rem 0.5rem;
-    }
-    .header {
-        background-color: #364250;
-        font-weight: 500;
-        font-size: 12px !important;
-        border-top: none !important;
-    }
-    h2 {
-        font-size: 1rem !important;
-    }
-    .flex {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .menu-btn:focus-within .popup {
-        display: block;
-
-        display: grid;
-        place-items: center;
+    :global(.popup.show) {
+        display: block !important;
     }
     nav {
         height: 3rem;
