@@ -8,14 +8,20 @@
         <a href="/fantasy">Fantasy</a>
     </div>
     {#if $user}
-        <button class="menu-btn" on:click="{toggleMenu}">
+        <button class="menu-btn" on:click|stopPropagation="{toggleMenu}">
             <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
             </svg>
-            <div class="popup" bind:this="{popup}">
+            
+            <!--  stop propagation, callback is noop -->
+            <div class="popup" bind:this="{popup}" on:click|stopPropagation="{_=>0}">
                 <div class="top-section flex">
-                    <p>{$user.name}</p>
-                    <a href="/logout">Log out</a>
+                    <a href="/profile/{$user.name}">{$user.name}</a>
+                    <a href="/logout" class="logout">Log out</a>
+                </div>
+                <div class="flex">
+                    <p>Dark mode</p>
+                    <label for="theme-toggle">x</label>
                 </div>
             </div>
         </button>
@@ -23,6 +29,9 @@
         <a href="/signin" class="signin-link">Sign in</a>
     {/if}
 </nav>
+<input type="checkbox" id="themetoggle" name="themetoggle" class="hidden">
+
+<svelte:window on:click="{closeMenu}"></svelte:window>
 
 <script>
     import user from '$lib/user'
@@ -30,8 +39,11 @@
     let popup
 
     function toggleMenu() {
-        console.log(1)
         popup.classList.toggle('show')
+    }
+
+    function closeMenu() {
+        popup.classList.remove('show')
     }
 </script>
 
@@ -43,7 +55,7 @@
     }
     .signin-link {
         color: var(--link-color) !important;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         border-left: 1px solid #838a92;
         padding: 0 16px;
         flex: 0;
@@ -67,6 +79,15 @@
     }
     :global(.popup.show) {
         display: block !important;
+    }
+    .popup > div {
+        padding: 9px;
+    }
+    .top-section {
+        background-color: #364250;
+    }
+    .logout {
+        font-size: 0.825rem;
     }
     nav {
         height: 3rem;
@@ -105,7 +126,8 @@
         text-decoration: none;
         font-weight: 500;
         flex: 1;
-        padding: 0 24px;
+        padding: 0 20px;
+        font-size: 0.95rem;
         display: grid;
         place-items: center;
         border: none;
