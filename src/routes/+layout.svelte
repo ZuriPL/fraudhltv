@@ -2,10 +2,28 @@
 <script>
     import NavBar from './NavBar.svelte'
     import { afterNavigate } from "$app/navigation";
+    import supabase from '$lib/supabase'
+    import user from '$lib/user'
+    import { onMount } from 'svelte'
 
     afterNavigate(_ => {
         document.body.classList.add('show-carousel')
     })
+
+    onMount(async () => {
+        // const { data: userData} = await supabase.auth.getSession()
+        // $user = userData.session
+
+        supabase.auth.getSession().then(({ data }) => {
+            $user = data.session
+        })
+
+        supabase.auth.onAuthStateChange((event, session) => {
+            $user = session
+        })
+    })
+
+    $: console.log($user)
 </script>
 
 <NavBar/>

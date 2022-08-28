@@ -16,7 +16,7 @@
             <!--  stop propagation, callback is noop -->
             <div class="popup" bind:this="{popup}" on:click|stopPropagation="{_=>0}">
                 <div class="top-section flex">
-                    <a href="/profile/{$user.name}">{$user.name}</a>
+                    <a href="/profile/{$user?.user?.user_metadata?.name}">{$user?.user?.user_metadata?.name}</a>
                     <a href="/logout" class="logout">Log out</a>
                 </div>
                 <div class="flex">
@@ -39,11 +39,11 @@
     let popup
 
     function toggleMenu() {
-        popup.classList.toggle('show')
+        popup?.classList?.toggle('show')
     }
 
     function closeMenu() {
-        popup.classList.remove('show')
+        popup?.classList?.remove('show')
     }
 </script>
 
