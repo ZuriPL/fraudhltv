@@ -11,9 +11,6 @@
     })
 
     onMount(async () => {
-        // const { data: userData} = await supabase.auth.getSession()
-        // $user = userData.session
-
         supabase.auth.getSession().then(({ data }) => {
             $user = data.session
         })
