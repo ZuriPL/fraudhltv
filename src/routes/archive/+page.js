@@ -1,25 +1,13 @@
 import timeAgo from '$lib/timeAgo';
+import supabase from '$lib/supabase';
 
-export async function load({ fetch }) {
-	// let res = await fetch(`https://fraudhltv.herokuapp.com/api/posts?populate=*`);
-	// let data = await res.json();
-	// let news = data.data;
-
-	let news = [
-		{
-			id: 1,
-			attributes: {
-				title: 'test',
-				flag: 'WORLD',
-				createdAt: '01-01-2022 09:00',
-				article: '# hello world'
-			}
-		}
-	];
+export async function load() {
+	const { data: news } = await supabase.from('Posts').select(`title, slug, flag, created_at`);
 
 	news.forEach((el) => {
-		el.attributes.timeAgo = timeAgo(new Date(el.attributes.createdAt));
+		el.timeAgo = timeAgo(el.created_at);
 	});
+	// console.log(news);
 
 	return { news };
 }

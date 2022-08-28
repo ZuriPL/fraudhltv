@@ -3,26 +3,28 @@
 </svelte:head>
 
 <main>
-    <h1>VERY ALPHA PAGE</h1>
-
-    <h2>History</h2>
-    {#each matchesHistory as match}
-    <div>
-        <p>{match.id}, {match.result}, {match.home.name}, {match.score}, {match.away.name}, {match.map}</p>  
-    </div>
-    {/each}
-    <h2>Pending</h2>
-    {#each matchesPending as match}
-    <div>
-        <p>{match.id}, {match.home.name} vs {match.away.name}</p>  
-    </div>
-    {/each}
-    <h2>Live</h2>
-    {#each matchesLive as match}
-    <div>
-        <p>{match.id}, {match.home.name}, vs {match.away.name}, {match.map}</p>  
-    </div>
-    {/each}
+    {#if import.meta.env['VITE_MODE'] === 'dev'}
+        <h2>History</h2>
+        {#each matchesHistory as match}
+        <div>
+            <p>{match.id}, {match.result}, {match.home.name}, {match.score}, {match.away.name}, {match.map}</p>  
+        </div>
+        {/each}
+        <h2>Pending</h2>
+        {#each matchesPending as match}
+        <div>
+            <p>{match.id}, {match.home.name} vs {match.away.name}</p>  
+        </div>
+        {/each}
+        <h2>Live</h2>
+        {#each matchesLive as match}
+        <div>
+            <p>{match.id}, {match.home.name}, vs {match.away.name}, {match.map}</p>  
+        </div>
+        {/each}
+    {:else}
+        <p>nothing to see here yet</p>
+    {/if}
 </main>
 
 <script>

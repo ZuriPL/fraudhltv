@@ -13,10 +13,10 @@
         </form>
         <div class="list">
             {#each news as article}
-                <a href="/post/{article?.attributes.slug}" class="article">
-                    <img src="https://www.hltv.org/img/static/flags/30x20/{article?.attributes.flag}.gif" alt="{article?.attributes.flag} flag">
-                    <p class="article-title">{article?.attributes.title}</p>
-                    <p class="article-date">{article?.attributes.timeAgo}</p>
+                <a href="/post/{article?.slug}" class="article">
+                    <img src="https://www.hltv.org/img/static/flags/30x20/{article?.flag}.gif" alt="{article?.flag} flag">
+                    <p class="article-title">{article?.title}</p>
+                    <p class="article-date">{article?.timeAgo}</p>
                 </a>
             {/each}
         </div>
@@ -26,11 +26,11 @@
 <script>
     export let data
 
-    let news = data.news
+    let { news } = data
 
     function search(e) {
-        if (e.srcElement[0].value === '') return news = data.news
-        news = data.news.filter(el => el.attributes.title.toLowerCase().includes(e.srcElement[0].value.toLowerCase()))
+        if (e.srcElement[0].value === '') return { news } = data
+        news = data.news.filter(el => el.title.toLowerCase().includes(e.srcElement[0].value.toLowerCase()))
     }
 </script>
 
