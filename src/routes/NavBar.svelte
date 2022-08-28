@@ -7,35 +7,44 @@
         <a href="/forums">Forums</a>
         <a href="/fantasy">Fantasy</a>
     </div>
-    <button class="menu-btn">
-        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
-        </svg>
-        <div class="popup">
-            Not yet
-            <!-- <div class="flex header">
-                <a href="/profile"><h2>{'zuriii'}</h2></a>
-                <a href="/logout">Log out</a>
-            </div>
-            <button class="hoverable">Profile settings </button>
-            <div class="site-controls">
-                <div class="flex hoverable">Theme <input type="checkbox" id="theme-toggle"></div>
-                <div class="flex hoverable">
-                    Language <select>
-                        <option value="Polish">Polish</option>
-                        <option value="English">English</option>
-                        <option value="Finnish">Finnish</option>
-                        <option value="Russian">Russian</option>
-                        <option value="French">French</option>
-                    </select>
+    {#if $user}
+        <button class="menu-btn">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
+            </svg>
+            <div class="popup">
+                <div class="flex header">
+                    <a href="/profile"><h2>{'zuriii'}</h2></a>
+                    <a href="/logout">Log out</a>
                 </div>
+                <button class="hoverable">Profile settings </button>
+                <div class="site-controls">
+                    <div class="flex hoverable">Theme <input type="checkbox" id="theme-toggle"></div>
+                </div>
+                <a href="/new" class="flex hoverable">New Post</a>
             </div>
-            <a href="/new" class="flex hoverable">New Post</a> -->
-        </div>
-    </button>
+        </button>
+    {:else}
+        <a href="/signin" class="signin-link">Sign in</a>
+    {/if}
 </nav>
 
+<script>
+    import user from '$lib/user'
+</script>
+
 <style>
+    .signin-link {
+        color: var(--link-color) !important;
+        font-size: 0.9rem;
+        border-left: 1px solid #838a92;
+        padding: 0 16px;
+        flex: 0;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        flex-basis: auto;
+    }
     .popup {
         display: none;
         position: absolute;
@@ -48,22 +57,10 @@
         color: var(--text-color);
         cursor: initial;
         border: 1px solid #495867;
-
-        background-color: red;
-        color: black;
-        font-size: 24px;
-        width: 100px;
-        height: 100px;
-        border: none;
     }
     .site-controls {
         padding: 0 !important;
         margin: 0;
-    }
-    select, option {
-        background-color: #2d3844;
-        color: var(--text-color);
-        width: 25ch;
     }
     .popup button {
         background-color: transparent;
