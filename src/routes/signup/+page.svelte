@@ -3,51 +3,55 @@
 </svelte:head>
 
 <main>
-    <form on:submit|preventDefault="{loginHandle}">
+    <form on:submit|preventDefault="{submitHandler}">
         <h1>Create an account</h1>
         <hr>
         <div class="grid">
             <div>
-                <label for="name">Username</label>
-                <input bind:this="{nameInput}" type="text" name="name" id="name" autocomplete="nickname">
+                <label for="name" class="input-label">Username</label>
+                <input maxlength="40" bind:this="{nameInput}" type="text" name="name" id="name" autocomplete="nickname" required>
             </div>
             <div>
-                <label for="email">Email</label>
-                <input bind:this="{emailInput}" type="email" name="email" id="email" autocomplete="email">
+                <label for="email" class="input-label">Email</label>
+                <input bind:this="{emailInput}" type="email" name="email" id="email" autocomplete="email" required>
             </div>
             <div>
-                <label for="password">Password</label>
-                <input bind:this="{passwordInput}" type="password" name="password" id="password" autocomplete="current-password">
+                <label for="password" class="input-label">Password</label>
+                <input bind:this="{passwordInput}" type="password" name="password" id="password" autocomplete="current-password" required>
             </div>
             <div>
-                <label for="confirm-password">Confirm password</label>
-                <input bind:this="{confirmPasswordInput}" type="password" name="confirm-password" id="confirm-password" autocomplete="current-password">
+                <label for="confirm-password" class="input-label">Confirm password</label>
+                <input bind:this="{confirmPasswordInput}" type="password" name="confirm-password" id="confirm-password" autocomplete="current-password" required>
             </div>
         </div>
         <hr>
-        <div class="row">
-            <label for="flag">
+        <div class="grid2">
+            <label class="textarea-label">
+                Write your bio
+                <textarea name="bio" cols="30" bind:this="{bioInput}"></textarea>
+            </label>
+            <label class="select-label">
                 Choose your country
-                <select name="flag" id="flag">
-                    <option value="">123</option>
-                    <option value="">123</option>
-                    <option value="">123</option>
+                <select name="flag" bind:this="{countrySelect}">
+                    <option value="1234">123</option>
+                    <option value="1234">123</option>
+                    <option value="1234">123</option>
                 </select>
             </label>
-            <label for="player">
+            <label class="select-label">
                 Choose your favourite player
-                <select name="player" id="player">
-                    <option value="">123</option>
-                    <option value="">123</option>
-                    <option value="">123</option>
+                <select name="player" bind:this="{playerSelect}">
+                    <option value="1234">123</option>
+                    <option value="1234">123</option>
+                    <option value="1234">123</option>
                 </select>
             </label>
-            <label for="team">
+            <label class="select-label">
                 Choose your favourite team
-                <select name="team" id="team">
-                    <option value="">123</option>
-                    <option value="">123</option>
-                    <option value="">123</option>
+                <select name="team" bind:this="{teamSelect}">
+                    <option value="1234">123</option>
+                    <option value="1234">123</option>
+                    <option value="1234">123</option>
                 </select>
             </label>
         </div>
@@ -60,10 +64,12 @@
     import supabase from '$lib/supabase'
     import { goto } from '$app/navigation'
 
-    let emailInput, passwordInput, nameInput, confirmPasswordInput
+    let emailInput, passwordInput, nameInput, confirmPasswordInput, bioInput, playerSelect, teamSelect, countrySelect
 
-    async function loginHandle() {
+    async function submitHandler(e) {
+        console.log(1)
         if (passwordInput.value !== confirmPasswordInput.value) return;
+        console.log(2)
 
         let { user, error } = await supabase.auth.signUp({
             email: emailInput.value,
@@ -72,7 +78,10 @@
                 data: {
                     name: nameInput.value,
                     role: 'regular',
-                    link: ''
+                    bio: bioInput.value,
+                    player: playerSelect.value,
+                    team: teamSelect.value,
+                    flag: countrySelect.value
                 }
             }
         })
@@ -125,11 +134,27 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
-    .row {
-        display: flex;
-        align-items: center;
-        justify-content: stretch;
+    .grid2 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         gap: 1rem;
+    }
+    .textarea-label {
+        grid-row: 1 / span 3;
+        grid-column: 1 / span 2;
+        width: 100%;
+        height: 100%;
+    }
+    textarea {
+        width: 100%;
+        height: 100%;
+        resize: none;
+        background: transparent;
+        color: var(--text-color);
+    }
+    .grid2 > .select-label {
+        grid-column: 3 / span 1;
     }
     select {
         width: 100%;
@@ -143,8 +168,12 @@
         margin-bottom: 0.25rem;
         display: block;
     }
-    .row label {
+    .grid2 label {
         width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
     }
     hr {
         margin: 1.5rem 0;
