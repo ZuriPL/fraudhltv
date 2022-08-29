@@ -74,7 +74,6 @@
         align-items: center;
         width: 100vw;
         gap: 1.5rem;
-        padding-top: 1.5rem;
     }
     .welcome {
         color: var(--text-color);
@@ -82,6 +81,7 @@
         height: 150px;
         display: grid;
         place-items: center;
+        text-align: center;
     }
     .carousel {
         display: none;

@@ -10,7 +10,7 @@
         document.body.classList.add('show-carousel')
     })
 
-    onMount(async () => {
+    onMount(() => {
         supabase.auth.getSession().then(({ data }) => {
             $user = data.session
         })
@@ -19,8 +19,6 @@
             $user = session
         })
     })
-
-    $: console.log($user)
 </script>
 
 <NavBar/>

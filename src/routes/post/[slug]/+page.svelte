@@ -49,7 +49,6 @@
     article {
         max-width: 800px;
         background-color: #2d3844;
-        margin-top: 1.5rem;
         width: calc(100% - 2rem);
         padding: 1rem 2rem;
     }

@@ -67,11 +67,9 @@
     let emailInput, passwordInput, nameInput, confirmPasswordInput, bioInput, playerSelect, teamSelect, countrySelect
 
     async function submitHandler(e) {
-        console.log(1)
         if (passwordInput.value !== confirmPasswordInput.value) return;
-        console.log(2)
 
-        let { user, error } = await supabase.auth.signUp({
+        let { data: { user }, error} = await supabase.auth.signUp({
             email: emailInput.value,
             password: passwordInput.value,
             options: {
@@ -86,8 +84,8 @@
             }
         })
 
-        if (user) return goto('/')
-
+        if (user) return await goto('/')
+        
         console.log(error)
     }
 </script>
@@ -126,7 +124,6 @@
     form {
         width: 800px;
         background-color: #2d3844;
-        margin-top: 2rem;
         padding: 1rem;
     }
     .grid {

@@ -17,7 +17,7 @@
             <div class="popup" bind:this="{popup}" on:click|stopPropagation="{_=>0}">
                 <div class="top-section flex">
                     <a href="/profile/{$user?.user?.user_metadata?.name}">{$user?.user?.user_metadata?.name}</a>
-                    <a href="/logout" class="logout">Log out</a>
+                    <button class="logout" on:click="{() => supabase.auth.signOut()}">Log out</button>
                 </div>
                 <div class="flex">
                     <p>Dark mode</p>
@@ -34,6 +34,8 @@
 <svelte:window on:click="{closeMenu}"></svelte:window>
 
 <script>
+    import supabase from '$lib/supabase'
+
     import user from '$lib/user'
 
     let popup
@@ -87,6 +89,10 @@
         background-color: #364250;
     }
     .logout {
+        all: unset;
+        color: var(--link-color);
+        font-weight: 600;
+        cursor: pointer;
         font-size: 0.825rem;
     }
     nav {
@@ -96,6 +102,7 @@
         align-items: stretch;
         color: #929a9e;
         padding: 0 calc(calc(100vw - 800px) / 2);
+        margin-bottom: 1.5rem;
     }
     .scroll-wrapper {
         display: flex;

@@ -8,7 +8,6 @@
     h2 {
         font-size: 10rem;
         color: #87a3bf;
-        margin-top: 1rem;
     }
     main {
         display: flex;
