@@ -15,14 +15,23 @@
             
             <!--  stop propagation, callback is noop -->
             <div class="popup" bind:this="{popup}" on:click|stopPropagation="{_=>0}">
-                <div class="top-section flex">
-                    <a href="/profile/{$user?.user?.user_metadata?.name}">{$user?.user?.user_metadata?.name}</a>
+                <div class="top-section item">
+                    <a href="/profile/{$user?.name}">{$user?.name}</a>
                     <button class="logout" on:click="{() => supabase.auth.signOut()}">Log out</button>
                 </div>
-                <div class="flex">
-                    <p>Dark mode</p>
-                    <label for="theme-toggle">x</label>
-                </div>
+                <a href="/edit-profile" class="item separator">
+                    Profile settings
+                </a>
+                <label class="item">Theme <select name="theme-toggle" id="theme-toggle">
+                    <option value="light">Light mode</option>
+                    <option value="dark">Dark mode</option>
+                    <option value="auto">System preference</option>
+                </select></label>
+                {#if $user.role === 'writer' || $user.role === 'superadmin'}
+                    <a href="/new-post" class="item new-post separator"><svg style="width:24px;height:auto" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                    </svg>New post</a>
+                {/if}
             </div>
         </button>
     {:else}
@@ -50,10 +59,24 @@
 </script>
 
 <style>
-    .flex {
+    .separator {
+        border-top: 1px solid #495867;
+    }
+    .item {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 8px;
+    }
+    .item:hover {
+        background-color: #45515f;
+    }
+    .new-post {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 1rem;
     }
     .signin-link {
         color: var(--link-color) !important;
@@ -78,22 +101,21 @@
         color: var(--text-color);
         cursor: initial;
         border: 1px solid #495867;
+        font-size: 0.85rem;
     }
     :global(.popup.show) {
         display: block !important;
     }
-    .popup > div {
-        padding: 9px;
-    }
     .top-section {
-        background-color: #364250;
+        font-size: 1rem;
+        background-color: #364250 !important;
     }
     .logout {
         all: unset;
         color: var(--link-color);
         font-weight: 600;
         cursor: pointer;
-        font-size: 0.825rem;
+        font-size: 0.85rem;
     }
     nav {
         height: 3rem;

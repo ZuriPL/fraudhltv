@@ -11,5 +11,11 @@
 </main>
 
 <script>
+    import supabase from '$lib/supabase'
 
+    async function main() {
+        const data = await supabase.from('Posts').insert([{ title: 'new test' }])
+        console.log(data)
+    }
+    // main()
 </script>

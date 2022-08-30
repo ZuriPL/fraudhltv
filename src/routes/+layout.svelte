@@ -11,12 +11,12 @@
     })
 
     onMount(() => {
-        supabase.auth.getSession().then(({ data }) => {
-            $user = data.session
+        supabase.auth.getSession().then(async ({ data }) => {
+            $user = (await supabase.from('users').select().eq('user_id', data?.session?.user?.id)?.single())?.data
         })
-
-        supabase.auth.onAuthStateChange((event, session) => {
-            $user = session
+        
+        supabase.auth.onAuthStateChange(async (event, session) => {
+            $user = (await supabase.from('users').select().eq('user_id', session?.user?.id)?.single())?.data
         })
     })
 </script>
