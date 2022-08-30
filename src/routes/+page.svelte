@@ -37,7 +37,7 @@
             <div class="list">
                 {#each data?.newsToday as article}
                     <a href="/post/{article?.slug}" class="article">
-                        <img src="https://www.hltv.org/img/static/flags/30x20/{article?.flag}.gif" alt="{article?.flag} flag">
+                        <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
                         <p class="article-title">{article?.title}</p>
                         <p class="article-date">{article?.timeAgo}</p>
                     </a>
@@ -51,7 +51,7 @@
         <div class="list">
             {#each data?.otherNews as article}
             <a href="/post/{article?.slug}" class="article">
-                <img src="https://www.hltv.org/img/static/flags/30x20/{article?.flag}.gif" alt="{article?.flag} flag">
+                <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
                 <p class="article-title">{article?.title}</p>
                 <p class="article-date">{article?.timeAgo}</p>
                 </a>
