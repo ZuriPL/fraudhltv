@@ -58,6 +58,7 @@
             author: $user.id,
             image: supabase.storage.from('fraudhltv-pictures').getPublicUrl(imageData.path).publicURL
         }])
+        console.log(supabase.storage.from('fraudhltv-pictures').getPublicUrl(imageData.path).publicURL)
         if (error) return log.textContent = 'An error occured while creating the post. The post may not have been created'; console.log(error);
         
         log.textContent = 'Post created succesfully'
