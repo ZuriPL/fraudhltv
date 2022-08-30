@@ -58,6 +58,7 @@
         <hr>
         <button>Sign up</button>
     </form>
+    <a href="/signin">Have an account? Sign in here</a>
 </main>
 
 <script>
@@ -119,7 +120,9 @@
     main {
         width: 100%;
         display: flex;
-        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.5rem;
     }
     form {
         width: 800px;

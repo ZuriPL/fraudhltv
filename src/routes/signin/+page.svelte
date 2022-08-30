@@ -17,6 +17,7 @@
         </div>
         <button>Log in</button>
     </form>
+    <a href="/signup">No account? Create one here</a>
 </main>
 
 <script>
@@ -76,7 +77,9 @@
     main {
         width: 100%;
         display: flex;
-        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.5rem;
     }
     form {
         max-width: 800px;

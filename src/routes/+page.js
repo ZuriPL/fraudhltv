@@ -2,7 +2,7 @@ import timeAgo from '$lib/timeAgo';
 import supabase from '$lib/supabase';
 
 export async function load() {
-	const { data: news } = await supabase.from('Posts').select();
+	const { data: news } = await supabase.from('posts').select();
 
 	news.forEach((el) => {
 		el.timeAgo = timeAgo(el.created_at);

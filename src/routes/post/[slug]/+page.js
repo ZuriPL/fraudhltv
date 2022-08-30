@@ -18,9 +18,9 @@ function formatDate(date) {
 
 export async function load({ params }) {
 	// asign data to news
-	const { data: news } = await supabase
-		.from('Posts')
-		.select(`title, article, created_at, image, author ( name, link)`) // perform a `join`
+	const { data: news, error } = await supabase
+		.from('posts')
+		.select(`title, article, created_at, image, author ( name )`) // perform a `join`
 		.eq('slug', params.slug) // select the article based on the slug
 		.single();
 

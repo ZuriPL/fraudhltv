@@ -27,8 +27,8 @@
         </label>
 
         <button>Post</button>
+        <p bind:this="{log}"></p>
     </form>
-    <p bind:this="{log}"></p>
 </main>
 
 <script>
@@ -48,9 +48,9 @@
             .from('fraudhltv-pictures')
             .upload(`public/${imagePicker.files[0].name}`, imagePicker.files[0])
 
-        if (imageError) return log.textContent = 'An error occured while sending the picture. The post may not have been created'
+        if (imageError) return log.textContent = 'An error occured while sending the picture. The post may not have been created'; console.log(imageError);
         
-        const { data, error } = await supabase.from('Posts').insert([{ 
+        const { data, error } = await supabase.from('posts').insert([{ 
             title: titleInput.value,
             article: articleInput.value,
             flag: flagSelect.value,
@@ -58,13 +58,16 @@
             author: $user.id,
             image: supabase.storage.from('fraudhltv-pictures').getPublicUrl(imageData.path).publicURL
         }])
-        if (error) return log.textContent = 'An error occured while creating the post. The post may not have been created'
+        if (error) return log.textContent = 'An error occured while creating the post. The post may not have been created'; console.log(error);
         
         log.textContent = 'Post created succesfully'
     }
 </script>
 
 <style>
+    p {
+        margin-top: 1rem;
+    }
     h1 {
         font-size: 2.75rem;
         margin-bottom: 1rem;
