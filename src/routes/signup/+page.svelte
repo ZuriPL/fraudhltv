@@ -32,26 +32,29 @@
             </label>
             <label class="select-label">
                 Choose your country
-                <select name="flag" bind:this="{countrySelect}">
-                    <option value="1234">123</option>
-                    <option value="1234">123</option>
-                    <option value="1234">123</option>
+                <select name="flag" bind:this="{countrySelect}" required>
+                    <option value="">--- Please choose an option ---</option>
+                    {#each countryList as country}        
+                        <option value="{country.code}">{country.name}</option>
+                    {/each}
                 </select>
             </label>
             <label class="select-label">
                 Choose your favourite player
-                <select name="player" bind:this="{playerSelect}">
-                    <option value="1234">123</option>
-                    <option value="1234">123</option>
-                    <option value="1234">123</option>
+                <select name="player" bind:this="{playerSelect}" required>
+                    <option value="">--- Please choose an option ---</option>
+                    {#each countryList as country}        
+                        <option value="{country.code}">{country.name}</option>
+                    {/each}
                 </select>
             </label>
             <label class="select-label">
                 Choose your favourite team
-                <select name="team" bind:this="{teamSelect}">
-                    <option value="1234">123</option>
-                    <option value="1234">123</option>
-                    <option value="1234">123</option>
+                <select name="team" bind:this="{teamSelect}" required>
+                    <option value="">--- Please choose an option ---</option>
+                    {#each countryList as country}        
+                        <option value="{country.code}">{country.name}</option>
+                    {/each}
                 </select>
             </label>
         </div>
@@ -64,6 +67,7 @@
 <script>
     import supabase from '$lib/supabase'
     import { goto } from '$app/navigation'
+    import { onMount } from 'svelte'
 
     let emailInput, passwordInput, nameInput, confirmPasswordInput, bioInput, playerSelect, teamSelect, countrySelect
 
@@ -89,17 +93,42 @@
         
         console.log(error)
     }
+
+    let countryList = []
+
+    onMount(async () => {
+        const res = await fetch('https://restcountries.com/v3.1/all');
+        const data = await res.json();
+
+        countryList = data.map((country) => {
+                return {
+                    name: country.name.common,
+                    code: country.cca2
+                }
+            });
+        countryList.sort((a, b) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0;
+        });
+    });
 </script>
 
 <style>
     main {
         color: var(--text-color);
     }
-    input {
+    input, textarea, select {
         display: block;
         width: 100%;
         background-color: transparent;
-        border: 1px solid #435971;
+        border: 1px solid var(--border-clr);
         font-size: 16px;
         color: var(--text-color);
     }
@@ -125,7 +154,8 @@
         gap: 0.5rem;
     }
     form {
-        width: 800px;
+        width: calc(100% - 2rem);
+        max-width: 800px;
         background-color: #2d3844;
         padding: 1rem;
     }
@@ -150,16 +180,9 @@
         width: 100%;
         height: 100%;
         resize: none;
-        background: transparent;
-        color: var(--text-color);
     }
     .grid2 > .select-label {
         grid-column: 3 / span 1;
-    }
-    select {
-        width: 100%;
-        background-color: transparent;
-        color: var(--text-color);
     }
     option {
         color: black;

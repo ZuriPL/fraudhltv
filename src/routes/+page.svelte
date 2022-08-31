@@ -1,9 +1,5 @@
 <svelte:head>
     <title>CS:GO Tier 50 News</title>
-    <meta name="twitter:title" content="CS:GO Tier 50 News" />
-    <meta name="twitter:site" content="@fraudhltv" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="/favicon.png" />
 </svelte:head>
 
 <main>
@@ -163,8 +159,8 @@
         align-items: center;
         gap: 1rem;
         padding: 0.5rem 1rem;
-        background-color: #2d3844;
-        border-bottom: 1px solid #495867;
+        background-color: var(--bg-primary);
+        border-bottom: 1px solid var(--border-clrX);
     }
     .article:hover {
         background-color: #45515f;
@@ -181,7 +177,7 @@
     }
     .article-date {
         font-size: 0.75rem;
-        color: #838a92;
+        color: var(--border-clr);
         margin-left: auto;
     }
     .article:last-child {

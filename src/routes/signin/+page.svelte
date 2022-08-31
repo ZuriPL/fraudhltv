@@ -50,7 +50,7 @@
         display: block;
         width: 100%;
         background-color: transparent;
-        border: 1px solid #435971;
+        border: 1px solid var(--border-clr);
         color: var(--text-color);
         font-size: 16px;
     }
@@ -64,7 +64,7 @@
         padding: 0.75rem 0;
         width: calc(calc(800px - 4rem) / 3);
         border: none;
-        background-color: #435971;
+        background-color: var(--button-clr);
         color: var(--text-color);
         font-size: 1rem;
         font-weight: 600;
@@ -72,7 +72,7 @@
         display: block;
     }
     button:hover {
-        background-color: #59728e;
+        background-color: var(--button-hover);
     }
     main {
         width: 100%;
@@ -84,7 +84,7 @@
     form {
         max-width: 800px;
         width: calc(100% - 2rem);
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         padding: 1rem;
     }
     h1 {

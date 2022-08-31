@@ -6,16 +6,10 @@
     {#if import.meta.env['VITE_MODE'] === 'dev'}
         <div></div>
     {:else}
-        <p>nothing to see here yet</p>
+        <GoHome msg="This page is under construction" />
     {/if}
 </main>
 
 <script>
-    import supabase from '$lib/supabase'
-
-    async function main() {
-        const data = await supabase.from('Posts').insert([{ title: 'new test' }])
-        console.log(data)
-    }
-    // main()
+    import GoHome from '$lib/gohome.svelte'
 </script>

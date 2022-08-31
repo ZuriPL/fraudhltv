@@ -48,7 +48,7 @@
     }
     article {
         max-width: 800px;
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         width: calc(100% - 2rem);
         padding: 1rem 2rem;
     }
@@ -66,8 +66,9 @@
         font-size: 2.5rem;
         letter-spacing: -1px;
         text-transform: uppercase;
+        color: white;
     }
     article :global(p) {
-        color: #b9bdbf;
+        color: var(--text-color);
     }
 </style>

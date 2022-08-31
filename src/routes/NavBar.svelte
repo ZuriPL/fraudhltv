@@ -2,22 +2,22 @@
     <a class="logo-anchor" href="/"><img src="/favicon.png" alt="Logo"></a>
     <div class="scroll-wrapper">
         <a href="/">News</a>
-        <a href="/rankings">Rankings</a>
+        <a href="/ranking">Ranking</a>
         <a href="/matches">Matches</a>
         <a href="/forums">Forums</a>
         <a href="/fantasy">Fantasy</a>
     </div>
     {#if $user}
-        <button class="menu-btn" on:click|stopPropagation="{toggleMenu}">
+        <button class="menu-btn" on:click="{toggleMenu}" bind:this="{button}">
             <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
             </svg>
             
             <!--  stop propagation, callback is noop -->
-            <div class="popup" bind:this="{popup}" on:click|stopPropagation="{_=>0}">
+            <div class="popup" bind:this="{popup}" on:click="{_=>0}">
                 <div class="top-section item">
                     <a href="/profile/{$user?.name}">{$user?.name}</a>
-                    <button class="logout" on:click="{() => supabase.auth.signOut()}">Log out</button>
+                    <button class="logout" on:click="{_ => supabase.auth.signOut()}">Log out</button>
                 </div>
                 <a href="/edit-profile" class="item separator">
                     Profile settings
@@ -27,7 +27,7 @@
                     <option value="dark">Dark mode</option>
                     <option value="auto">System preference</option>
                 </select></label>
-                {#if $user.role === 'writer' || $user.role === 'superadmin'}
+                {#if $user.role === 'writer' || $user.role === 'super'}
                     <a href="/new-post" class="item new-post separator"><svg style="width:24px;height:auto" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                     </svg>New post</a>
@@ -44,18 +44,22 @@
 
 <script>
     import supabase from '$lib/supabase'
-
+    import { beforeNavigate } from '$app/navigation'
     import user from '$lib/user'
 
-    let popup
+    let popup, button
 
-    function toggleMenu() {
+    function toggleMenu(e) {
+        if (e.path.includes(popup)) return
         popup?.classList?.toggle('show')
     }
 
-    function closeMenu() {
+    function closeMenu(e) {
+        if (e.path.includes(button)) return
         popup?.classList?.remove('show')
     }
+
+    beforeNavigate(_ => closeMenu({ path: []}))
 </script>
 
 <style>

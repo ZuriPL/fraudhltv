@@ -23,11 +23,13 @@
         </div>
         {/each}
     {:else}
-        <p>nothing to see here yet</p>
+        <GoHome msg="This page is under construction" />
     {/if}
 </main>
 
 <script>
+    import GoHome from '$lib/gohome.svelte'
+
     export let data;
 
     let { matchesHistory, matchesLive, matchesPending } = data

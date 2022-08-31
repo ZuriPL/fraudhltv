@@ -38,15 +38,30 @@
         font-weight: 600;
     }
     :global(body) {
-        background-color: #1b1f23;
-        color: white;
+        background-color: var(--bg-secondary);
+        color: var(--text-color);
         overflow-x: hidden;
     }
     :global(.hidden) {
         display: none;
     }
     :root {
-        --text-color: #b9bdbf;
-        --link-color: #87a3bf;
+        --text-color-dark: #b9bdbf;
+        --link-color-dark: #87a3bf;
+        --bg-secondary-dark: #1b1f23;
+        --bg-primary-dark: #2d3844;
+        --bg-hover-dark: #45515f;
+        --border-clr-dark: #838a92;
+        --button-clr-dark: #435971;
+        --button-hover-dark: #59728e;
+
+        --button-clr: var(--button-clr-dark);
+        --button-hover: var(--button-hover-dark);
+        --text-color: var(--text-color-dark);
+        --link-color: var(--link-color-dark); 
+        --bg-secondary: var(--bg-secondary-dark); 
+        --bg-primary: var(--bg-primary-dark); 
+        --bg-hover: var(--bg-hover-dark); 
+        --border-clr: var(--border-clr-dark);
     }
 </style>

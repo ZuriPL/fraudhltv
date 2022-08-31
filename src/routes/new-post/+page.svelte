@@ -1,41 +1,72 @@
 
-<main>
-    <form on:submit|preventDefault="{handleSubmit}">
-        <h1>Make a new post</h1>
-        <label>
-            Title:
-            <input type="text" bind:this="{titleInput}">
-        </label>
+{#if $user?.role !== 'writer'}
+    <GoHome msg="You're not allowed to view this page" />
+{:else}
+    <main>
+        <form on:submit|preventDefault="{handleSubmit}">
+            <h1>Make a new post</h1>
+            <label>
+                Title:
+                <input type="text" bind:this="{titleInput}">
+            </label>
 
-        <label>
-            Write the article
-            <textarea cols="100" rows="30" bind:this="{articleInput}"></textarea>
-        </label>
+            <label>
+                Write the article
+                <textarea cols="100" rows="30" bind:this="{articleInput}"></textarea>
+            </label>
 
-        <label>
-            Set the country linked to the article
-            <select name="flag-picker" id="flag-picker" bind:this="{flagSelect}">
-                <option value="PL">Poland</option>
-                <option value="DE">Russia</option>
-                <option value="FI">Finland</option>
-            </select>
-        </label>
-            
-        <label>
-            Pick the article image
-            <input type="file" name="image-picker" id="image-picker" accept="image/*" bind:this="{imagePicker}">
-        </label>
+            <label>
+                Set the country linked to the article
+                <select name="flag-picker" id="flag-picker" bind:this="{flagSelect}">
+                    {#each list as country}        
+                        <option value="{country.code}">{country.name}</option>
+                    {/each}
+                </select>
+            </label>
+                
+            <label>
+                Pick the article image
+                <input type="file" name="image-picker" id="image-picker" accept="image/*" bind:this="{imagePicker}">
+            </label>
 
-        <button>Post</button>
-        <p bind:this="{log}"></p>
-    </form>
-</main>
+            <button>Post</button>
+            <p bind:this="{log}"></p>
+        </form>
+    </main>
+{/if}
 
 <script>
+    import GoHome from '$lib/gohome.svelte'
     import supabase from '$lib/supabase'
     import user from '$lib/user'
+    import { onMount } from 'svelte'
 
     let titleInput, articleInput, flagSelect, imagePicker, log
+    
+    let list = []
+
+    onMount(async () => {
+        const res = await fetch('https://restcountries.com/v3.1/all');
+	    const data = await res.json();
+
+        list = data.map((country) => {
+                return {
+                    name: country.name.common,
+                    code: country.cca2
+                }
+            });
+        list.sort((a, b) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0;
+        });
+    });
 
     function slugify(text) {
         let slug = text.toLowerCase()
@@ -76,27 +107,23 @@
     form > * {
         display: block;
     }
-    main {
-        color: var(--text-color);
-    }
     input:not([type="file"]), textarea, select {
         display: block;
         width: 100%;
         background-color: transparent;
-        border: 1px solid #435971;
+        border: 1px solid var(--border-clr);
         font-size: 16px;
         color: var(--text-color);
     }
     input[type="file"] {
-        display: block;
         font-size: 16px;
-        
+        display: block;
     }
     button {
         padding: 0.75rem 0;
         width: calc(calc(800px - 4rem) / 3);
         border: none;
-        background-color: #435971;
+        background-color: var(--button-clr);
         color: var(--text-color);
         font-size: 1rem;
         font-weight: 600;
@@ -105,24 +132,25 @@
         margin-top: 2rem;
     }
     button:hover, ::file-selector-button:hover {
-        background-color: #59728e;
+        background-color: var(--button-hover);
     }
     ::file-selector-button {
         border: none;
         font-size: 1rem;
         color: var(--text-color);
-        background-color: #435971;
+        background-color: var(--button-clr);
         padding: 0.5rem 1rem;
         margin-right: 0.75rem;
     }
     main {
+        color: var(--text-color);
         width: 100%;
         display: flex;
         justify-content: center;
     }
     form {
         width: 800px;
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         padding: 1rem;
     }
     textarea {

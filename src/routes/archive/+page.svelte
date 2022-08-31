@@ -14,7 +14,7 @@
         <div class="list">
             {#each news as article}
                 <a href="/post/{article?.slug}" class="article">
-                    <img src="https://www.hltv.org/img/static/flags/30x20/{article?.flag}.gif" alt="{article?.flag} flag">
+                    <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
                     <p class="article-title">{article?.title}</p>
                     <p class="article-date">{article?.timeAgo}</p>
                 </a>
@@ -53,20 +53,21 @@
         align-items: stretch;
         height: 32px;
         gap: 0.5rem;
-        border: 1px solid #485564;
+        border: 1px solid var(--border-clr);
         width: fit-content;
         padding: 0.25rem;
+        color: var(--text-color);
     }
     form > button, form > input {
         all: unset;
     }
     form > button {
-        border-left: 1px solid #485564;
+        border-left: 1px solid var(--border-clr);
         padding-left: 0.25rem;
-        color: #848d92;
+        color: var(--border-clr);
     }
     form > button:hover path {
-        fill: #85a0bc;
+        fill: var(--link-color);
     }
     .news > h1 {
         font-weight: 500;
@@ -82,11 +83,11 @@
         align-items: center;
         gap: 1rem;
         padding: 0.5rem 1rem;
-        background-color: #2d3844;
-        border-bottom: 1px solid #495867;
+        background-color: var(--bg-primary);
+        border-bottom: 1px solid var(--border-clr);
     }
     .article:hover {
-        background-color: #45515f;
+        background-color: var(--bg-hover);
     }
     .article:last-child {
         border: none;
@@ -100,7 +101,7 @@
     }
     .article-date {
         font-size: 0.75rem;
-        color: #838a92;
+        color: var(--border-clr);
         margin-left: auto;
     }
     .article:last-child {
