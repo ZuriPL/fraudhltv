@@ -65,7 +65,7 @@
         width: calc(calc(800px - 4rem) / 3);
         border: none;
         background-color: var(--button-clr);
-        color: var(--text-color);
+        color: var(--btn-text-color);
         font-size: 1rem;
         font-weight: 600;
         margin: 1rem auto 0 auto;
@@ -89,6 +89,7 @@
     }
     h1 {
         margin-bottom: 1rem;
+        color: var(--header-color);
         grid-column: span 2;
     }
 </style>

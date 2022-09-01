@@ -32,7 +32,7 @@
             </label>
             <label class="select-label">
                 Choose your country
-                <select name="flag" bind:this="{countrySelect}" required>
+                <select name="flag" bind:this="{countrySelect}">
                     <option value="">--- Please choose an option ---</option>
                     {#each countryList as country}        
                         <option value="{country.code}">{country.name}</option>
@@ -41,19 +41,19 @@
             </label>
             <label class="select-label">
                 Choose your favourite player
-                <select name="player" bind:this="{playerSelect}" required>
+                <select name="player" bind:this="{playerSelect}">
                     <option value="">--- Please choose an option ---</option>
-                    {#each countryList as country}        
-                        <option value="{country.code}">{country.name}</option>
+                    {#each playersList as player}        
+                        <option value="{player.id}">{player.id}</option>
                     {/each}
                 </select>
             </label>
             <label class="select-label">
                 Choose your favourite team
-                <select name="team" bind:this="{teamSelect}" required>
+                <select name="team" bind:this="{teamSelect}">
                     <option value="">--- Please choose an option ---</option>
-                    {#each countryList as country}        
-                        <option value="{country.code}">{country.name}</option>
+                    {#each teamsList as team}        
+                        <option value="{team}">{team}</option>
                     {/each}
                 </select>
             </label>
@@ -95,17 +95,19 @@
     }
 
     let countryList = []
+    let playersList = []
+    let teamsList = []
 
     onMount(async () => {
-        const res = await fetch('https://restcountries.com/v3.1/all');
-        const data = await res.json();
+        let res = await fetch('https://restcountries.com/v3.1/all');
+        let data = await res.json();
 
         countryList = data.map((country) => {
-                return {
-                    name: country.name.common,
-                    code: country.cca2
-                }
-            });
+            return {
+                name: country.name.common,
+                code: country.cca2
+            }
+        });
         countryList.sort((a, b) => {
             const nameA = a.name.toUpperCase();
             const nameB = b.name.toUpperCase();
@@ -117,6 +119,30 @@
             }
             return 0;
         });
+
+        res = await fetch('/players.json')
+        data = await res.json()
+
+        playersList = data
+
+        playersList.sort((a, b) => {
+            const nameA = a.id.toUpperCase();
+            const nameB = b.id.toUpperCase();
+            if (nameA < nameB) {
+                return -1;
+            }
+            if (nameA > nameB) {
+                return 1;
+            }
+            return 0;
+        });
+
+        res = await fetch('/teams.json')
+        data = await res.json()
+
+        teamsList = data
+
+        teamsList.sort();
     });
 </script>
 
@@ -136,15 +162,15 @@
         padding: 0.75rem 0;
         width: calc(calc(800px - 4rem) / 3);
         border: none;
-        background-color: #435971;
-        color: var(--text-color);
+        background-color: var(--button-clr);
+        color: var(--btn-text-color);
         font-size: 1rem;
         font-weight: 600;
         margin: 0 auto;
         display: block;
     }
     button:hover {
-        background-color: #59728e;
+        background-color: var(--button-hover);
     }
     main {
         width: 100%;
@@ -156,7 +182,7 @@
     form {
         width: calc(100% - 2rem);
         max-width: 800px;
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         padding: 1rem;
     }
     .grid {
@@ -200,7 +226,7 @@
     }
     hr {
         margin: 1.5rem 0;
-        border: 1px solid #495867;
+        border: 1px solid var(--border-clr);
     }
     h1 {
         margin-bottom: 1rem;

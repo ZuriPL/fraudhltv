@@ -44,18 +44,20 @@
     }
     :root {
         --text-color-dark: #b9bdbf;
+        --btn-text-color-dark: #b9bdbf;
         --header-color-dark: white;
         --link-color-dark: #87a3bf;
         --bg-secondary-dark: #1b1f23;
         --bg-header-dark: #364250;
         --bg-primary-dark: #2d3844;
         --bg-hover-dark: #45515f;
-        --border-clr-dark: hsl(212, 5%, 40%);
+        --border-clr-dark: #61666b;
         --button-clr-dark: #435971;
         --button-hover-dark: #59728e;
         --list-shadow-dark: 0 1px 1px 0 rgb(0 0 0 / 50%);
         
         --text-color-light: #353535;
+        --btn-text-color-light: #fff;
         --link-color-light: #2d6da3;
         --header-color-light: black;
         --bg-secondary-light: #e5e7ea;
@@ -75,6 +77,7 @@
         --button-clr: var(--button-clr-dark);
         --button-hover: var(--button-hover-dark);
         --text-color: var(--text-color-dark);
+        --btn-text-color: var(--btn-text-color-dark);
         --link-color: var(--link-color-dark); 
         --bg-secondary: var(--bg-secondary-dark); 
         --bg-header: var(--bg-header-dark);
@@ -90,6 +93,7 @@
             --list-shadow: var(--list-shadow-dark);
             --button-hover: var(--button-hover-dark);
             --text-color: var(--text-color-dark);
+            --btn-text-color: var(--btn-text-color-dark);
             --link-color: var(--link-color-dark); 
             --bg-secondary: var(--bg-secondary-dark); 
             --bg-header: var(--bg-header-dark);
@@ -106,6 +110,7 @@
             --list-shadow: var(--list-shadow-light);
             --button-hover: var(--button-hover-light);
             --text-color: var(--text-color-light);
+            --btn-text-color: var(--btn-text-color-light);
             --link-color: var(--link-color-light); 
             --bg-secondary: var(--bg-secondary-light); 
             --bg-header: var(--bg-header-light);
@@ -120,6 +125,7 @@
         --list-shadow: var(--list-shadow-light);
         --button-hover: var(--button-hover-light);
         --text-color: var(--text-color-light);
+        --btn-text-color: var(--btn-text-color-light);
         --link-color: var(--link-color-light); 
         --bg-secondary: var(--bg-secondary-light); 
         --bg-header: var(--bg-header-light);
@@ -132,7 +138,7 @@
         --button-clr: var(--button-clr-dark);
         --list-shadow: var(--list-shadow-dark);
         --button-hover: var(--button-hover-dark);
-        --text-color: var(--text-color-dark);
+        --btn-text-color: var(--btn-text-color-dark);
         --link-color: var(--link-color-dark); 
         --bg-secondary: var(--bg-secondary-dark); 
         --bg-header: var(--bg-header-dark);
