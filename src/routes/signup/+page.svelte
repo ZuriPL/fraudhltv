@@ -3,71 +3,77 @@
 </svelte:head>
 
 <main>
-    <form on:submit|preventDefault="{submitHandler}">
-        <h1>Create an account</h1>
-        <hr>
-        <div class="grid">
-            <div>
-                <label for="name" class="input-label">Username</label>
-                <input maxlength="40" bind:this="{nameInput}" type="text" name="name" id="name" autocomplete="nickname" required>
+    {#if $user}
+        <GoHome msg="You're already logged in" />
+    {:else}
+        <form on:submit|preventDefault="{submitHandler}">
+            <h1>Create an account</h1>
+            <hr>
+            <div class="grid">
+                <div>
+                    <label for="name" class="input-label">Username</label>
+                    <input maxlength="40" bind:this="{nameInput}" type="text" name="name" id="name" autocomplete="nickname" required>
+                </div>
+                <div>
+                    <label for="email" class="input-label">Email</label>
+                    <input bind:this="{emailInput}" type="email" name="email" id="email" autocomplete="email" required>
+                </div>
+                <div>
+                    <label for="password" class="input-label">Password</label>
+                    <input bind:this="{passwordInput}" type="password" name="password" id="password" autocomplete="current-password" required>
+                </div>
+                <div>
+                    <label for="confirm-password" class="input-label">Confirm password</label>
+                    <input bind:this="{confirmPasswordInput}" type="password" name="confirm-password" id="confirm-password" autocomplete="current-password" required>
+                </div>
             </div>
-            <div>
-                <label for="email" class="input-label">Email</label>
-                <input bind:this="{emailInput}" type="email" name="email" id="email" autocomplete="email" required>
+            <hr>
+            <div class="grid2">
+                <label class="textarea-label">
+                    Write your bio
+                    <textarea name="bio" cols="30" bind:this="{bioInput}"></textarea>
+                </label>
+                <label class="select-label">
+                    Choose your country
+                    <select name="flag" bind:this="{countrySelect}">
+                        <option value="">--- Please choose an option ---</option>
+                        {#each countryList as country}        
+                            <option value="{country.code}">{country.name}</option>
+                        {/each}
+                    </select>
+                </label>
+                <label class="select-label">
+                    Choose your favourite player
+                    <select name="player" bind:this="{playerSelect}">
+                        <option value="">--- Please choose an option ---</option>
+                        {#each playersList as player}        
+                            <option value="{player.id}">{player.id}</option>
+                        {/each}
+                    </select>
+                </label>
+                <label class="select-label">
+                    Choose your favourite team
+                    <select name="team" bind:this="{teamSelect}">
+                        <option value="">--- Please choose an option ---</option>
+                        {#each teamsList as team}        
+                            <option value="{team}">{team}</option>
+                        {/each}
+                    </select>
+                </label>
             </div>
-            <div>
-                <label for="password" class="input-label">Password</label>
-                <input bind:this="{passwordInput}" type="password" name="password" id="password" autocomplete="current-password" required>
-            </div>
-            <div>
-                <label for="confirm-password" class="input-label">Confirm password</label>
-                <input bind:this="{confirmPasswordInput}" type="password" name="confirm-password" id="confirm-password" autocomplete="current-password" required>
-            </div>
-        </div>
-        <hr>
-        <div class="grid2">
-            <label class="textarea-label">
-                Write your bio
-                <textarea name="bio" cols="30" bind:this="{bioInput}"></textarea>
-            </label>
-            <label class="select-label">
-                Choose your country
-                <select name="flag" bind:this="{countrySelect}">
-                    <option value="">--- Please choose an option ---</option>
-                    {#each countryList as country}        
-                        <option value="{country.code}">{country.name}</option>
-                    {/each}
-                </select>
-            </label>
-            <label class="select-label">
-                Choose your favourite player
-                <select name="player" bind:this="{playerSelect}">
-                    <option value="">--- Please choose an option ---</option>
-                    {#each playersList as player}        
-                        <option value="{player.id}">{player.id}</option>
-                    {/each}
-                </select>
-            </label>
-            <label class="select-label">
-                Choose your favourite team
-                <select name="team" bind:this="{teamSelect}">
-                    <option value="">--- Please choose an option ---</option>
-                    {#each teamsList as team}        
-                        <option value="{team}">{team}</option>
-                    {/each}
-                </select>
-            </label>
-        </div>
-        <hr>
-        <button>Sign up</button>
-    </form>
-    <a href="/signin">Have an account? Sign in here</a>
+            <hr>
+            <button>Sign up</button>
+        </form>
+        <a href="/signin">Have an account? Sign in here</a>
+    {/if}
 </main>
 
 <script>
     import supabase from '$lib/supabase'
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
+    import GoHome from '$lib/gohome.svelte'
+    import user from '$lib/user'
 
     let emailInput, passwordInput, nameInput, confirmPasswordInput, bioInput, playerSelect, teamSelect, countrySelect
 

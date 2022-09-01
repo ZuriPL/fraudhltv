@@ -3,26 +3,32 @@
 </svelte:head>
 
 <main>
-    <form on:submit|preventDefault="{submitHandler}">
-        <h1>Log in</h1>
-        <div class="row">
-            <label>
-                Email
-                <input type="email" bind:this="{emailInput}" autocomplete="email" id="email" name="email" required>
-            </label>
-            <label>
-                Password
-                <input type="password" bind:this="{passwordInput}" autocomplete="current-password" name="password" id="password" required>
-            </label>
-        </div>
-        <button>Log in</button>
-    </form>
-    <a href="/signup">No account? Create one here</a>
+    {#if $user}
+        <GoHome msg="You're already logged in" />
+    {:else}
+        <form on:submit|preventDefault="{submitHandler}">
+            <h1>Log in</h1>
+            <div class="row">
+                <label>
+                    Email
+                    <input type="email" bind:this="{emailInput}" autocomplete="email" id="email" name="email" required>
+                </label>
+                <label>
+                    Password
+                    <input type="password" bind:this="{passwordInput}" autocomplete="current-password" name="password" id="password" required>
+                </label>
+            </div>
+            <button>Log in</button>
+        </form>
+        <a href="/signup">No account? Create one here</a>
+    {/if}
 </main>
 
 <script>
+    import GoHome from '$lib/gohome.svelte'
     import supabase from '$lib/supabase'
     import { goto } from '$app/navigation'
+    import user from '$lib/user'
 
     let emailInput, passwordInput
 
