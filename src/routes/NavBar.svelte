@@ -22,11 +22,13 @@
                 <a href="/edit-profile" class="item separator">
                     Profile settings
                 </a>
-                <label class="item">Theme <select name="theme-toggle" id="theme-toggle">
-                    <option value="light">Light mode</option>
-                    <option value="dark">Dark mode</option>
-                    <option value="auto">System preference</option>
-                </select></label>
+                <label on:input="{handleTheme}" class="item">
+                    Theme <select name="theme-toggle" id="theme-toggle" value="{$user.preferred_theme}">
+                        <option value="auto">System preference</option>
+                        <option value="light">Light mode</option>
+                        <option value="dark">Dark mode</option>
+                    </select>
+                </label>
                 {#if $user.role === 'writer' || $user.role === 'super'}
                     <a href="/new-post" class="item new-post separator"><svg style="width:24px;height:auto" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
@@ -60,11 +62,20 @@
     }
 
     beforeNavigate(_ => closeMenu({ path: []}))
+
+    async function handleTheme(e) {
+        document.body.classList.remove('auto')
+        document.body.classList.remove('light')
+        document.body.classList.remove('dark')
+        document.body.classList.add(e.target.value)
+
+        await supabase.from('users').update({ preferred_theme: e.target.value }).eq('user_id', $user.user_id)
+    }
 </script>
 
 <style>
     .separator {
-        border-top: 1px solid #495867;
+        border-top: 1px solid var(--border-clr);
     }
     .item {
         display: flex;
@@ -73,7 +84,7 @@
         padding: 8px;
     }
     .item:hover {
-        background-color: #45515f;
+        background-color: var(--bg-hover);
     }
     .new-post {
         display: flex;
@@ -85,7 +96,7 @@
     .signin-link {
         color: var(--link-color) !important;
         font-size: 0.85rem;
-        border-left: 1px solid #838a92;
+        border-left: 1px solid var(--border-clr);
         padding: 0 16px;
         flex: 0;
         display: grid;
@@ -100,11 +111,11 @@
         bottom: 0;
         transform: translateY(100%);
         width: 350px;
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         z-index: 2;
         color: var(--text-color);
         cursor: initial;
-        border: 1px solid #495867;
+        border: 1px solid var(--border-clr);
         font-size: 0.85rem;
     }
     :global(.popup.show) {
@@ -112,7 +123,7 @@
     }
     .top-section {
         font-size: 1rem;
-        background-color: #364250 !important;
+        background-color: var(--bg-header) !important;
     }
     .logout {
         all: unset;
@@ -123,7 +134,7 @@
     }
     nav {
         height: 3rem;
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         display: flex;
         align-items: stretch;
         color: #929a9e;
@@ -155,7 +166,7 @@
     }
     .scroll-wrapper > a:not(.logo-anchor), nav > button {
         display: block;
-        color: #929a9e;
+        color: var(--text-color);
         text-decoration: none;
         font-weight: 500;
         flex: 1;
@@ -167,8 +178,7 @@
         border-left: 1px solid #838a92;
     }
     .scroll-wrapper > a:not(.logo-anchor):hover {
-        background-color: #45515f;
-        color: #afbcd4;
+        background-color: var(--bg-hover);
     }
     .menu-btn {
         position: relative;

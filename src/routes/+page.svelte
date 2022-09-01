@@ -152,6 +152,9 @@
         font-size: 1.125rem;
         font-weight: 600;
     }
+    .list {
+        box-shadow: var(--list-shadow);
+    }
     .article {
         color: var(--text-color);
         text-decoration: none;
@@ -163,7 +166,7 @@
         border-bottom: 1px solid var(--border-clrX);
     }
     .article:hover {
-        background-color: #45515f;
+        background-color: var(--bg-hover);
     }
     .article:last-child {
         border: none;
@@ -171,6 +174,7 @@
     .article > img {
         width: 20px;
         aspect-ratio: 3/2;
+        outline: 1px solid black;
     }
     .article-title {
         font-weight: 600;
