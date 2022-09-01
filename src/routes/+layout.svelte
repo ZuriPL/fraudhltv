@@ -44,6 +44,7 @@
     }
     :root {
         --text-color-dark: #b9bdbf;
+        --header-color-dark: white;
         --link-color-dark: #87a3bf;
         --bg-secondary-dark: #1b1f23;
         --bg-header-dark: #364250;
@@ -56,6 +57,7 @@
         
         --text-color-light: #353535;
         --link-color-light: #2d6da3;
+        --header-color-light: black;
         --bg-secondary-light: #e5e7ea;
         --bg-header-light: #f6f6f9;
         --bg-primary-light: #ffffff;
@@ -80,6 +82,7 @@
         --bg-hover: var(--bg-hover-dark); 
         --border-clr: var(--border-clr-dark);
         --list-shadow: var(--list-shadow-dark);
+        --header-color: var(--header-color-dark);
     }
     @media (prefers-color-scheme: dark) {
         :global(body) {
@@ -93,6 +96,7 @@
             --bg-primary: var(--bg-primary-dark); 
             --bg-hover: var(--bg-hover-dark); 
             --border-clr: var(--border-clr-dark);
+            --header-color: var(--header-color-dark);
         }
     }
 
@@ -108,6 +112,7 @@
             --bg-primary: var(--bg-primary-light); 
             --bg-hover: var(--bg-hover-light); 
             --border-clr: var(--border-clr-light);
+            --header-color: var(--header-color-light)
         }
     }
     :global(body.light) {
@@ -121,6 +126,7 @@
         --bg-primary: var(--bg-primary-light); 
         --bg-hover: var(--bg-hover-light); 
         --border-clr: var(--border-clr-light);
+        --header-color: var(--header-color-light);
     }
     :global(body.dark) {
         --button-clr: var(--button-clr-dark);
@@ -133,5 +139,6 @@
         --bg-primary: var(--bg-primary-dark); 
         --bg-hover: var(--bg-hover-dark); 
         --border-clr: var(--border-clr-dark);
+        --header-color: var(--header-color-dark);
     }
 </style>

@@ -66,7 +66,7 @@
         font-size: 2.5rem;
         letter-spacing: -1px;
         text-transform: uppercase;
-        color: white;
+        color: var(--header-color);
     }
     article :global(p) {
         color: var(--text-color);
