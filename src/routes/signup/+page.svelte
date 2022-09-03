@@ -47,7 +47,7 @@
                     <select name="player" bind:this="{playerSelect}">
                         <option value="">--- Please choose an option ---</option>
                         {#each playersList as player}        
-                            <option value="{player.id}">{player.id}</option>
+                            <option value="{player}">{player}</option>
                         {/each}
                     </select>
                 </label>
@@ -131,17 +131,7 @@
 
         playersList = data
 
-        playersList.sort((a, b) => {
-            const nameA = a.id.toUpperCase();
-            const nameB = b.id.toUpperCase();
-            if (nameA < nameB) {
-                return -1;
-            }
-            if (nameA > nameB) {
-                return 1;
-            }
-            return 0;
-        });
+        playersList.sort();
 
         res = await fetch('/teams.json')
         data = await res.json()
