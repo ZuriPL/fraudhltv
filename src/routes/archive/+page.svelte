@@ -95,6 +95,7 @@
     .article > img {
         width: 20px;
         aspect-ratio: 3/2;
+        border: 1px solid black;
     }
     .article-title {
         font-weight: 600;

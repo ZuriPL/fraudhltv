@@ -1,5 +1,5 @@
 <nav>
-    <a class="logo-anchor" href="/"><img src="/favicon.png" alt="Logo"></a>
+    <a class="logo-anchor" href="/"><img src="/favicon{favicon}.png" alt="Logo"></a>
     <div class="scroll-wrapper">
         <a href="/">News</a>
         <a href="/ranking">Ranking</a>
@@ -20,7 +20,7 @@
                     <button class="logout" on:click="{_ => supabase.auth.signOut()}">Log out</button>
                 </div>
                 <a href="/edit-profile" class="item separator">
-                    Profile settings
+                    Edit profile
                 </a>
                 <label on:input="{handleTheme}" class="item">
                     Theme <select name="theme-toggle" id="theme-toggle" value="{$user.preferred_theme}">
@@ -29,7 +29,7 @@
                         <option value="dark">Dark mode</option>
                     </select>
                 </label>
-                {#if $user.role === 'writer' || $user.role === 'super'}
+                {#if $user.role === 'writer' || $user.role === 'admin'}
                     <a href="/new-post" class="item new-post separator"><svg style="width:24px;height:auto" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
                     </svg>New post</a>
@@ -40,7 +40,6 @@
         <a href="/signin" class="signin-link">Sign in</a>
     {/if}
 </nav>
-<input type="checkbox" id="themetoggle" name="themetoggle" class="hidden">
 
 <svelte:window on:click="{closeMenu}"></svelte:window>
 
@@ -50,18 +49,23 @@
     import user from '$lib/user'
 
     let popup, button
+    let favicon = ''
 
-    function toggleMenu(e) {
-        if (e.path.includes(popup)) return
+    $: favicon = $user?.preferred_theme === 'light' ? '_light' : ''
+
+    let fakeEvent = { composedPath: _=>[] }
+
+    function toggleMenu(e = fakeEvent) {
+        if (e.composedPath().includes(popup)) return
         popup?.classList?.toggle('show')
     }
 
-    function closeMenu(e) {
-        if (e.path.includes(button)) return
+    function closeMenu(e = fakeEvent) {
+        if (e.composedPath().includes(button)) return
         popup?.classList?.remove('show')
     }
 
-    beforeNavigate(_ => closeMenu({ path: []}))
+    beforeNavigate(_ => closeMenu())
 
     async function handleTheme(e) {
         document.body.classList.remove('auto')
@@ -69,6 +73,7 @@
         document.body.classList.remove('dark')
         document.body.classList.add(e.target.value)
 
+        $user.preferred_theme = e.target.value
         await supabase.from('users').update({ preferred_theme: e.target.value }).eq('user_id', $user.user_id)
     }
 </script>

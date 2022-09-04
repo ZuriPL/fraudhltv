@@ -1,7 +1,5 @@
 
-{#if $user?.role !== 'writer'}
-    <GoHome msg="You're not allowed to view this page" />
-{:else}
+{#if $user?.role === 'admin' || $user?.role === 'writer'}
     <main>
         <form on:submit|preventDefault="{handleSubmit}">
             <h1>Make a new post</h1>
@@ -18,6 +16,7 @@
             <label>
                 Set the country linked to the article
                 <select name="flag-picker" id="flag-picker" bind:this="{flagSelect}">
+                    <option value="WORLD">Global</option>
                     {#each list as country}        
                         <option value="{country.code}">{country.name}</option>
                     {/each}
@@ -33,6 +32,8 @@
             <p bind:this="{log}"></p>
         </form>
     </main>
+{:else}
+    <GoHome msg="You're not allowed to view this page" />
 {/if}
 
 <script>

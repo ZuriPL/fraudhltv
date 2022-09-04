@@ -37,6 +37,7 @@
                     Choose your country
                     <select name="flag" bind:this="{countrySelect}">
                         <option value="">--- Please choose an option ---</option>
+                        <option value="WORLD">Global</option>
                         {#each countryList as country}        
                             <option value="{country.code}">{country.name}</option>
                         {/each}
@@ -62,6 +63,7 @@
                 </label>
             </div>
             <hr>
+            <p class="log" bind:this="{log}"></p>
             <button>Sign up</button>
         </form>
         <a href="/signin">Have an account? Sign in here</a>
@@ -76,10 +78,11 @@
     import user from '$lib/user'
 
     let emailInput, passwordInput, nameInput, confirmPasswordInput, bioInput, playerSelect, teamSelect, countrySelect
+    let log
 
     async function submitHandler(e) {
-        if (passwordInput.value !== confirmPasswordInput.value) return;
-
+        if (passwordInput.value !== confirmPasswordInput.value) return log.textContent = "Passwords don't match";
+        
         let { data: { user }, error} = await supabase.auth.signUp({
             email: emailInput.value,
             password: passwordInput.value,
@@ -97,7 +100,7 @@
 
         if (user) return await goto('/')
         
-        console.log(error)
+        log.textContent = error.message
     }
 
     let countryList = []
@@ -127,16 +130,12 @@
         });
 
         res = await fetch('/players.json')
-        data = await res.json()
-
-        playersList = data
+        playersList = await res.json()
 
         playersList.sort();
 
         res = await fetch('/teams.json')
-        data = await res.json()
-
-        teamsList = data
+        teamsList = await res.json()
 
         teamsList.sort();
     });
@@ -154,6 +153,9 @@
         font-size: 16px;
         color: var(--text-color);
     }
+    select {
+        background-color: var(--bg-primary);
+    }
     button {
         padding: 0.75rem 0;
         width: calc(calc(800px - 4rem) / 3);
@@ -164,6 +166,13 @@
         font-weight: 600;
         margin: 0 auto;
         display: block;
+    }
+    .log {
+        margin-top: -0.5rem;
+        margin-bottom: 0.5rem;
+        color: red;
+        font-size: 0.9rem;
+        font-weight: 500;
     }
     button:hover {
         background-color: var(--button-hover);
@@ -205,9 +214,6 @@
     }
     .grid2 > .select-label {
         grid-column: 3 / span 1;
-    }
-    option {
-        color: black;
     }
     .grid label {
         margin-bottom: 0.25rem;

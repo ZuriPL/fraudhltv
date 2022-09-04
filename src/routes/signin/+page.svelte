@@ -18,6 +18,7 @@
                     <input type="password" bind:this="{passwordInput}" autocomplete="current-password" name="password" id="password" required>
                 </label>
             </div>
+            <p class="log" bind:this="{log}"></p>
             <button>Log in</button>
         </form>
         <a href="/signup">No account? Create one here</a>
@@ -31,6 +32,7 @@
     import user from '$lib/user'
 
     let emailInput, passwordInput
+    let log
 
     async function submitHandler() {
         let { data: { user }, error } = await supabase.auth.signInWithPassword({
@@ -40,7 +42,7 @@
 
         if (user) return goto('/')
 
-        console.log(error)
+        log.textContent = error.message
     }
 </script>
 
@@ -51,6 +53,12 @@
     label {
         min-width: calc(400px - 1.5rem);
         flex-grow: 1;
+    }
+    .log {
+        color: red;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
     }
     input {
         display: block;
@@ -74,7 +82,7 @@
         color: var(--btn-text-color);
         font-size: 1rem;
         font-weight: 600;
-        margin: 1rem auto 0 auto;
+        margin: 0.5rem auto 0 auto;
         display: block;
     }
     button:hover {

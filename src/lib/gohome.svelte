@@ -10,6 +10,7 @@
 <style>
     h1 {
         font-size: 2.25rem;
+        color: var(--header-color);
     }
     div {
         display: flex;
@@ -18,7 +19,7 @@
         color: var(--text-color);
         width: calc(100% - 2rem);
         max-width: 800px;
-        background-color: #2d3844;
+        background-color: var(--bg-primary);
         padding: 1rem;
         margin: 1rem auto;
     }

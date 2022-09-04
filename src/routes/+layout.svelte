@@ -10,15 +10,24 @@
         document.body.classList.add('show-carousel')
     })
 
+    function setTheme(theme) {
+        document.body.classList.remove('auto')
+        document.body.classList.remove('light')
+        document.body.classList.remove('dark')
+        if (theme) document.body.classList.add(theme)
+    }
+    
     onMount(() => {
         supabase.auth.getSession().then(async ({ data }) => {
-            $user = (await supabase.from('users').select().eq('user_id', data?.session?.user?.id)?.single())?.data
-            document.body.classList.add($user.preferred_theme)
+            let { data: userData } = await supabase.from('users').select().eq('user_id', data?.session?.user?.id)?.single()
+            $user = userData
+            setTheme($user?.preferred_theme)
         })
         
         supabase.auth.onAuthStateChange(async (event, session) => {
-            $user = (await supabase.from('users').select().eq('user_id', session?.user?.id)?.single())?.data
-            document.body.classList.add($user.preferred_theme)
+            let { data: userData } = await supabase.from('users').select().eq('user_id', session?.user?.id)?.single()
+            $user = userData
+            setTheme($user?.preferred_theme)
         })
     })
 </script>
@@ -41,6 +50,15 @@
     }
     :global(.hidden) {
         display: none;
+    }
+    :global(select) {
+        background-color: var(--bg-primary);
+        border: 1px solid var(--border-clr);
+        color: var(--text-color);
+    }
+    :global(option) {
+        color: var(--text-color);
+        background-color: var(--bg-primary);
     }
     :root {
         --text-color-dark: #b9bdbf;
