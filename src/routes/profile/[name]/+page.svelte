@@ -12,11 +12,11 @@
         {/if}
     </div>
     <div class="tags flex">
-        <p>ID: {data?.id}</p>
-        <p>Joined: {data?.created_at}</p>
         {#if $user?.role !== 'regular'}
             <p style="text-transform: capitalize;">{data?.role}</p>
         {/if}
+        <p>ID: {data?.id}</p>
+        <p>Joined: {data?.created_at}</p>
         {#if data.player}
             <p class="flex">
                 <svg style="width:auto;height:0.9rem;" viewBox="0 0 24 24">
