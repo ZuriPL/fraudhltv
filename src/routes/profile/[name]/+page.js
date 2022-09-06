@@ -17,6 +17,8 @@ function formatDate(date) {
 
 export async function load({ params }) {
 	let { data } = await supabase.from('users').select().eq('name', params.name).single();
+
 	data.created_at = formatDate(new Date(data?.created_at)).split(' ')[0].replace(/\/+/g, '-');
+
 	return data;
 }

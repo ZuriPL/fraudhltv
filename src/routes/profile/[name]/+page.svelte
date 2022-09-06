@@ -3,6 +3,10 @@
     export let data
 </script>
 
+<svelte:head>
+    <title>{data.name}'s profile | FraudHLTV</title>
+</svelte:head>
+
 <main>
     <div class="flex first">
         <img src="https://flagcdn.com/w320/{data?.flag.toLowerCase()}.png" alt="{data?.flag} flag">
@@ -35,8 +39,10 @@
         {/if}
 
     </div>
-    <p class="label">Bio: </p>
-    <p class="bio">{data?.bio}</p>
+    {#if data.bio}
+        <p class="label">Bio: </p>
+        <div class="bio">{@html data?.bio.replace(/[<>]/g, '').replace(/\n/g, '<br>') }</div>
+    {/if}
 </main>
 
 <style>

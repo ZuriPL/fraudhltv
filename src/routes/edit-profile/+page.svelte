@@ -13,8 +13,8 @@
                 <input maxlength="40" value="{$user?.name}" bind:this="{nameInput}" type="text" name="name" id="name" autocomplete="nickname" required>
             </div>
             <div>
-                <button on:click="{handleEmailChange}">Change email</button>
-                <button on:click="{handlePasswordChange}">Change password</button>
+                <a href="/update-email">Change email</a>
+                <a href="/update-password">Change password</a>
             </div>
         </div>
         <hr>
@@ -53,56 +53,48 @@
         </div>
         <hr>
         <p class="log" bind:this="{log}"></p>
-        <button>Sign up</button>
+        <button>Update</button>
     </form>
-    <a href="/signin">Have an account? Sign in here</a>
 </main>
 
 <script>
     import supabase from '$lib/supabase'
+    import user from '$lib/user'
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte'
-    import user from '$lib/user'
+
+    let nameInput, bioInput, playerSelect, teamSelect, countrySelect
     
-    function handleEmailChange (){
-
-    }
-
-    function handlePasswordChange (){
-
-    }
-
-    let emailInput, passwordInput, nameInput, confirmPasswordInput, bioInput, playerSelect, teamSelect, countrySelect
     let log
 
     async function submitHandler(e) {
-        return
-        if (passwordInput.value !== confirmPasswordInput.value) return log.textContent = "Passwords don't match";
-        
-        let { data: { user }, error} = await supabase.auth.signUp({
-            email: emailInput.value,
-            password: passwordInput.value,
-            options: {
-                data: {
-                    name: nameInput.value,
-                    role: 'regular',
-                    bio: bioInput.value,
-                    player: playerSelect.value,
-                    team: teamSelect.value,
-                    flag: countrySelect.value
-                }
-            }
-        })
+        // return
 
-        if (user) return await goto('/')
-        
-        log.textContent = error.message
+        let { error } = await supabase.from('users').update({
+            bio: bioInput.value,
+            name: nameInput.value,
+            flag: countrySelect.value,
+            player: playerSelect.value,
+            team: teamSelect.value
+        }).eq('user_id', $user.user_id)
+
+        if (error) og.textContent = error.message
+        else goto(`/profile/${$user.name}`)
     }
 
     let countryList = []
-    let playersList = []
-    let teamsList = []
+    let playersList = ['player']
+    let teamsList = ['team']
     let mounted
+
+    async function getData(object) {
+        let res = await fetch(`/${object}.json`);
+        let list = await res.json();
+        
+        list.sort();
+
+        return list
+    }
 
     onMount(async () => {
         let res = await fetch('https://restcountries.com/v3.1/all');
@@ -126,28 +118,18 @@
             return 0;
         });
 
-        res = await fetch('/players.json')
-        playersList = await res.json()
-        
-        playersList.sort();
-        
-        res = await fetch('/teams.json')
-        teamsList = await res.json()
-        
-        teamsList.sort();
+        teamsList = await getData('teams')
+        playersList = await getData('players')
 
-        mounted = true;
-
-        (_=>0)()
+        await playersList && await teamsList && (mounted = true);
     });
     
     $: {
         (async _ => {
-            console.log($user)
-            if (!mounted || !$user) return;
+            if (!mounted ) return;
+            teamSelect.value = $user?.team;
             countrySelect.value = $user?.flag;
             playerSelect.value = $user?.player;
-            teamSelect.value = $user['team'];
         })();
     };
 </script>
@@ -181,12 +163,13 @@
         margin: 0 auto;
         display: block;
     }
-    .grid > div > button {
+    .grid > div > a {
         all: unset;
         font-weight: 600;
         display: block;
         margin-top: 0.5rem;
         color: var(--link-color);
+        cursor: pointer;
     }
     .log {
         margin-top: -0.5rem;
