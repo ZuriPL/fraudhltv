@@ -1,20 +1,20 @@
 <svelte:head>
-    <title>Change your email</title>
+    <title>Change your password</title>
 </svelte:head>
 
 <main>
 
     <form on:submit|preventDefault="{submitHandler}">
-        <h1>Change your email</h1>
+        <h1>Change your password</h1>
         <hr>
         <div class="row">
             <label>
-                New email
-                <input type="email" bind:this="{emailInput}" autocomplete="" id="email" name="email" required>
+                New password
+                <input type="password" bind:this="{passwordInput}" autocomplete="new-password" required>
             </label>
             <label>
-                Password
-                <input type="password" bind:this="{passwordInput}" autocomplete="current-password" name="password" id="password" required>
+                Confirm new password
+                <input type="password" bind:this="{confirmPasswordInput}" autocomplete="new-password" required>
             </label>
         </div>
         <hr>
@@ -24,39 +24,22 @@
 </main>
 
 <script>
+    export let accessToken
     import supabase from '$lib/supabase'
-    import user from '$lib/user'
-    import { goto } from '$app/navigation'
-    import { onMount } from 'svelte'
 
-    let emailInput, passwordInput
+    let passwordInput, confirmPasswordInput
     
     let log
 
     async function submitHandler(e) {
-        let res = await fetch('/edit-profile/api/update-email', {
-            method: 'POST',
-            body: JSON.stringify({
-                newEmail: emailInput.value,
-                password: passwordInput.value
-            })
-        })
-        let data = await res.json()
-        console.log(data)
-    }
-
-    let countryList = []
-    let playersList = ['player']
-    let teamsList = ['team']
-    let mounted
-
-    async function getData(object) {
-        let res = await fetch(`/${object}.json`);
-        let list = await res.json();
+        if (passwordInput.value !== confirmPasswordInput.value) return log.textContent = "Passwords don't match"
         
-        list.sort();
-
-        return list
+        const { error, data } = await supabase.auth.admin.updateUser(accessToken, {
+            password: passwordInput.value,
+        })
+        
+        if (error) log.textContent = error.message
+        console.log(error)
     }
 </script>
 

@@ -13,8 +13,8 @@
                 <input maxlength="40" value="{$user?.name}" bind:this="{nameInput}" type="text" name="name" id="name" autocomplete="nickname" required>
             </div>
             <div>
-                <a href="/update-email">Change email</a>
-                <a href="/update-password">Change password</a>
+                <a href="/edit-profile/update-email">Change email</a>
+                <a href="/edit-profile/update-password">Change password</a>
             </div>
         </div>
         <hr>

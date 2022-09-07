@@ -1,6 +1,7 @@
 
 <script>
     import NavBar from './NavBar.svelte'
+    import Footer from './Footer.svelte'
     import { afterNavigate } from "$app/navigation";
     import supabase from '$lib/supabase'
     import user from '$lib/user'
@@ -34,6 +35,7 @@
 
 <NavBar/>
 <slot></slot>
+<Footer />
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
@@ -91,6 +93,9 @@
         background-color: var(--bg-secondary);
         color: var(--text-color);
         overflow-x: hidden;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
 
         --button-clr: var(--button-clr-dark);
         --button-hover: var(--button-hover-dark);
