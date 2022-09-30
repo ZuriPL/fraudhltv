@@ -34,7 +34,7 @@
     async function submitHandler(e) {
         if (passwordInput.value !== confirmPasswordInput.value) return log.textContent = "Passwords don't match"
         
-        const { error, data } = await supabase.auth.admin.updateUser(accessToken, {
+        const { error, data } = await supabase.auth.updateUser(accessToken, {
             password: passwordInput.value,
         })
         

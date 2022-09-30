@@ -1,0 +1,62 @@
+<script>
+	export let data;
+</script>
+
+<svelte:head>
+	<title>Forum thread: {data?.title} | FraudHLTV</title>
+</svelte:head>
+
+<main>
+	<div class="spacer">
+		<div class="header">{data.title}<span>{data.author.name}</span></div>
+
+		<div class="post-content">
+			{data?.text}
+		</div>
+
+		<div class="footer">{data.created_at}</div>
+	</div>
+</main>
+
+<style>
+	.header {
+		background-color: var(--bg-header);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid var(--border-clr);
+		font-weight: bold;
+		font-size: 1.25rem;
+	}
+	.header > span {
+		font-weight: initial;
+		font-size: 14px;
+		margin: auto 0;
+	}
+	.footer {
+		border-top: 1px solid var(--border-clr);
+		font-size: 12px;
+	}
+	:global(img) {
+		width: 100%;
+		display: block;
+	}
+	.spacer {
+		max-width: 800px;
+		background-color: var(--bg-primary);
+		width: calc(100% - 2rem);
+	}
+	.spacer > * {
+		padding: 0.5rem 0.75rem;
+	}
+	main {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		align-items: center;
+		width: 100vw;
+	}
+	.post-content > :global(*) {
+		margin-bottom: 1rem;
+	}
+</style>

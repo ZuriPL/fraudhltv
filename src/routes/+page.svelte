@@ -2,73 +2,72 @@
     <title>CS:GO Tier 50 News</title>
 </svelte:head>
 
-{#if url?.hash?.includes('type=recovery')}
-    <RecoveryFinish accessToken="{url.hash.split(/[=&#]/g)[url.hash.split(/[=&#]/g).indexOf('access_token') + 1]}" />
-{:else}
-    <main>
-        {#if data?.newsToday?.length !== 0}
-            <div class="carousel">
-                <a class="banner-link" href="/post/{data?.newsToday[counter]?.slug}">
-                    <img src="{data?.newsToday[counter]?.image}" alt="banner">
-                </a>
-                <div class="controls">
-                    {#each data?.newsToday.map(el => el?.image) as img, idx}
-                        <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
-                    {/each}
-                </div>  
-                <button class="left" on:click="{_ => counter == 0 ? counter = data?.newsToday.length - 1 : counter--}">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
-                    </svg>
-                </button>
-                <button class="right" on:click="{_ => counter ==  data?.newsToday.length - 1 ? counter = 0 : counter++}">
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                    </svg>
-                </button>
-            </div>
-        {/if}
-        <h1 class="welcome">Welcome to FraudHLTV</h1>
+<main>
+    {#if data?.newsToday?.length !== 0}
+        <div class="carousel">
+            <a class="banner-link" href="/post/{data?.newsToday[counter]?.slug}">
+                <img src="{data?.newsToday[counter]?.image}" alt="banner">
+            </a>
+            <div class="controls">
+                {#each data?.newsToday.map(el => el?.image) as img, idx}
+                    <div active="{idx == counter}" on:click="{_ => counter = idx}"/>
+                {/each}
+            </div>  
+            <button class="left" on:click="{_ => counter == 0 ? counter = data?.newsToday.length - 1 : counter--}">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z" />
+                </svg>
+            </button>
+            <button class="right" on:click="{_ => counter ==  data?.newsToday.length - 1 ? counter = 0 : counter++}">
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
+                </svg>
+            </button>
+        </div>
+    {/if}
+    <h1 class="welcome">Welcome to FraudHLTV</h1>
 
-        {#if data?.newsToday.length !== 0}
-            <div class="news">
-                <h1>Today's news</h1>
-                <div class="list">
-                    {#each data?.newsToday as article}
-                        <a href="/post/{article?.slug}" class="article">
-                            <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
-                            <p class="article-title">{article?.title}</p>
-                            <p class="article-date">{article?.timeAgo}</p>
-                        </a>
-                    {/each}
-                </div>
-            </div>
-        {/if}
-
+    {#if data?.newsToday.length !== 0}
         <div class="news">
-            <h1>{data?.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
+            <h1>Today's news</h1>
             <div class="list">
-                {#each data?.otherNews as article}
-                <a href="/post/{article?.slug}" class="article">
-                    <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
-                    <p class="article-title">{article?.title}</p>
-                    <p class="article-date">{article?.timeAgo}</p>
+                {#each data?.newsToday as article}
+                    <a href="/post/{article?.slug}" class="article">
+                        <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
+                        <p class="article-title">{article?.title}</p>
+                        <p class="article-date">{article?.timeAgo}</p>
                     </a>
                 {/each}
             </div>
-            <a href="/archive">See more</a>
         </div>
-    </main>
-{/if}
+    {/if}
+
+    <div class="news">
+        <h1>{data?.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
+        <div class="list">
+            {#each data?.otherNews as article}
+            <a href="/post/{article?.slug}" class="article">
+                <img src="https://flagcdn.com/w320/{article?.flag.toLowerCase()}.png" alt="{article?.flag} flag">
+                <p class="article-title">{article?.title}</p>
+                <p class="article-date">{article?.timeAgo}</p>
+                </a>
+            {/each}
+        </div>
+        <a href="/archive">See more</a>
+    </div>
+</main>
 
 <script>
     export let data
 
-    import { onMount } from 'svelte'
-    import RecoveryFinish from './RecoveryFinish.svelte'
-    
-    let url
-    onMount(_ => url = location)
+    import { goto } from '$app/navigation'
+    import { page } from '$app/stores'
+
+    $: {
+        if ($page?.url?.hash?.includes('type=recovery')) {
+            goto(`/edit-profile/update-password/finish${$page.url.hash}`)
+        }
+    }
     let counter = 0
 </script>
 

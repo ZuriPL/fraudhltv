@@ -1,20 +1,20 @@
 <svelte:head>
-    <title>Change your email</title>
+    <title>Change your password</title>
 </svelte:head>
 
 <main>
 
     <form on:submit|preventDefault="{submitHandler}">
-        <h1>Change your email</h1>
+        <h1>Change your password</h1>
         <hr>
         <div class="row">
             <label>
-                New email
-                <input type="email" bind:this="{emailInput}" autocomplete="" required>
+                New password
+                <input type="password" bind:this="{passwordInput}" autocomplete="new-password" required>
             </label>
             <label>
-                Password
-                <input type="password" bind:this="{passwordInput}" autocomplete="current-password" required>
+                Confirm new password
+                <input type="password" bind:this="{confirmPasswordInput}" autocomplete="new-password" required>
             </label>
         </div>
         <hr>
@@ -27,22 +27,26 @@
     import supabase from '$lib/supabase'
     import user from '$lib/user'
     import { goto } from '$app/navigation'
-    import { onMount } from 'svelte'
 
-    let emailInput, passwordInput
+    import { page } from '$app/stores'
+    
+    let accessToken = $page.url.hash.split('&')[0].split('=')[1]
+
+    let confirmPasswordInput, passwordInput
     
     let log
 
     async function submitHandler(e) {
-        let res = await fetch('/edit-profile/api/update-email', {
-            method: 'POST',
-            body: JSON.stringify({
-                newEmail: emailInput.value,
-                password: passwordInput.value
-            })
+        if (confirmPasswordInput.value !== passwordInput.value) return log.textContent = "Passwords don't match"
+
+        const { error, data } = await supabase.auth.updateUser(accessToken, {
+            password: passwordInput.value,
         })
-        let data = await res.json()
+
+        console.log(error)
         console.log(data)
+
+        if (!error) goto('/')
     }
 </script>
 

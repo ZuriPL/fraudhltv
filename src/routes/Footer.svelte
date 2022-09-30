@@ -20,7 +20,7 @@
         margin-top: 1.5rem;
         color: #929a9e;
         font-size: 12px;
-        padding: 1rem calc(calc(100vw - 800px) / 2);
+        padding: 1rem max(calc(calc(100vw - 800px) / 2), 1rem);
         display: flex;
         align-items: center;
         justify-content: space-between;

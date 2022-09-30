@@ -4,35 +4,34 @@
 
 <div>
     <h1 bind:this="{heading}">Check your inbox</h1>
-    <p bind:this="{text}">We've sent you a recovery email to your current email addres: {$user?.email}</p>
+    <p bind:this="{text}">We've sent you a recovery email to your current email addres: {user?.email}</p>
 </div>
 
 <script>
-    import user from '$lib/user'
+    import userStore from '$lib/user'
     import supabase from '$lib/supabase'
-    import { onMount } from 'svelte'
+    let heading, text, user
 
-    let heading, text, mounted
+    const unsubscribe = userStore.subscribe(async value => {
+        console.log(1)
+        if (!value) return
+        console.log(2)
 
-    onMount(async _ => {
-        mounted = true
-    })
+        user = value
+
+        let { data, error } = await supabase.auth.resetPasswordForEmail(user.email)
     
-    $: {
-        (async () => {
-            if (!($user && mounted)) return
-            
-            let { data, error } = await supabase.auth.resetPasswordForEmail($user.email)
+        if (error) {
+            heading.textContent = 'An error occured'
+            text.textContent = error.message
+            return
+        }
         
-            if (error) {
-                heading.textContent = 'An error occured'
-                text.textContent = error.message
-                return
-            }
-            console.log(data)
-            console.log(error)
-        })()
-    }
+        console.log(data)
+        console.log(error)
+        
+        unsubscribe()
+    })
 </script>
 
 <style>
