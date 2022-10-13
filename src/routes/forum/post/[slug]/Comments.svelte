@@ -1,28 +1,71 @@
 <script>
-    export let replies = [
+    // export let replies = [
+    //     {
+    //         text: 'Repluy 1',
+    //         replies: []
+    //     },
+    //     {
+    //         text: 'reply 2',
+    //         replies: [
+    //             {
+    //                 text: 'another reply',
+    //                 replies: []
+    //             }
+    //         ]
+    //     }
+    // ]
+
+    let data = [
         {
-            text: 'Repluy 1',
-            replies: []
+            text: '1',
+            id: 1,
+            replies_to: 0,
         },
         {
-            text: 'reply 2',
-            replies: [
-                {
-                    text: 'another reply',
-                    replies: []
-                }
-            ]
+            text: '2',
+            id: 2,
+            replies_to: 0
+        },
+        {
+            text: 'reply',
+            id: 3,
+            replies_to: 1
+        },
+        {
+            text: 'next',
+            id: 4,
+            replies_to: 3
         }
     ]
-    // export let replies;
+
+    const checkId = (id => {
+        return (el) => {
+            return el.id === id
+        }
+    })
+
+    let replies = data.filter(checkId(0))
+    console.log(replies) 
+    console.log(checkId(0)) 
 </script>
 
-<div>
-    <div>
-        {replies[0].text}
-    </div>
+<style>
+    .block {
+        margin: 1rem;
+        background-color: red;
+        margin-left: 3rem;
+    }
+    .outer {
+        background-color: blue;
+    }
+</style>
 
+<div class="outer">
     {#each replies as reply}
-        <svelte:self replies={reply.replies}/>
+        <div class="block">
+            {reply.text}
+
+            <svelte:self replies={reply.replies}/>
+        </div>
     {/each}
 </div>

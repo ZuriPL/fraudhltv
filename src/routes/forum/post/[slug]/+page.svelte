@@ -1,5 +1,7 @@
 <script>
 	export let data;
+
+	import Comments from './Comments.svelte'
 </script>
 
 <svelte:head>
@@ -16,6 +18,8 @@
 
 		<div class="footer">{data.created_at}</div>
 	</div>
+
+	<Comments />
 </main>
 
 <style>

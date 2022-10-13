@@ -24,5 +24,7 @@ export async function load({ params }) {
 
 	data.created_at = formatDate(new Date(data.created_at));
 
+	const { comments } = await supabase.from('forum-comments').select() 
+
 	return data;
 }
