@@ -24,7 +24,10 @@ export async function load({ params }) {
 
 	data.created_at = formatDate(new Date(data.created_at));
 
-	const { comments } = await supabase.from('forum-comments').select() 
+	const { data: comments } = await supabase
+		.from('forum-comments')
+		.select()
+		.eq('host_thread', data.id);
 
-	return data;
+	return { data, comments };
 }

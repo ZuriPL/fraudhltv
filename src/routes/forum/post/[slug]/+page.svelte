@@ -1,22 +1,26 @@
 <script>
 	export let data;
+	let { data: postData, comments: commentsData } = data;
 
-	import Comments from './Comments.svelte'
+	import Comments from './Comments.svelte';
+	import { setContext } from 'svelte';
+
+	setContext('comments', commentsData);
 </script>
 
 <svelte:head>
-	<title>Forum thread: {data?.title} | FraudHLTV</title>
+	<title>Forum thread: {postData?.title} | FraudHLTV</title>
 </svelte:head>
 
 <main>
 	<div class="spacer">
-		<div class="header">{data.title}<span>{data.author.name}</span></div>
+		<div class="header">{postData?.title}<span>{postData.author.name}</span></div>
 
 		<div class="post-content">
-			{data?.text}
+			{postData?.text}
 		</div>
 
-		<div class="footer">{data.created_at}</div>
+		<div class="footer">{postData.created_at}</div>
 	</div>
 
 	<Comments />
