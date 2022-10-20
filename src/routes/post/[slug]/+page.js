@@ -30,4 +30,4 @@ export async function load({ params }) {
 	return news;
 }
 
-export const prerender = true;
+// export const prerender = true;

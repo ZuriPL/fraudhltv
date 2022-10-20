@@ -2,6 +2,7 @@
 	export let data;
 
 	import user from '$lib/user';
+	import { browser } from '$app/environment';
 </script>
 
 <svelte:head>
@@ -33,7 +34,7 @@
 			{@html data?.article}
 		</div>
 	</article>
-	{#if $user?.role === 'admin'}
+	{#if browser && $user?.role === 'admin'}
 		<button>delete</button>
 	{/if}
 </main>
