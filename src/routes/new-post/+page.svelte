@@ -9,15 +9,22 @@
 	let list = [];
 
 	onMount(async () => {
-		const res = await fetch('https://restcountries.com/v3.1/all');
+		const res = await fetch('https://flagcdn.com/en/codes.json');
 		const data = await res.json();
 
-		list = data.map((country) => {
-			return {
-				name: country.name.common,
-				code: country.cca2
-			};
-		});
+		// list = data.map((country) => {
+		// 	return {
+		// 		name: country.name.common,
+		// 		code: country.cca2
+		// 	};
+		// });
+		let keys = Object.keys(data);
+		for (let i = 0; i < keys.length; i++) {
+			list.push({
+				name: data[keys[i]],
+				code: keys[i]
+			});
+		}
 		list.sort((a, b) => {
 			const nameA = a.name.toUpperCase();
 			const nameB = b.name.toUpperCase();
@@ -89,7 +96,6 @@
 			<label>
 				Set the country linked to the article
 				<select name="flag-picker" id="flag-picker" bind:this={flagSelect}>
-					<option value="WORLD">Global</option>
 					{#each list as country}
 						<option value={country.code}>{country.name}</option>
 					{/each}

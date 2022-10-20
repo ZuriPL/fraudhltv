@@ -20,7 +20,7 @@ export async function load({ params }) {
 	// asign data to news
 	const { data: news, error } = await supabase
 		.from('posts')
-		.select(`title, article, created_at, image, author ( name )`) // perform a `join`
+		.select(`title, article, created_at, id, image, author ( name )`) // perform a `join`
 		.eq('slug', params.slug) // select the article based on the slug
 		.single();
 
@@ -29,5 +29,3 @@ export async function load({ params }) {
 
 	return news;
 }
-
-// export const prerender = true;

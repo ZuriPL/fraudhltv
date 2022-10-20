@@ -3,6 +3,16 @@
 
 	import user from '$lib/user';
 	import { browser } from '$app/environment';
+	import { goto } from '$app/navigation';
+	import supabase from '$lib/supabase';
+
+	async function deletePost() {
+		if (confirm('Are you sure???')) {
+			const { error } = await supabase.from('posts').delete().eq('id', data.id);
+			console.log(error);
+			goto('/');
+		}
+	}
 </script>
 
 <svelte:head>
@@ -35,7 +45,7 @@
 		</div>
 	</article>
 	{#if browser && $user?.role === 'admin'}
-		<button>delete</button>
+		<button on:click={deletePost}>delete</button>
 	{/if}
 </main>
 
