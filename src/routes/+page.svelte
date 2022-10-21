@@ -189,13 +189,14 @@
 		gap: 1rem;
 		padding: 0.5rem 1rem;
 		background-color: var(--bg-primary);
-		border-bottom: 1px solid var(--border-clrX);
+		border-bottom: 1px solid var(--border-clr);
 	}
 	.article:hover {
 		background-color: var(--bg-hover);
 	}
 	.article:last-child {
 		border: none;
+		margin-left: auto;
 	}
 	.article > img {
 		width: 20px;
@@ -208,9 +209,6 @@
 	.article-date {
 		font-size: 0.75rem;
 		color: var(--border-clr);
-		margin-left: auto;
-	}
-	.article:last-child {
 		margin-left: auto;
 	}
 </style>

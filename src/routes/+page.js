@@ -10,14 +10,12 @@ export async function load() {
 
 	const date = new Date();
 
-	let newsToday = news
-		.filter(
-			(el) =>
-				new Date(el.created_at).getFullYear() === date.getFullYear() &&
-				new Date(el.created_at).getMonth() === date.getMonth() &&
-				new Date(el.created_at).getDate() === date.getDate()
-		)
-		.reverse();
+	let newsToday = news.filter(
+		(el) =>
+			new Date(el.created_at).getFullYear() === date.getFullYear() &&
+			new Date(el.created_at).getMonth() === date.getMonth() &&
+			new Date(el.created_at).getDate() === date.getDate()
+	);
 
 	let otherNews = news
 		.filter(
@@ -26,8 +24,7 @@ export async function load() {
 				new Date(el.created_at).getMonth() !== date.getMonth() ||
 				new Date(el.created_at).getDate() !== date.getDate()
 		)
-		.slice(0, 10)
-		.reverse();
+		.slice(0, 10);
 
 	return { newsToday, otherNews };
 }
