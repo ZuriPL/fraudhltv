@@ -24,6 +24,9 @@
 		});
 
 		invalidateAll();
+
+		titleInput.value = '';
+		contentInput.value = '';
 	}
 </script>
 

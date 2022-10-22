@@ -1,11 +1,9 @@
 <script>
-	export let data;
-	let { data: postData, comments: commentsData } = data;
-
 	import Comments from './Comments.svelte';
-	import { setContext } from 'svelte';
+	import user from '$lib/user';
 
-	setContext('comments', commentsData);
+	export let data;
+	let postData = data.data;
 </script>
 
 <svelte:head>
@@ -14,14 +12,24 @@
 
 <main>
 	<div class="spacer">
-		<div class="header">{postData?.title}<span>{postData.author.name}</span></div>
+		<div class="header">{postData?.title}<span>{postData?.author?.name}</span></div>
 
 		<div class="post-content">
 			{postData?.text}
 		</div>
 
 		<div class="footer">
-			<span>{postData.created_at}</span>
+			<span>{postData?.created_at}</span>
+			{#if postData?.author?.id === $user?.id}
+				<button class="delete">
+					<svg style="width:16px;height:auto" viewBox="0 0 24 24">
+						<path
+							fill="currentColor"
+							d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
+						/>
+					</svg>
+				</button>
+			{/if}
 			<button
 				><svg style="width:16px;height:auto" viewBox="0 0 24 24">
 					<path
@@ -39,6 +47,9 @@
 </main>
 
 <style>
+	.delete {
+		color: #c52216;
+	}
 	button {
 		all: unset;
 		cursor: default;
@@ -48,6 +59,7 @@
 		align-items: center;
 		gap: 0.25rem;
 		cursor: pointer;
+		border-left: 1px solid var(--border-clr);
 	}
 	.header {
 		background-color: var(--bg-header);
@@ -85,7 +97,8 @@
 		max-width: 800px;
 		width: calc(100% - 2rem);
 	}
-	.spacer > * {
+	.spacer > *:not(.footer),
+	.footer > * {
 		padding: 0.5rem 0.75rem;
 	}
 	main {

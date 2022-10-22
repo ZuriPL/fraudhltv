@@ -18,7 +18,7 @@ function formatDate(date) {
 export async function load({ params }) {
 	const { data, error } = await supabase
 		.from('forum-posts')
-		.select('*, author ( name )')
+		.select('*, author ( name, id )')
 		.eq('slug', params.slug)
 		.single();
 
@@ -26,7 +26,7 @@ export async function load({ params }) {
 
 	const { data: comments } = await supabase
 		.from('forum-comments')
-		.select('*, author ( name, player, team, flag )')
+		.select('*, author ( id, name, player, team, flag )')
 		.eq('host_thread', data.id);
 
 	comments.forEach((el) => {
