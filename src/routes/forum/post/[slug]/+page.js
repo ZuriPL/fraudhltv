@@ -26,8 +26,12 @@ export async function load({ params }) {
 
 	const { data: comments } = await supabase
 		.from('forum-comments')
-		.select()
+		.select('*, author ( name, player, team, flag )')
 		.eq('host_thread', data.id);
+
+	comments.forEach((el) => {
+		el.created_at = formatDate(new Date(el.created_at));
+	});
 
 	return { data, comments };
 }
