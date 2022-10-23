@@ -16,7 +16,7 @@
 		const { data, error } = await supabase.from('forum-posts').insert({
 			title: titleInput.value,
 			text: contentInput.value,
-			author: $user.id
+			author: $user?.id
 		});
 
 		if (error) {
@@ -42,7 +42,7 @@
 	<title>CS:GO Tier 50 Forums</title>
 </svelte:head>
 
-{#if import.meta.env['VITE_MODE'] === 'dev' || $user.role === 'admin'}
+{#if import.meta.env['VITE_MODE'] === 'dev' || ($user && $user?.role === 'admin')}
 	<div class="spacer">
 		<main>
 			<table>
