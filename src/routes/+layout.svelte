@@ -19,27 +19,23 @@
 
 	onMount(() => {
 		supabase.auth.getSession().then(async ({ data }) => {
-			try {
-				let { data: userData } = await supabase
-					.from('users')
-					.select()
-					.eq('user_id', data?.session?.user?.id)
-					?.single();
-				$user = userData;
-				setTheme($user?.preferred_theme);
-			} catch {}
+			let { data: userData } = await supabase
+				.from('users')
+				.select()
+				.eq('user_id', data?.session?.user?.id)
+				?.single();
+			$user = userData;
+			setTheme($user?.preferred_theme);
 		});
 
 		supabase.auth.onAuthStateChange(async (event, session) => {
-			try {
-				let { data: userData } = await supabase
-					.from('users')
-					.select()
-					.eq('user_id', session?.user?.id)
-					?.single();
-				$user = userData;
-				setTheme($user?.preferred_theme);
-			} catch {}
+			let { data: userData } = await supabase
+				.from('users')
+				.select()
+				.eq('user_id', session?.user?.id)
+				?.single();
+			$user = userData;
+			setTheme($user?.preferred_theme);
 		});
 	});
 </script>
