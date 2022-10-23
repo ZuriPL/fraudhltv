@@ -10,6 +10,9 @@
 	let titleInput, contentInput;
 
 	async function createNew() {
+		if (titleInput.value.length === 0 || contentInput.value.length === 0)
+			return (log.textContent = 'Fields may not be empty');
+
 		const { data, error } = await supabase.from('forum-posts').insert({
 			title: titleInput.value,
 			text: contentInput.value,
@@ -21,6 +24,10 @@
 		} else {
 			log.textContent = 'Post created succefully';
 		}
+
+		setTimeout((_) => {
+			log.textContent = '';
+		}, 5000);
 
 		invalidateAll();
 
