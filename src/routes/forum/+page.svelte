@@ -9,42 +9,53 @@
 
 	let titleInput, contentInput;
 
-	function slugify(text) {
-		let slug = text.toLowerCase();
-		slug = slug.replace(/ +/g, '-');
-		return slug;
-	}
-
 	async function createNew() {
 		const { data, error } = await supabase.from('forum-posts').insert({
 			title: titleInput.value,
 			text: contentInput.value,
-			slug: slugify(titleInput.value),
 			author: $user.id
 		});
+
+		if (error) {
+			log.textContent = 'There was an error creating the post. Please try again';
+		} else {
+			log.textContent = 'Post created succefully';
+		}
 
 		invalidateAll();
 
 		titleInput.value = '';
 		contentInput.value = '';
 	}
+
+	let log;
 </script>
 
 <svelte:head>
 	<title>CS:GO Tier 50 Forums</title>
 </svelte:head>
 
-{#if import.meta.env['VITE_MODE'] === 'dev'}
+{#if import.meta.env['VITE_MODE'] === 'dev' || $user.role === 'admin'}
 	<div class="spacer">
 		<main>
-			<div class="flex header"><span>Topic</span><span>Author</span><span>Created: </span></div>
-			{#each data.data as post}
-				<a href={`/forum/post/${post.slug}`} class="flex"
-					><span>{post.title}</span><span>{post.author.name}</span><span
-						>{timeAgo(post.created_at)}</span
-					></a
-				>
-			{/each}
+			<table>
+				<thead>
+					<tr>
+						<th>Topic</th>
+						<th>Author</th>
+						<th>Created</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each data.data as post}
+						<tr>
+							<td><a href="forum/post/{post.id}">{post.title}</a></td>
+							<td><a href="forum/post/{post.id}">{post.author.name}</a></td>
+							<td><a href="forum/post/{post.id}">{timeAgo(post.created_at)}</a></td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
 		</main>
 		{#if $user}
 			<h2>Create new post</h2>
@@ -58,6 +69,7 @@
 					<textarea bind:this={contentInput} name="new" cols="30" rows="10" />
 				</label>
 				<button>Post</button>
+				<p class="log" bind:this={log} />
 			</form>
 		{/if}
 	</div>
@@ -66,6 +78,41 @@
 {/if}
 
 <style>
+	table td {
+		border-top: 1px solid var(--border-clr);
+	}
+	table tr:hover {
+		background-color: var(--bg-hover);
+	}
+	table th {
+		padding: 1rem;
+		padding-left: 3rem;
+		background-color: var(--bg-header);
+	}
+	table {
+		background-color: var(--bg-primary);
+		border-collapse: collapse;
+	}
+	table tr :is(td, th) {
+		white-space: nowrap;
+		text-align: left;
+	}
+
+	table a {
+		padding: 1rem;
+		padding-left: 3rem !important;
+		width: 100%;
+		display: block;
+	}
+	table td:first-child a {
+		padding-left: 1rem !important;
+	}
+	th:first-child {
+		padding-left: 1rem;
+	}
+	table tr :is(td, th):first-child {
+		width: 100%;
+	}
 	h2 {
 		padding-left: 1rem;
 		margin-top: 1.25rem;
@@ -97,7 +144,7 @@
 	button:hover {
 		background-color: var(--button-hover);
 	}
-	.flex {
+	/* .flex {
 		display: flex;
 		align-items: center;
 		background-color: var(--bg-primary);
@@ -110,7 +157,7 @@
 	}
 	.flex > span {
 		min-width: 7rem;
-	}
+	} */
 	form {
 		width: calc(100% - 2rem);
 		margin: 0 1rem;
@@ -134,16 +181,16 @@
 		all: unset;
 		cursor: pointer;
 	}
-	a:hover {
+	/* a:hover {
 		background-color: var(--bg-hover);
-	}
-	span {
+	} */
+	/* span {
 		display: block;
-	}
-	.header.flex {
+	} */
+	/* .header.flex {
 		background-color: var(--bg-header);
 		font-weight: 700;
 		font-size: 1.1rem;
 		border: none;
-	}
+	} */
 </style>

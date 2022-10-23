@@ -1,9 +1,41 @@
 <script>
 	import Comments from './Comments.svelte';
+	import replyto from './store';
 	import user from '$lib/user';
+	import supabase from '$lib/supabase';
+	import { invalidateAll, goto } from '$app/navigation';
 
 	export let data;
 	let postData = data.data;
+
+	let commentInput;
+	let replied;
+
+	async function replyf() {
+		if (replied === true) return;
+		replied = true;
+
+		await supabase.from('forum-comments').insert({
+			host_thread: postData.id,
+			text: commentInput.value,
+			author: $user.id,
+			replies_to: null
+		});
+
+		await invalidateAll();
+
+		$replyto = null;
+		commentInput.value = '';
+		replied = false;
+	}
+
+	async function deletef() {
+		if (confirm('Do you want to delete this post?')) {
+			await supabase.from('forum-comments').delete().eq('host_thread', postData.id);
+			await supabase.from('forum-posts').delete().eq('id', postData.id);
+			goto('/forum');
+		}
+	}
 </script>
 
 <svelte:head>
@@ -12,7 +44,11 @@
 
 <main>
 	<div class="spacer">
-		<div class="header">{postData?.title}<span>{postData?.author?.name}</span></div>
+		<div class="header">
+			{postData?.title}<span
+				><a href="/profile/{postData?.author?.name}">{postData?.author?.name}</a></span
+			>
+		</div>
 
 		<div class="post-content">
 			{postData?.text}
@@ -21,7 +57,7 @@
 		<div class="footer">
 			<span>{postData?.created_at}</span>
 			{#if postData?.author?.id === $user?.id}
-				<button class="delete">
+				<button class="delete" on:click={deletef}>
 					<svg style="width:16px;height:auto" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
@@ -30,7 +66,7 @@
 					</svg>
 				</button>
 			{/if}
-			<button
+			<button on:click={(_) => commentInput.focus()}
 				><svg style="width:16px;height:auto" viewBox="0 0 24 24">
 					<path
 						fill="currentColor"
@@ -43,10 +79,51 @@
 
 	<div class="comments-spacer">
 		<Comments />
+
+		<form on:submit|preventDefault={replyf}>
+			<div class="comment-input">
+				<div class="flex-header">Replying to the original post</div>
+				<textarea bind:this={commentInput} placeholder="Write your comment here" />
+			</div>
+			<button>Reply</button>
+		</form>
 	</div>
 </main>
 
 <style>
+	.flex-header {
+		height: 2rem;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		font-size: 12px;
+		background-color: var(--bg-header);
+	}
+	form {
+		width: 100%;
+		margin-top: 0.75rem;
+	}
+	form > button {
+		padding: 0.5rem 0.75rem;
+		border: none;
+		background-color: var(--button-clr);
+		color: var(--btn-text-color);
+		font-size: 1rem;
+		display: block;
+		font-size: 14px;
+		margin-block: 0.75rem;
+	}
+	textarea {
+		resize: vertical;
+		width: 100%;
+		height: 10ex;
+		background-color: var(--bg-primary);
+		border: none;
+		border-top: 1px solid var(--border-clr);
+		color: var(--text-color);
+		padding: 0.5rem;
+	}
 	.delete {
 		color: #c52216;
 	}
@@ -92,10 +169,13 @@
 		background-color: var(--bg-primary);
 		width: calc(100% - 2rem);
 		box-shadow: var(--list-shadow);
+		z-index: 1;
 	}
 	.comments-spacer {
 		max-width: 800px;
 		width: calc(100% - 2rem);
+		isolation: isolate;
+		z-index: 0;
 	}
 	.spacer > *:not(.footer),
 	.footer > * {
