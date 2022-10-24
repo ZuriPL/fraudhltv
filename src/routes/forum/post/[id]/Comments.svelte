@@ -155,7 +155,7 @@
 		top: calc(2rem + 1px);
 		left: -0.75rem;
 		width: 1px;
-		height: 100vh;
+		height: 1300000vh;
 		background-color: var(--bg-secondary);
 		z-index: 1;
 	}
