@@ -184,6 +184,7 @@
 	table a {
 		padding: 0.75rem 1rem;
 		display: block;
+		color: var(--text-color);
 	}
 	table td:first-child a,
 	table th {
