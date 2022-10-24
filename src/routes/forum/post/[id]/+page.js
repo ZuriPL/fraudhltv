@@ -35,7 +35,7 @@ export async function load({ params }) {
 
 	const { data } = await supabase
 		.from('forum-posts')
-		.select('*, author ( name, id )')
+		.select('*, author ( id, name, player, team, flag )')
 		.eq('id', params.id)
 		.single();
 

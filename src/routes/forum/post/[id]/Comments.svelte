@@ -154,6 +154,7 @@
 	.author-info img {
 		border: 1px solid black;
 		margin-left: 0.15rem;
+		height: 12px;
 	}
 	.block > .header:hover {
 		background-color: var(--bg-hover);
