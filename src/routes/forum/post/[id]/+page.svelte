@@ -4,7 +4,7 @@
 	import user from '$lib/user';
 	import supabase from '$lib/supabase';
 	import { invalidateAll, goto } from '$app/navigation';
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 
 	// onMount(async (_) => {
 	// 	const { data } = await supabase.from('forum-comments').select();
