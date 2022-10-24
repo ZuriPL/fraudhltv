@@ -4,6 +4,23 @@
 	import user from '$lib/user';
 	import supabase from '$lib/supabase';
 	import { invalidateAll, goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	// onMount(async (_) => {
+	// 	const { data } = await supabase.from('forum-comments').select();
+
+	// 	console.log(data);
+	// 	recurse();
+	// });
+
+	// function recurse(id = null) {
+	// 	const arr = data.comments.filter((el) => el.replies_to === id);
+
+	// 	arr.forEach((el) => {
+	// 		recurse(el.id);
+	// 		if (arr.filter((el) => !el.is_deleted).length === 0) console.log(el);
+	// 	});
+	// }
 
 	export let data;
 	let postData = data.data;
