@@ -4,7 +4,7 @@
 	import supabase from '$lib/supabase';
 	import user from '$lib/user';
 	import { page } from '$app/stores';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidateAll, goto } from '$app/navigation';
 
 	export let data;
 
@@ -14,23 +14,28 @@
 		if (titleInput.value.length === 0 || contentInput.value.length === 0)
 			return (log.textContent = 'Fields may not be empty');
 
-		const { data, error } = await supabase.from('forum-posts').insert({
-			title: titleInput.value,
-			text: contentInput.value,
-			author: $user?.id
-		});
+		const { data, error } = await supabase
+			.from('forum-posts')
+			.insert({
+				title: titleInput.value,
+				text: contentInput.value,
+				author: $user?.id
+			})
+			.select()
+			.single();
+
+		await invalidateAll();
 
 		if (error) {
 			log.textContent = 'There was an error creating the post. Please try again';
 		} else {
 			log.textContent = 'Post created succefully';
+			goto(`/forum/post/${data.id}`);
 		}
 
 		setTimeout((_) => {
 			log.textContent = '';
 		}, 5000);
-
-		invalidateAll();
 
 		titleInput.value = '';
 		contentInput.value = '';
@@ -39,13 +44,19 @@
 	let log;
 
 	function forward() {
-		history.replaceState(null, '', `/forum?page=${+$page.url.searchParams.get('page') + 10}`);
+		history.replaceState(
+			null,
+			'',
+			`/forum?page=${Math.min(data.data.length, +$page.url.searchParams.get('page') + 10)}`
+		);
 		invalidateAll();
 	}
 	function backward() {
-		let num = +$page.url.searchParams.get('page') - 10;
-		if (+$page.url.searchParams.get('page') < 10) num = 0;
-		history.replaceState(null, '', `/forum?page=${num}`);
+		history.replaceState(
+			null,
+			'',
+			`/forum?page=${Math.max(0, +$page.url.searchParams.get('page') - 10)}`
+		);
 		invalidateAll();
 	}
 </script>

@@ -3,31 +3,7 @@
 	import replyto from './store';
 	import user from '$lib/user';
 	import supabase from '$lib/supabase';
-	import { page } from '$app/stores';
 	import { invalidateAll, goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-
-	onMount(async (_) => {
-		const { data } = await supabase.from('forum-comments').select();
-
-		recurse();
-		console.log($page.data.comments.filter((el) => !toDelete.includes(el.id)));
-	});
-
-	let toDelete = [];
-
-	function recurse(id = null) {
-		const arr = data.comments.filter((el) => el.replies_to === id);
-		let res = [];
-
-		arr.forEach((el) => {
-			res.push(recurse(el.id));
-			if (el.is_deleted && !res.includes(false)) toDelete.push(el.id);
-		});
-		if (!res.includes(false) && arr.filter((el) => !el.is_deleted).length === 0) return true;
-
-		return false;
-	}
 
 	export let data;
 	let postData = data.data;
@@ -74,13 +50,11 @@
 			>
 		</div>
 
-		<div class="post-content">
-			{postData?.text}
-		</div>
+		<pre class="post-content">{postData?.text}</pre>
 
 		<div class="footer">
 			<span>{postData?.created_at}</span>
-			{#if postData?.author?.id === $user?.id}
+			{#if postData?.author?.id === $user?.id || $user?.role === 'admin'}
 				<button class="delete" on:click={deletef}>
 					<svg style="width:16px;height:auto" viewBox="0 0 24 24">
 						<path
