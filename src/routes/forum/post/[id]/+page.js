@@ -16,7 +16,24 @@ function formatDate(date) {
 }
 
 export async function load({ params }) {
-	const { data, error } = await supabase
+	let toDelete = [];
+
+	function scan(id = null) {
+		const arr = comments.filter((el) => el.replies_to === id);
+		let res = [];
+
+		arr.forEach((el) => {
+			res.push(scan(el.id));
+			if (el.is_deleted && !res.includes(false)) toDelete.push(el.id);
+			res = [];
+		});
+
+		if (!res.includes(false) && arr.filter((el) => !el.is_deleted).length === 0) return true;
+
+		return false;
+	}
+
+	const { data } = await supabase
 		.from('forum-posts')
 		.select('*, author ( name, id )')
 		.eq('id', params.id)
@@ -24,7 +41,7 @@ export async function load({ params }) {
 
 	data.created_at = formatDate(new Date(data.created_at));
 
-	const { data: comments } = await supabase
+	let { data: comments } = await supabase
 		.from('forum-comments')
 		.select('*, author ( id, name, player, team, flag )')
 		.eq('host_thread', data.id)
@@ -39,6 +56,9 @@ export async function load({ params }) {
 	comments.forEach((el) => {
 		el.created_at = formatDate(new Date(el.created_at));
 	});
+
+	scan();
+	comments = comments.filter((el) => !toDelete.includes(el.id));
 
 	return { data, comments };
 }

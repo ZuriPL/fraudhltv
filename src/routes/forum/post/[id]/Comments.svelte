@@ -14,9 +14,9 @@
 		commentInput?.focus();
 	}
 
-	async function deletef(x) {
+	async function deletef(id) {
 		if (confirm('Do you want to delete this comment?')) {
-			await supabase.from('forum-comments').update({ is_deleted: true }).eq('id', x);
+			await supabase.from('forum-comments').update({ is_deleted: true, text: '' }).eq('id', id);
 
 			invalidateAll();
 		}
@@ -71,7 +71,7 @@
 		<div class="flex footer">
 			<span>{reply?.created_at}</span>
 			{#if (reply?.author?.id === $user?.id || $user?.role === 'admin') && !reply.is_deleted}
-				<button class="delete" on:click={(_) => deletef(reply?.id)}>
+				<button class="red" on:click={(_) => deletef(reply?.id)}>
 					<svg style="width:16px;height:auto" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
@@ -123,7 +123,7 @@
 		background-color: var(--bg-primary);
 		margin-top: 1rem;
 	}
-	.delete {
+	.red {
 		color: #c52216;
 	}
 	.wrapper::after {

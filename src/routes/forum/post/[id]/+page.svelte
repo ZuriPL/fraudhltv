@@ -3,24 +3,31 @@
 	import replyto from './store';
 	import user from '$lib/user';
 	import supabase from '$lib/supabase';
+	import { page } from '$app/stores';
 	import { invalidateAll, goto } from '$app/navigation';
-	// import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
-	// onMount(async (_) => {
-	// 	const { data } = await supabase.from('forum-comments').select();
+	onMount(async (_) => {
+		const { data } = await supabase.from('forum-comments').select();
 
-	// 	console.log(data);
-	// 	recurse();
-	// });
+		recurse();
+		console.log($page.data.comments.filter((el) => !toDelete.includes(el.id)));
+	});
 
-	// function recurse(id = null) {
-	// 	const arr = data.comments.filter((el) => el.replies_to === id);
+	let toDelete = [];
 
-	// 	arr.forEach((el) => {
-	// 		recurse(el.id);
-	// 		if (arr.filter((el) => !el.is_deleted).length === 0) console.log(el);
-	// 	});
-	// }
+	function recurse(id = null) {
+		const arr = data.comments.filter((el) => el.replies_to === id);
+		let res = [];
+
+		arr.forEach((el) => {
+			res.push(recurse(el.id));
+			if (el.is_deleted && !res.includes(false)) toDelete.push(el.id);
+		});
+		if (!res.includes(false) && arr.filter((el) => !el.is_deleted).length === 0) return true;
+
+		return false;
+	}
 
 	export let data;
 	let postData = data.data;
@@ -83,14 +90,16 @@
 					</svg>
 				</button>
 			{/if}
-			<button on:click={(_) => commentInput.focus()}
-				><svg style="width:16px;height:auto" viewBox="0 0 24 24">
-					<path
-						fill="currentColor"
-						d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z"
-					/>
-				</svg>Reply</button
-			>
+			{#if $user}
+				<button on:click={(_) => commentInput.focus()}
+					><svg style="width:16px;height:auto" viewBox="0 0 24 24">
+						<path
+							fill="currentColor"
+							d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z"
+						/>
+					</svg>Reply</button
+				>
+			{/if}
 		</div>
 	</div>
 
