@@ -69,6 +69,15 @@
 		color: var(--text-color);
 		background-color: var(--bg-primary);
 	}
+	:global(::-webkit-scrollbar) {
+		height: 4px;
+		width: 4px;
+		background-color: transparent;
+	}
+	:global(::-webkit-scrollbar-thumb) {
+		border-radius: 50px;
+		background-color: var(--link-color);
+	}
 	:root {
 		--text-color-dark: #b9bdbf;
 		--btn-text-color-dark: #b9bdbf;

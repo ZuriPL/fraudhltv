@@ -156,14 +156,6 @@
 		overflow-y: hidden;
 		width: 100%;
 	}
-	.scroll-wrapper::-webkit-scrollbar {
-		height: 4px;
-		background-color: transparent;
-	}
-	.scroll-wrapper::-webkit-scrollbar-thumb {
-		border-radius: 50px;
-		background-color: var(--link-color);
-	}
 	img {
 		height: 100%;
 		aspect-ratio: 1 / 1;

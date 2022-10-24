@@ -3,6 +3,7 @@
 	import timeAgo from '$lib/timeAgo';
 	import supabase from '$lib/supabase';
 	import user from '$lib/user';
+	import { page } from '$app/stores';
 	import { invalidateAll } from '$app/navigation';
 
 	export let data;
@@ -36,6 +37,17 @@
 	}
 
 	let log;
+
+	function forward() {
+		history.replaceState(null, '', `/forum?page=${+$page.url.searchParams.get('page') + 10}`);
+		invalidateAll();
+	}
+	function backward() {
+		let num = +$page.url.searchParams.get('page') - 10;
+		if (+$page.url.searchParams.get('page') < 10) num = 0;
+		history.replaceState(null, '', `/forum?page=${num}`);
+		invalidateAll();
+	}
 </script>
 
 <svelte:head>
@@ -45,24 +57,56 @@
 {#if import.meta.env['VITE_MODE'] === 'dev' || ($user && $user?.role === 'admin')}
 	<div class="spacer">
 		<main>
-			<table>
-				<thead>
-					<tr>
-						<th>Topic</th>
-						<th>Author</th>
-						<th>Created</th>
-					</tr>
-				</thead>
-				<tbody>
-					{#each data.data as post}
+			<div class="table-wrapper">
+				<table>
+					<thead>
 						<tr>
-							<td><a href="forum/post/{post.id}">{post.title}</a></td>
-							<td><a href="forum/post/{post.id}">{post.author.name}</a></td>
-							<td><a href="forum/post/{post.id}">{timeAgo(post.created_at)}</a></td>
+							<th>Topic</th>
+							<th>Author</th>
+							<th>Created</th>
 						</tr>
-					{/each}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{#each data.data as post}
+							<tr>
+								<td><a href="forum/post/{post.id}">{post.title}</a></td>
+								<td><a href="forum/post/{post.id}">{post.author.name}</a></td>
+								<td><a href="forum/post/{post.id}">{timeAgo(post.created_at)}</a></td>
+							</tr>
+						{/each}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3">
+								<div>
+									<p>
+										Showing results {+$page.url.searchParams.get('page') +
+											1}-{+$page.url.searchParams.get('page') + data.data.length} of {data.length}
+									</p>
+									<div class="button-wrapper">
+										<button on:click={backward}>
+											<svg style="width:24px;height:auto" viewBox="0 0 24 24">
+												<path
+													fill="currentColor"
+													d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+												/>
+											</svg>
+										</button>
+										<button on:click={forward}>
+											<svg style="width:24px;height:auto" viewBox="0 0 24 24">
+												<path
+													fill="currentColor"
+													d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+												/>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
 		</main>
 		{#if $user}
 			<h2>Create new post</h2>
@@ -85,37 +129,68 @@
 {/if}
 
 <style>
-	table td {
-		border-top: 1px solid var(--border-clr);
+	.button-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
 	}
-	table tr:hover {
-		background-color: var(--bg-hover);
+	table tfoot .button-wrapper button {
+		all: unset;
+		color: var(--link-color);
+		height: 24px;
 	}
-	table th {
-		padding: 1rem;
-		padding-left: 3rem;
-		background-color: var(--bg-header);
+	table tfoot .button-wrapper button:hover {
+		cursor: pointer;
+	}
+	tfoot td {
+		padding: 0;
+	}
+	tfoot td > div {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 12px;
+		padding: 0.25rem 1rem;
+	}
+	.table-wrapper {
+		width: 100%;
+		overflow-x: auto;
 	}
 	table {
 		background-color: var(--bg-primary);
 		border-collapse: collapse;
+		font-size: 14px;
+	}
+	table tbody td {
+		border-top: 1px solid var(--border-clr);
+	}
+	table tfoot {
+		border-top: 1px solid var(--border-clr);
+	}
+	table th {
+		background-color: var(--bg-header);
+		padding: 0.75rem 1rem;
+		padding-left: 3rem;
+		color: var(--text-color) !important;
+		font-weight: 700;
 	}
 	table tr :is(td, th) {
 		white-space: nowrap;
 		text-align: left;
 	}
-
+	table tbody tr:hover {
+		background-color: var(--bg-hover);
+	}
 	table a {
-		padding: 1rem;
-		padding-left: 3rem !important;
-		width: 100%;
+		padding: 0.75rem 1rem;
 		display: block;
 	}
-	table td:first-child a {
+	table td:first-child a,
+	table th {
 		padding-left: 1rem !important;
-	}
-	th:first-child {
-		padding-left: 1rem;
+		font-weight: 600;
+		color: var(--link-color);
+		padding-right: 2rem;
 	}
 	table tr :is(td, th):first-child {
 		width: 100%;
@@ -151,20 +226,6 @@
 	button:hover {
 		background-color: var(--button-hover);
 	}
-	/* .flex {
-		display: flex;
-		align-items: center;
-		background-color: var(--bg-primary);
-		padding: 1rem;
-		gap: 2rem;
-		border-top: 1px solid var(--border-clr);
-	}
-	.flex > span:first-child {
-		margin-right: auto;
-	}
-	.flex > span {
-		min-width: 7rem;
-	} */
 	form {
 		width: calc(100% - 2rem);
 		margin: 0 1rem;
@@ -184,20 +245,4 @@
 		width: 100%;
 		margin: 0 auto;
 	}
-	a {
-		all: unset;
-		cursor: pointer;
-	}
-	/* a:hover {
-		background-color: var(--bg-hover);
-	} */
-	/* span {
-		display: block;
-	} */
-	/* .header.flex {
-		background-color: var(--bg-header);
-		font-weight: 700;
-		font-size: 1.1rem;
-		border: none;
-	} */
 </style>
