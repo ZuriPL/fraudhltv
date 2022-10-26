@@ -40,8 +40,7 @@
 	<a class="logo-anchor" href="/"><img src="/favicon{favicon}.png" alt="Logo" /></a>
 	<div class="scroll-wrapper">
 		<a href="/">News</a>
-		<a href="/ranking">Ranking</a>
-		<a href="/matches">Matches</a>
+		<a href="/ranking">Rankings</a>
 		<a href="/forum">Forums</a>
 		<a href="/fantasy">Fantasy</a>
 	</div>

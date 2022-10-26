@@ -1,15 +1,15 @@
+<script>
+	import GoHome from '$lib/gohome.svelte';
+</script>
+
 <svelte:head>
-    <title>CS:GO Tier 50 Fantasy</title>
+	<title>FraudHLTV Fantasy</title>
 </svelte:head>
 
 <main>
-    {#if import.meta.env['VITE_MODE'] === 'dev'}
-        <div></div>
-    {:else}
-        <GoHome msg="This page is under construction" />
-    {/if}
+	{#if import.meta.env['VITE_MODE'] === 'dev'}
+		<div />
+	{:else}
+		<GoHome msg="This page is under construction" />
+	{/if}
 </main>
-
-<script>
-    import GoHome from '$lib/gohome.svelte'
-</script>

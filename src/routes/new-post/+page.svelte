@@ -12,12 +12,6 @@
 		const res = await fetch('https://flagcdn.com/en/codes.json');
 		const data = await res.json();
 
-		// list = data.map((country) => {
-		// 	return {
-		// 		name: country.name.common,
-		// 		code: country.cca2
-		// 	};
-		// });
 		let keys = Object.keys(data);
 		for (let i = 0; i < keys.length; i++) {
 			list.push({

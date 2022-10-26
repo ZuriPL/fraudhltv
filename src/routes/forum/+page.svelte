@@ -62,7 +62,7 @@
 </script>
 
 <svelte:head>
-	<title>CS:GO Tier 50 Forums</title>
+	<title>FraudHLTV Forum</title>
 </svelte:head>
 
 {#if import.meta.env['VITE_MODE'] === 'dev' || ($user && $user?.role === 'admin')}

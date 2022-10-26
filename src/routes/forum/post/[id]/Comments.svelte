@@ -61,7 +61,7 @@
 			{:else}
 				<span class="author-info">
 					<span>
-						<svg style="width:12px;height:auto" viewBox="0 0 24 24">
+						<svg style="width:12px;height:12px" viewBox="0 0 24 24">
 							<path
 								fill="currentColor"
 								d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
@@ -71,7 +71,7 @@
 					</span>
 					<div style="border-left: 2px solid rgba(146,154,158,.75); height:12px;" />
 					<span>
-						<svg style="width:12px;height:auto" viewBox="0 0 24 24">
+						<svg style="width:12px;height:12px" viewBox="0 0 24 24">
 							<path
 								fill="currentColor"
 								d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
@@ -101,7 +101,7 @@
 			<span>{reply?.created_at}</span>
 			{#if (reply?.author?.id === $user?.id || $user?.role === 'admin') && !reply.is_deleted}
 				<button class="red" on:click={(_) => deletef(reply?.id)}>
-					<svg style="width:16px;height:auto" viewBox="0 0 24 24">
+					<svg style="width:16px;height:16px" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
 							d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
@@ -111,7 +111,7 @@
 			{/if}
 			{#if !reply.is_deleted}
 				<button on:click={() => replytof(reply?.id)}
-					><svg style="width:16px;height:auto" viewBox="0 0 24 24">
+					><svg style="width:16px;height:16px" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
 							d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z"
@@ -148,13 +148,6 @@
 	input:checked + .block + .wrapper :global(:is(.block, .wrapper)) {
 		display: none;
 	}
-	/* .block > .footer::before {
-		content: '2 replies';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		transform: translateY(100%);
-	} */
 	.author-info {
 		display: flex;
 		gap: 0.5rem;
@@ -164,11 +157,14 @@
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
+		white-space: nowrap;
 	}
 	.author-info img {
 		border: 1px solid black;
 		margin-left: 0.15rem;
 		height: 12px;
+		width: 18px;
+		display: block;
 	}
 	.block > .header:hover {
 		background-color: var(--bg-hover);
@@ -187,7 +183,7 @@
 		content: '';
 		position: absolute;
 		left: 0.5rem;
-		top: -0.75rem;
+		top: -0.5rem;
 		bottom: 0;
 		width: 1px;
 		background-color: var(--border-clr);
@@ -196,9 +192,9 @@
 	.comment-input::after {
 		content: '';
 		top: 2rem;
-		left: -0.75rem;
+		left: -0.5rem;
 		position: absolute;
-		width: 0.75rem;
+		width: 0.5rem;
 		background-color: var(--border-clr);
 		height: 1px;
 	}
@@ -210,7 +206,7 @@
 		content: '';
 		position: absolute;
 		top: calc(2rem + 1px);
-		left: -0.75rem;
+		left: -0.5rem;
 		width: 1px;
 		height: 1300000vh;
 		background-color: var(--bg-secondary);
@@ -219,6 +215,7 @@
 	.header {
 		height: 2rem;
 		background-color: var(--bg-header);
+		overflow: hidden;
 	}
 	.comment-input ~ button {
 		padding: 0.5rem 0.75rem;
@@ -285,10 +282,10 @@
 		padding: 0.5rem 0.75rem;
 	}
 	.wrapper {
-		padding-left: 1.25rem;
+		padding-left: 1rem;
 		position: relative;
 		overflow-y: clip;
-		overflow-clip-margin: 0.75rem;
+		overflow-clip-margin: 0.5rem;
 	}
 	.flex {
 		display: flex;

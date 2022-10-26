@@ -45,9 +45,10 @@
 <main>
 	<div class="spacer">
 		<div class="header">
-			{postData?.title}<span class="author-info">
+			<p class="title">{postData?.title}</p>
+			<span class="author-info">
 				<span>
-					<svg style="width:12px;height:auto" viewBox="0 0 24 24">
+					<svg style="min-width:12px;height:12px" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
 							d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
@@ -57,7 +58,7 @@
 				</span>
 				<div style="border-left: 2px solid rgba(146,154,158,.75); height:12px;" />
 				<span>
-					<svg style="width:12px;height:auto" viewBox="0 0 24 24">
+					<svg style="min-width:12px;height:12px" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
 							d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
@@ -82,7 +83,7 @@
 			<span>{postData?.created_at}</span>
 			{#if postData?.author?.id === $user?.id || $user?.role === 'admin'}
 				<button class="delete" on:click={deletef}>
-					<svg style="width:16px;height:auto" viewBox="0 0 24 24">
+					<svg style="width:16px;height:16px" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
 							d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"
@@ -96,7 +97,7 @@
 						$replyto = null;
 						commentInput.focus();
 					}}
-					><svg style="width:16px;height:auto" viewBox="0 0 24 24">
+					><svg style="width:16px;height:16px" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
 							d="M10,9V5L3,12L10,19V14.9C15,14.9 18.5,16.5 21,20C20,15 17,10 10,9Z"
@@ -130,11 +131,14 @@
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
+		white-space: nowrap;
 	}
 	.author-info img {
 		border: 1px solid black;
 		margin-left: 0.15rem;
 		height: 12px;
+		width: 18px;
+		display: block;
 	}
 	.flex-header {
 		height: 2rem;
@@ -187,11 +191,18 @@
 		background-color: var(--bg-header);
 		display: flex;
 		align-items: center;
+		gap: 0.25rem;
 		justify-content: space-between;
 		border-bottom: 1px solid var(--border-clr);
 		font-weight: bold;
 		font-size: 1.25rem;
 	}
+	.header > .title {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
 	.header > span {
 		font-weight: initial;
 		font-size: 12px;
@@ -204,10 +215,6 @@
 	}
 	.footer > :first-child {
 		margin-right: auto;
-	}
-	:global(img) {
-		width: 100%;
-		display: block;
 	}
 	.spacer {
 		max-width: 800px;

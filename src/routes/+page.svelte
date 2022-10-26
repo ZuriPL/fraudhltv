@@ -13,7 +13,7 @@
 </script>
 
 <svelte:head>
-	<title>CS:GO Tier 50 News</title>
+	<title>FraudHLTV News</title>
 </svelte:head>
 
 <main>
@@ -102,6 +102,7 @@
 		font-size: 3rem;
 		height: 150px;
 		display: grid;
+		cursor: default;
 		place-items: center;
 		text-align: center;
 	}

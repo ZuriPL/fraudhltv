@@ -1,9 +1,7 @@
 import supabase from '$lib/supabase';
 
 export async function load({ url }) {
-	console.log();
-
-	const { data, error } = await supabase
+	const { data } = await supabase
 		.from('forum-posts')
 		.select('*, author ( name )')
 		.range(url.searchParams.get('page') ?? 0, (url.searchParams.get('page') ?? 0) + 9)
