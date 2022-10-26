@@ -52,8 +52,9 @@
 </script>
 
 {#each replies as reply}
-	<div class="block" id={reply.num}>
-		<div class="flex header">
+	<input type="checkbox" id="reply-{reply.id}" style="display: none;" />
+	<div class="block">
+		<label for="reply-{reply.id}" class="flex header">
 			<a href={`#${reply?.num}`}>#{reply?.num}</a>
 			{#if reply.is_deleted}
 				<span style="font-style: italic;">[deleted]</span>
@@ -88,7 +89,7 @@
 					</span>
 				</span>
 			{/if}
-		</div>
+		</label>
 		<div class="main">
 			{#if reply.is_deleted}
 				<span style="font-style: italic;">[deleted]</span>
@@ -141,6 +142,19 @@
 {/each}
 
 <style>
+	input:checked + .block > .header {
+		background-color: var(--bg-hover);
+	}
+	input:checked + .block + .wrapper :global(:is(.block, .wrapper)) {
+		display: none;
+	}
+	/* .block > .footer::before {
+		content: '2 replies';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		transform: translateY(100%);
+	} */
 	.author-info {
 		display: flex;
 		gap: 0.5rem;
@@ -242,14 +256,14 @@
 		border-top: 0.75rem solid var(--bg-secondary);
 		overflow-wrap: break-word;
 	}
-	.block > div:not(:last-child),
+	.block > :not(:last-child),
 	.comment-input > .header {
 		padding: 0.5rem 0.75rem;
 	}
-	.block > div:not(.header) {
+	.block > :not(.header) {
 		border-top: 1px solid var(--border-clr);
 	}
-	.block > div:not(.main),
+	.block > :not(.main),
 	.comment-input > .header {
 		font-size: 12px;
 	}
@@ -263,6 +277,9 @@
 		gap: 0.25rem;
 		cursor: pointer;
 		border-left: 1px solid var(--border-clr);
+	}
+	.footer {
+		position: relative;
 	}
 	.footer > * {
 		padding: 0.5rem 0.75rem;

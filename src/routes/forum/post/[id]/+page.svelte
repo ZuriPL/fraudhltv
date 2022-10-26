@@ -91,7 +91,11 @@
 				</button>
 			{/if}
 			{#if $user}
-				<button on:click={(_) => commentInput.focus()}
+				<button
+					on:click={(_) => {
+						$replyto = null;
+						commentInput.focus();
+					}}
 					><svg style="width:16px;height:auto" viewBox="0 0 24 24">
 						<path
 							fill="currentColor"
