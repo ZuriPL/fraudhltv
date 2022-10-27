@@ -109,7 +109,7 @@
 					</svg>
 				</button>
 			{/if}
-			{#if !reply.is_deleted}
+			{#if !reply.is_deleted && $user && !$user?.is_banned}
 				<button on:click={() => replytof(reply?.id)}
 					><svg style="width:16px;height:16px" viewBox="0 0 24 24">
 						<path
@@ -124,19 +124,15 @@
 	<div class="wrapper">
 		<svelte:self id={reply?.id} />
 		{#if reply?.id === $replyto}
-			{#if $user}
-				{@const a = commentInput?.focus()}
-				<form on:submit|preventDefault={replyf}>
-					<div class="comment-input">
-						<div class="flex header">Replying to #{reply?.num}</div>
-						<textarea bind:this={commentInput} placeholder="Write your comment here" />
-					</div>
-					<button>Reply</button>
-				</form>
-				<div />
-			{:else}
-				<div class="msg">Please log in</div>
-			{/if}
+			{@const a = commentInput?.focus()}
+			<form on:submit|preventDefault={replyf}>
+				<div class="comment-input">
+					<div class="flex header">Replying to #{reply?.num}</div>
+					<textarea bind:this={commentInput} placeholder="Write your comment here" />
+				</div>
+				<button>Reply</button>
+			</form>
+			<div />
 		{/if}
 	</div>
 {/each}
@@ -168,13 +164,6 @@
 	}
 	.block > .header:hover {
 		background-color: var(--bg-hover);
-	}
-	.msg {
-		padding: 1rem;
-		font-size: 1rem;
-		font-weight: bold;
-		background-color: var(--bg-primary);
-		margin-top: 1rem;
 	}
 	.red {
 		color: #c52216;

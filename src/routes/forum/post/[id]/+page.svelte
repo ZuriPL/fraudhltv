@@ -91,7 +91,7 @@
 					</svg>
 				</button>
 			{/if}
-			{#if $user}
+			{#if $user && !$user?.is_banned}
 				<button
 					on:click={(_) => {
 						$replyto = null;

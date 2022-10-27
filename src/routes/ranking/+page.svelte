@@ -21,7 +21,7 @@
 		<h1>CS:GO Fraud Ranking by FraudHLTV</h1>
 		<p class="update-text">Last updated: {data.update}</p>
 		{#each ranking as team}
-			<details>
+			<details open={team.id === 1 ? 'true' : undefined}>
 				<summary>
 					<span class="rank">#{team.id}</span>
 					<img src={team.logo} alt="{team.name}'s logo" />
@@ -81,6 +81,7 @@
 	.expanded {
 		display: flex;
 		gap: 1rem;
+		box-sizing: border-box;
 		align-items: stretch;
 		width: 100%;
 		background-color: var(--bg-primary);
@@ -88,25 +89,29 @@
 		padding: 0.5rem 0.75rem;
 	}
 	.expanded > div {
-		max-width: 20% !important;
-		flex-basis: 20%;
-		flex-grow: 0;
+		width: 20%;
+		position: relative;
+		margin-bottom: calc(1ex + 0.5rem);
 	}
 	.expanded > div > img {
-		display: block;
 		max-width: 100%;
+		display: block;
+		margin-bottom: 0.25rem;
 	}
+
 	.expanded > div > span {
-		display: flex;
-		position: relative;
-		align-items: center;
-		line-height: 0.9;
-		gap: 0.25rem;
-		font-size: 14px;
-		justify-content: center;
-		margin-top: 0.5rem;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
 		max-width: 100% !important;
-		overflow: hidden;
+		transform: translateY(100%);
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		justify-content: center;
+		font-size: 14px;
+		overflow-x: hidden;
 	}
 	.expanded > div > span > img {
 		width: 16px;
