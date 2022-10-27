@@ -52,14 +52,14 @@
 									src="https://flagcdn.com/w20/{player.nat.toLowerCase()}.png"
 									aria-hidden="true"
 									alt=""
-								/>{player.name}</span
+								/><span>{player.name}</span></span
 							>
 						</div>
 					{/each}
 				</div>
 			</details>
 		{/each}
-		{#if $user.role === 'admin'}
+		{#if $user?.role === 'admin'}
 			<button on:click={admin1}>edit</button>
 			<div class="panel" bind:this={panel}>123</div>
 		{/if}
@@ -87,23 +87,36 @@
 		border-top: 1px solid var(--border-clr);
 		padding: 0.5rem 0.75rem;
 	}
+	.expanded > div {
+		max-width: 20% !important;
+		flex-basis: 20%;
+		flex-grow: 0;
+	}
 	.expanded > div > img {
 		display: block;
-		width: 100%;
+		max-width: 100%;
 	}
 	.expanded > div > span {
 		display: flex;
+		position: relative;
 		align-items: center;
 		line-height: 0.9;
 		gap: 0.25rem;
 		font-size: 14px;
 		justify-content: center;
 		margin-top: 0.5rem;
+		max-width: 100% !important;
+		overflow: hidden;
 	}
 	.expanded > div > span > img {
 		width: 16px;
 		height: 10px;
 		border: 1px solid black;
+	}
+	@media screen and (max-width: 600px) {
+		.expanded > div > span > img {
+			display: none;
+		}
 	}
 	.wrapper span {
 		font-size: 10px;
