@@ -16,10 +16,7 @@ function formatDate(date) {
 }
 
 export async function load() {
-	const { data, error } = await supabase
-		.from('ranking')
-		.select('*')
-		.order('id', { ascending: true });
+	const { data } = await supabase.from('ranking').select('*').order('id', { ascending: true });
 
 	for (let i = 0; i < data.length; i++) {
 		let players = [];

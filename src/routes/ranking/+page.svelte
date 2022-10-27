@@ -4,6 +4,12 @@
 	import user from '$lib/user';
 
 	const ranking = data.data;
+
+	let panel;
+
+	function admin1() {
+		panel.classList.toggle('hide');
+	}
 </script>
 
 <svelte:head>
@@ -11,8 +17,8 @@
 </svelte:head>
 
 <main>
-	{#if import.meta.env['VITE_MODE'] === 'dev' || $user.role === 'admin'}
-		<h1>CS:GO World Ranking by FraudHLTV</h1>
+	{#if import.meta.env['VITE_MODE'] === 'dev' || $user?.role === 'admin'}
+		<h1>CS:GO Fraud Ranking by FraudHLTV</h1>
 		<p class="update-text">Last updated: {data.update}</p>
 		{#each ranking as team}
 			<details>
@@ -53,12 +59,19 @@
 				</div>
 			</details>
 		{/each}
+		{#if $user.role === 'admin'}
+			<button on:click={admin1}>edit</button>
+			<div class="panel" bind:this={panel}>123</div>
+		{/if}
 	{:else}
 		<GoHome msg="This page is under construction" />
 	{/if}
 </main>
 
 <style>
+	:global(.hide) {
+		display: none;
+	}
 	.green {
 		color: #009900;
 	}
@@ -94,7 +107,7 @@
 	}
 	.wrapper span {
 		font-size: 10px;
-		margin-right: 0.25rem;
+		margin-right: 0.3rem;
 		color: #8c8c8c;
 		transition: opacity 0.5s ease-out;
 	}
@@ -111,7 +124,7 @@
 		font-size: 18px;
 	}
 	.wrapper {
-		line-height: 0.8;
+		line-height: 0.85;
 	}
 	.rank {
 		font-weight: bold;
@@ -131,7 +144,7 @@
 		background-color: var(--bg-hover);
 	}
 	summary img {
-		height: 29px;
+		height: 30px;
 	}
 	summary > :last-child {
 		margin-left: auto;
