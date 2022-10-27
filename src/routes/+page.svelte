@@ -10,6 +10,9 @@
 		}
 	}
 	let counter = 0;
+
+	let countdown = Date.parse('31 Oct 2022 18:00:00 GMT') - Date.now();
+	setTimeout((_) => (countdown = Date.parse('31 Oct 2022 18:00:00 GMT') - Date.now()), 1000);
 </script>
 
 <svelte:head>
@@ -51,6 +54,7 @@
 			</button>
 		</div>
 	{/if}
+	<!-- <h1 class="welcome">{countdown}</h1> -->
 	<h1 class="welcome">Welcome to FraudHLTV</h1>
 
 	{#if data?.newsToday.length !== 0}
@@ -206,10 +210,14 @@
 	}
 	.article-title {
 		font-weight: 600;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 	.article-date {
 		font-size: 0.75rem;
 		color: var(--border-clr);
 		margin-left: auto;
+		white-space: nowrap;
 	}
 </style>
