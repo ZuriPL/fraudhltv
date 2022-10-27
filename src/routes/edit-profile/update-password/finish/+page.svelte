@@ -11,11 +11,11 @@
 
 	let log;
 
-	async function submitHandler(e) {
+	async function submitHandler() {
 		if (confirmPasswordInput.value !== passwordInput.value)
 			return (log.textContent = "Passwords don't match");
 
-		const { error, data } = await supabase.auth.updateUser(accessToken, {
+		const { error, data } = await supabase.auth.updateUser({
 			password: passwordInput.value
 		});
 
