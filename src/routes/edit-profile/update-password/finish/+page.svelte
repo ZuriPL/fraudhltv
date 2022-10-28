@@ -1,6 +1,5 @@
 <script>
 	import supabase from '$lib/supabase';
-	import user from '$lib/user';
 	import { goto } from '$app/navigation';
 
 	import { page } from '$app/stores';

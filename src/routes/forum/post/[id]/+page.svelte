@@ -47,27 +47,31 @@
 		<div class="header">
 			<p class="title">{postData?.title}</p>
 			<span class="author-info">
-				<span>
-					<svg style="min-width:12px;height:12px" viewBox="0 0 24 24">
-						<path
-							fill="currentColor"
-							d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
-						/>
-					</svg>
-					{postData?.author?.player}
-				</span>
-				<div style="border-left: 2px solid rgba(146,154,158,.75); height:12px;" />
-				<span>
-					<svg style="min-width:12px;height:12px" viewBox="0 0 24 24">
-						<path
-							fill="currentColor"
-							d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
-						/>
-					</svg>
-					{postData?.author?.team}
-				</span>
-				<span>
+				{#if postData?.author?.player}
+					<span>
+						<svg style="min-width:12px;height:12px" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
+							/>
+						</svg>
+						{postData?.author?.player}
+					</span>
 					<div style="border-left: 2px solid rgba(146,154,158,.75); height:12px;" />
+				{/if}
+				{#if postData?.author?.team}
+					<span>
+						<svg style="min-width:12px;height:12px" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"
+							/>
+						</svg>
+						{postData?.author?.team}
+					</span>
+					<div style="border-left: 2px solid rgba(146,154,158,.75); height:12px;" />
+				{/if}
+				<span>
 					<img
 						src="https://flagcdn.com/w20/{postData?.author?.flag?.toLowerCase()}.png"
 						alt="{postData?.author?.flag} flag"
@@ -135,7 +139,6 @@
 	}
 	.author-info img {
 		border: 1px solid black;
-		margin-left: 0.15rem;
 		height: 12px;
 		width: 18px;
 		display: block;
@@ -239,6 +242,9 @@
 		gap: 1.5rem;
 		align-items: center;
 		width: 100vw;
+	}
+	.post-content {
+		white-space: pre;
 	}
 	.post-content > :global(*) {
 		margin-bottom: 1rem;

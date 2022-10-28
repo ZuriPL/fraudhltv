@@ -59,6 +59,9 @@
 			<p class="log" bind:this={log} />
 			<button>Log in</button>
 		</form>
+		<a href="https://twitter.com/fraudhltv" target="_blank"
+			>Forgot your password? DM us on twitter</a
+		>
 		<a href="/signup">No account? Create one here</a>
 	{/if}
 </main>

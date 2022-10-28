@@ -147,6 +147,7 @@
 		color: #929a9e;
 		padding: 0 calc(calc(100vw - 800px) / 2);
 		margin-bottom: 1.5rem;
+		box-shadow: var(--list-shadow);
 	}
 	.scroll-wrapper {
 		display: flex;

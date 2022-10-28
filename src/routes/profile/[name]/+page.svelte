@@ -1,6 +1,16 @@
 <script>
 	import user from '$lib/user';
+	import supabase from '$lib/supabase';
+	import { invalidateAll } from '$app/navigation';
 	export let data;
+
+	async function ban() {
+		if (confirm(`Are you sure you want to ban: ${data?.name}`)) {
+			await supabase.from('users').update({ is_banned: true }).eq('id', data.id);
+
+			invalidateAll();
+		}
+	}
 </script>
 
 <svelte:head>
@@ -13,6 +23,13 @@
 		<h2>{data?.name}</h2>
 		{#if $user?.name == data?.name}
 			<a href="/edit-profile" class="edit">Edit profile</a>
+		{/if}
+		{#if $user?.role === 'admin' && $user?.name !== data?.name && !data.is_banned}
+			<button
+				on:click={ban}
+				class="edit"
+				style="background-color: #c52216; color: var(--btn-text-color-light)">Ban this user</button
+			>
 		{/if}
 	</div>
 	<div class="tags flex">

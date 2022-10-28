@@ -68,6 +68,14 @@
 {#if import.meta.env['VITE_MODE'] === 'dev' || ($user && $user?.role === 'admin')}
 	<div class="spacer">
 		<main>
+			{#if $user?.is_banned}
+				<div class="msg">
+					<p style="margin-bottom: 1rem;">You have been banned from participating in the forums</p>
+					<p>
+						You're still able to view a post, but you're unable to create new threads and comments
+					</p>
+				</div>
+			{/if}
 			<div class="table-wrapper">
 				<table>
 					<thead>
@@ -119,7 +127,7 @@
 				</table>
 			</div>
 		</main>
-		{#if $user}
+		{#if $user && !$user.is_banned}
 			<h2>Create new post</h2>
 			<form on:submit|preventDefault={createNew}>
 				<label>
@@ -140,6 +148,12 @@
 {/if}
 
 <style>
+	.msg {
+		background-color: var(--bg-primary);
+		padding: 1rem;
+		margin-bottom: 2rem;
+		box-shadow: var(--list-shadow);
+	}
 	.button-wrapper {
 		display: flex;
 		align-items: center;
@@ -166,6 +180,7 @@
 	.table-wrapper {
 		width: 100%;
 		overflow-x: auto;
+		box-shadow: var(--list-shadow);
 	}
 	table {
 		background-color: var(--bg-primary);
@@ -244,13 +259,13 @@
 		max-width: 800px;
 		background-color: var(--bg-primary);
 		padding: 1rem;
+		box-shadow: var(--list-shadow);
 	}
 	main {
 		width: calc(100% - 2rem);
 		margin: 0 1rem;
 		max-width: 800px;
 		display: block;
-		box-shadow: var(--list-shadow);
 	}
 	.spacer {
 		max-width: calc(800px + 2rem);

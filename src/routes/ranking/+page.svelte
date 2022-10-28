@@ -118,14 +118,21 @@
 		height: 10px;
 		border: 1px solid black;
 	}
+	.wrapper > span:not(:last-child)::after {
+		content: '\2022';
+		margin-left: 0.25rem;
+	}
 	@media screen and (max-width: 600px) {
 		.expanded > div > span > img {
 			display: none;
 		}
+		.expanded {
+			gap: 0.75rem;
+		}
 	}
 	.wrapper span {
 		font-size: 10px;
-		margin-right: 0.3rem;
+		margin-right: 0.25rem;
 		color: #8c8c8c;
 		transition: opacity 0.5s ease-out;
 	}
