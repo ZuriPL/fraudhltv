@@ -244,7 +244,7 @@
 		width: 100vw;
 	}
 	.post-content {
-		white-space: pre;
+		white-space: pre-wrap;
 	}
 	.post-content > :global(*) {
 		margin-bottom: 1rem;
