@@ -16,11 +16,12 @@
 	let log;
 
 	async function submitHandler() {
-		if (nameInput.value.includes(' ')) return (log.textContent = "Names can't include spaces");
 		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
 
 		if (passwordInput.value !== confirmPasswordInput.value)
 			return (log.textContent = "Passwords don't match");
+
+		nameInput.value.trim();
 
 		let {
 			data: { user },
