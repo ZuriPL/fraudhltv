@@ -9,6 +9,19 @@
 	let log;
 
 	async function submitHandler() {
+		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
+		if (nameInput.value.length === 0) return (log.textContent = "Name can't be blank");
+
+		if (passwordInput.value !== confirmPasswordInput.value)
+			return (log.textContent = "Passwords don't match");
+
+		nameInput.value.trim();
+
+		let regex = /[a-zA-Z0-9]/;
+		if (!regex.test(nameInput.value)) {
+			return (log.textContent = "Name can't have special characters");
+		}
+
 		let { error } = await supabase
 			.from('users')
 			.update({
