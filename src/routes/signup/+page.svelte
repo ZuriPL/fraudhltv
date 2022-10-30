@@ -23,6 +23,7 @@
 	async function submitHandler() {
 		if (color !== captchaInput.value) return (log.textContent = "Colors don't match");
 		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
+		if (nameInput.value.length === 0) return (log.textContent = 'Name can't be blank');
 
 		if (passwordInput.value !== confirmPasswordInput.value)
 			return (log.textContent = "Passwords don't match");
