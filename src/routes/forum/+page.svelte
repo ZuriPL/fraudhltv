@@ -25,7 +25,7 @@
 			.select()
 			.single();
 
-		await invalidateAll();
+		console.log(error);
 
 		if (error) {
 			log.textContent = 'There was an error creating the post. Please try again';
