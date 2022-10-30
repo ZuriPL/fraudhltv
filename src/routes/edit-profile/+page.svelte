@@ -25,24 +25,24 @@
 				.from('users')
 				.select()
 				.eq('user_id', data?.session?.user?.id)
-				?.single();
+				.single();
 			$user = userData;
 		});
 
-		if (error) og.textContent = error.message;
+		if (error) log.textContent = error.message;
 		else goto(`/profile/${$user.name}`);
 	}
 
 	let countryList = [];
-	let playersList = ['player'];
-	let teamsList = ['team'];
+	let playersList = [];
+	let teamsList = [];
 	let mounted;
 
 	async function getData(object) {
 		let res = await fetch(`/${object}.json`);
 		let list = await res.json();
 
-		list.sort();
+		list.sort((a, b) => a.localeCompare(b));
 
 		return list;
 	}

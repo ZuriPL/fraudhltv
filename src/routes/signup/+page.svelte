@@ -16,6 +16,8 @@
 	let log;
 
 	async function submitHandler(e) {
+		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
+
 		if (passwordInput.value !== confirmPasswordInput.value)
 			return (log.textContent = "Passwords don't match");
 
@@ -71,12 +73,12 @@
 		res = await fetch('/players.json');
 		playersList = await res.json();
 
-		playersList.sort();
+		playersList.sort((a, b) => a.localeCompare(b));
 
 		res = await fetch('/teams.json');
 		teamsList = await res.json();
 
-		teamsList.sort();
+		teamsList.sort((a, b) => a.localeCompare(b));
 	});
 </script>
 
@@ -148,7 +150,6 @@
 					Choose your country
 					<select name="flag" bind:this={countrySelect} required>
 						<option value="">--- Please choose an option ---</option>
-						<option value="WORLD">Global</option>
 						{#each countryList as country}
 							<option value={country.code}>{country.name}</option>
 						{/each}
