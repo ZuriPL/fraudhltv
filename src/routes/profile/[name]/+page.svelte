@@ -43,7 +43,8 @@
 			<button
 				on:click={unban}
 				class="edit"
-				style="background-color: #c52216; color: var(--btn-text-color-light)">Unan this user</button
+				style="background-color: #c52216; color: var(--btn-text-color-light)"
+				>Unban this user</button
 			>
 		{/if}
 	</div>
