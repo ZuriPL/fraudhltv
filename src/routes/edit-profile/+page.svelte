@@ -12,7 +12,7 @@
 		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
 		if (nameInput.value.length === 0) return (log.textContent = "Name can't be blank");
 
-		nameInput.value.trim();
+		nameInput.value = nameInput.value.trim();
 
 		let regex = /[a-zA-Z0-9]/;
 		if (!regex.test(nameInput.value)) {
@@ -40,7 +40,7 @@
 		});
 
 		if (error) log.textContent = error.message;
-		else goto(`/profile/${$user.name}`);
+		else goto(`/profile/${nameInput.value}`);
 	}
 
 	let countryList = [];
