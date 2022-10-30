@@ -13,6 +13,8 @@
 		if (titleInput.value.length === 0 || contentInput.value.length === 0)
 			return (log.textContent = 'Fields may not be empty');
 
+		if (titleInput.value.length > 100) return (log.textContent = 'Title is too long');
+
 		const { data, error } = await supabase
 			.from('forum-posts')
 			.insert({
@@ -135,7 +137,7 @@
 		<form on:submit|preventDefault={createNew}>
 			<label>
 				Title
-				<input bind:this={titleInput} type="text" />
+				<input bind:this={titleInput} type="text" maxlength="100" />
 			</label>
 			<label>
 				Content
