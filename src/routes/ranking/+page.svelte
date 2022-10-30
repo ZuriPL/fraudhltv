@@ -133,6 +133,10 @@
 	}
 	.wrapper {
 		transition: transform 0.5s ease-out;
+		line-height: 0.85;
+		text-overflow: clip;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 	details[open] .wrapper {
 		transform: translateY(5px);
@@ -142,9 +146,6 @@
 	}
 	.wrapper p {
 		font-size: 18px;
-	}
-	.wrapper {
-		line-height: 0.85;
 	}
 	.rank {
 		font-weight: bold;

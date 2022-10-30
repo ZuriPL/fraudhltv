@@ -46,7 +46,10 @@
 		history.replaceState(
 			null,
 			'',
-			`/forum?page=${Math.min(data.data.length, +$page.url.searchParams.get('page') + 10)}`
+			`/forum?num=${Math.min(
+				Math.max(data.length - 10, 0),
+				+$page.url.searchParams.get('num') + 10
+			)}`
 		);
 		invalidateAll();
 	}
@@ -54,7 +57,7 @@
 		history.replaceState(
 			null,
 			'',
-			`/forum?page=${Math.max(0, +$page.url.searchParams.get('page') - 10)}`
+			`/forum?num=${Math.max(0, +$page.url.searchParams.get('num') - 10)}`
 		);
 		invalidateAll();
 	}
@@ -97,37 +100,34 @@
 						</tr>
 					{/each}
 				</tbody>
-				<tfoot>
-					<tr>
-						<td colspan="3">
-							<div>
-								<p>
-									Showing results {+$page.url.searchParams.get('page') +
-										1}-{+$page.url.searchParams.get('page') + data.data.length} of {data.length}
-								</p>
-								<div class="button-wrapper">
-									<button on:click={backward}>
-										<svg style="width:24px;height:auto" viewBox="0 0 24 24">
-											<path
-												fill="currentColor"
-												d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
-											/>
-										</svg>
-									</button>
-									<button on:click={forward}>
-										<svg style="width:24px;height:auto" viewBox="0 0 24 24">
-											<path
-												fill="currentColor"
-												d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-											/>
-										</svg>
-									</button>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</tfoot>
 			</table>
+		</div>
+		<div class="tfoot">
+			<div>
+				<p>
+					Showing results {+$page.url.searchParams.get('num') + 1}-{+$page.url.searchParams.get(
+						'num'
+					) + data.data.length} of {data.length}
+				</p>
+				<div class="button-wrapper">
+					<button on:click={backward}>
+						<svg style="width:24px;height:auto" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+							/>
+						</svg>
+					</button>
+					<button on:click={forward}>
+						<svg style="width:24px;height:auto" viewBox="0 0 24 24">
+							<path
+								fill="currentColor"
+								d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+							/>
+						</svg>
+					</button>
+				</div>
+			</div>
 		</div>
 	</main>
 	{#if $user && !$user.is_banned}
@@ -148,6 +148,10 @@
 </div>
 
 <style>
+	.tfoot {
+		background-color: var(--bg-primary);
+		border-top: 1px solid var(--border-clr);
+	}
 	.msg {
 		background-color: var(--bg-primary);
 		padding: 1rem;
@@ -159,18 +163,15 @@
 		align-items: center;
 		gap: 0.25rem;
 	}
-	table tfoot .button-wrapper button {
+	.tfoot .button-wrapper button {
 		all: unset;
 		color: var(--link-color);
 		height: 24px;
 	}
-	table tfoot .button-wrapper button:hover {
+	.tfoot .button-wrapper button:hover {
 		cursor: pointer;
 	}
-	tfoot td {
-		padding: 0;
-	}
-	tfoot td > div {
+	.tfoot > div {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -181,16 +182,13 @@
 		width: 100%;
 		overflow-x: auto;
 		box-shadow: var(--list-shadow);
+		background-color: var(--bg-primary);
 	}
 	table {
-		background-color: var(--bg-primary);
 		border-collapse: collapse;
 		font-size: 14px;
 	}
 	table tbody td {
-		border-top: 1px solid var(--border-clr);
-	}
-	table tfoot {
 		border-top: 1px solid var(--border-clr);
 	}
 	table th {
@@ -243,7 +241,7 @@
 		width: calc(calc(800px - 4rem) / 3);
 		border: none;
 		background-color: var(--button-clr);
-		color: var(--text-color);
+		color: var(--btn-text-color);
 		font-size: 1rem;
 		font-weight: 600;
 		margin: 0 auto;

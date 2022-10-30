@@ -4,7 +4,7 @@ export async function load({ url }) {
 	const { data } = await supabase
 		.from('forum-posts')
 		.select('*, author ( name )')
-		.range(url.searchParams.get('page') ?? 0, (url.searchParams.get('page') ?? 0) + 9)
+		.range(url.searchParams.get('num') ?? 0, (url.searchParams.get('num') ?? 0) + 9)
 		.order('created_at', { ascending: false });
 
 	const length = (await supabase.from('forum-posts').select('id', { count: 'exact', head: true }))

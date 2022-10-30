@@ -8,9 +8,7 @@
 
 	let log;
 
-	async function submitHandler(e) {
-		// return
-
+	async function submitHandler() {
 		let { error } = await supabase
 			.from('users')
 			.update({
@@ -21,6 +19,15 @@
 				team: teamSelect.value
 			})
 			.eq('user_id', $user.user_id);
+
+		supabase.auth.getSession().then(async ({ data }) => {
+			const { data: userData } = await supabase
+				.from('users')
+				.select()
+				.eq('user_id', data?.session?.user?.id)
+				?.single();
+			$user = userData;
+		});
 
 		if (error) og.textContent = error.message;
 		else goto(`/profile/${$user.name}`);

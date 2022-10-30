@@ -104,7 +104,7 @@
 		</div>
 	</div>
 	{#if data.bio}
-		<p class="label">Bio:</p>
+		<p class="label label--bio">Bio:</p>
 		<pre class="bio">{data?.bio}</pre>
 	{/if}
 </main>
@@ -150,7 +150,6 @@
 		flex-basis: calc(50% - 0.5rem);
 	}
 	.forum-activity {
-		margin-bottom: 1.5rem;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: stretch;
@@ -197,6 +196,9 @@
 	.label {
 		font-weight: 700;
 		margin-bottom: 0.25rem;
+	}
+	.label--bio {
+		margin-top: 1.5rem;
 	}
 	.bio {
 		background-color: var(--bg-header);
