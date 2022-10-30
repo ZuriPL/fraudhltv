@@ -40,6 +40,9 @@
 		{/if}
 		<p>ID: {data?.id}</p>
 		<p>Joined: {data?.created_at}</p>
+		{#if data.is_banned}
+			<p>Banned</p>
+		{/if}
 		{#if data.player}
 			<p class="flex">
 				<svg style="width:auto;height:0.9rem;" viewBox="0 0 24 24">
