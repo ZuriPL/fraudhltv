@@ -53,7 +53,7 @@
 
 {#each replies as reply}
 	<input type="checkbox" id="reply-{reply.id}" style="display: none;" />
-	<div class="block">
+	<div class="block" id={reply?.num}>
 		<label for="reply-{reply.id}" class="flex header">
 			<a href={`#${reply?.num}`}>#{reply?.num}</a>
 			{#if reply.is_deleted}
@@ -142,6 +142,10 @@
 {/each}
 
 <style>
+	:target {
+		outline: 1px solid var(--link-color);
+		scroll-margin-top: 0.75rem;
+	}
 	input:checked + .block > .header {
 		background-color: var(--bg-hover);
 	}

@@ -10,9 +10,6 @@
 		}
 	}
 	let counter = 0;
-
-	let countdown = Date.parse('31 Oct 2022 18:00:00 GMT') - Date.now();
-	setTimeout((_) => (countdown = Date.parse('31 Oct 2022 18:00:00 GMT') - Date.now()), 1000);
 </script>
 
 <svelte:head>
@@ -54,7 +51,6 @@
 			</button>
 		</div>
 	{/if}
-	<!-- <h1 class="welcome">{countdown}</h1> -->
 	<h1 class="welcome">Welcome to FraudHLTV</h1>
 
 	{#if data?.newsToday.length !== 0}
@@ -62,7 +58,7 @@
 			<h1>Today's news</h1>
 			<div class="list">
 				{#each data?.newsToday as article}
-					<a href="/post/{article?.slug}" class="article">
+					<a data-sveltekit-prefetch href="/post/{article?.slug}" class="article">
 						<img
 							src="https://flagcdn.com/w20/{article?.flag.toLowerCase()}.png"
 							alt="{article?.flag} flag"
@@ -79,7 +75,7 @@
 		<h1>{data?.newsToday.length !== 0 ? 'Previous' : 'All'} news</h1>
 		<div class="list">
 			{#each data?.otherNews as article}
-				<a href="/post/{article?.slug}" class="article">
+				<a data-sveltekit-prefetch href="/post/{article?.slug}" class="article">
 					<img
 						src="https://flagcdn.com/w20/{article?.flag.toLowerCase()}.png"
 						alt="{article?.flag} flag"

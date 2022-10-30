@@ -4,6 +4,8 @@
 	import { invalidateAll } from '$app/navigation';
 	export let data;
 
+	console.log(data);
+
 	async function ban() {
 		if (confirm(`Are you sure you want to ban: ${data?.name}`)) {
 			await supabase.from('users').update({ is_banned: true }).eq('id', data.id);
@@ -61,13 +63,100 @@
 			</p>
 		{/if}
 	</div>
+	<div class="forum-activity">
+		<div class="column">
+			<p class="label">Forum posts</p>
+			{#if data.posts.length > 0}
+				{#each data.posts as post}
+					<div>
+						<a data-sveltekit-prefetch href="/forum/post/{post.id}">
+							<p class="title">{post.title}</p>
+							<p class="content">{post.text}</p>
+						</a>
+					</div>
+				{/each}
+			{:else}
+				<p class="empty-msg">No posts</p>
+			{/if}
+		</div>
+		<div class="column">
+			<p class="label">Forum comments</p>
+			{#if data.comments.length > 0}
+				{#each data.comments as comment}
+					<div>
+						<a
+							data-sveltekit-reload
+							data-sveltekit-prefetch
+							href="/forum/post/{comment.host_thread.id}#{comment.num}"
+						>
+							<p class="title">{comment?.text}</p>
+							<p class="content">
+								Replies to: {comment?.replies_to
+									? comment?.replies_to?.text
+									: comment?.host_thread?.text}
+							</p>
+						</a>
+					</div>
+				{/each}
+			{:else}
+				<p class="empty-msg">No comments</p>
+			{/if}
+		</div>
+	</div>
 	{#if data.bio}
 		<p class="label">Bio:</p>
-		<div class="bio">{@html data?.bio.replace(/[<>]/g, '').replace(/\n/g, '<br>')}</div>
+		<pre class="bio">{data?.bio}</pre>
 	{/if}
 </main>
 
 <style>
+	.title {
+		font-weight: bold;
+		font-size: 18px;
+		color: var(--link-color);
+	}
+	.content {
+		font-size: 12px;
+		height: 2.5ex;
+		max-width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+	.column > div {
+		background-color: var(--bg-header);
+		box-shadow: var(--list-shadow);
+		margin-top: 0.5rem;
+	}
+	.column > div:hover {
+		background-color: var(--bg-hover);
+	}
+	.column a {
+		color: var(--text-color);
+		padding: 0.5rem 0.5rem;
+		display: block;
+	}
+	.empty-msg {
+		display: grid;
+		place-items: center start;
+		flex-grow: 1;
+	}
+	.column {
+		min-width: 200px;
+		min-height: 70px;
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		flex-basis: calc(50% - 0.5rem);
+	}
+	.forum-activity {
+		margin-bottom: 1.5rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		width: 100%;
+		gap: 1rem;
+	}
 	main {
 		background-color: var(--bg-primary);
 		width: calc(100% - 2rem);
@@ -113,6 +202,7 @@
 		background-color: var(--bg-header);
 		box-shadow: var(--list-shadow);
 		padding: 0.75rem;
+		white-space: pre-wrap;
 	}
 	.edit {
 		border: none;

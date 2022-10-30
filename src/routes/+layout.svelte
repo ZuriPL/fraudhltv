@@ -51,6 +51,7 @@
 		margin: 0;
 		font-family: 'Open Sans', sans-serif;
 		box-sizing: border-box;
+		scroll-behavior: smooth;
 	}
 	:global(a) {
 		text-decoration: none;

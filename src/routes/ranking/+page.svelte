@@ -1,6 +1,5 @@
 <script>
 	export let data;
-	import GoHome from '$lib/gohome.svelte';
 	import user from '$lib/user';
 
 	const ranking = data.data;
@@ -17,54 +16,50 @@
 </svelte:head>
 
 <main>
-	{#if import.meta.env['VITE_MODE'] === 'dev' || $user?.role === 'admin'}
-		<h1>CS:GO Fraud Ranking by FraudHLTV</h1>
-		<p class="update-text">Last updated: {data.update}</p>
-		{#each ranking as team}
-			<details open={team.id === 1 ? 'true' : undefined}>
-				<summary>
-					<span class="rank">#{team.id}</span>
-					<img src={team.logo} alt="{team.name}'s logo" />
-					<div class="wrapper">
-						<p>{team.name}</p>
-						{#each team.players as player}
-							<span>{player.name}</span>
-						{/each}
-					</div>
-					{#if team.delta > 0}
-						<span class="green">
-							+{team.delta}
-						</span>
-					{:else if team.delta < 0}
-						<span class="red">
-							{team.delta}
-						</span>
-					{:else}
-						<span>-</span>
-					{/if}
-				</summary>
-				<div class="expanded">
+	<h1>CS:GO Fraud Ranking by FraudHLTV</h1>
+	<p class="update-text">Last updated: {data.update}</p>
+	{#each ranking as team}
+		<details open={team.id === 1 ? 'true' : undefined}>
+			<summary>
+				<span class="rank">#{team.id}</span>
+				<img src={team.logo} alt="{team.name}'s logo" />
+				<div class="wrapper">
+					<p>{team.name}</p>
 					{#each team.players as player}
-						<div>
-							<img src={player.img} alt="Photo of {player.name}" />
-							<span
-								><img
-									src="https://flagcdn.com/w20/{player.nat.toLowerCase()}.png"
-									aria-hidden="true"
-									alt=""
-								/><span>{player.name}</span></span
-							>
-						</div>
+						<span>{player.name}</span>
 					{/each}
 				</div>
-			</details>
-		{/each}
-		{#if $user?.role === 'admin'}
-			<button on:click={admin1}>edit</button>
-			<div class="panel" bind:this={panel}>123</div>
-		{/if}
-	{:else}
-		<GoHome msg="This page is under construction" />
+				{#if team.delta > 0}
+					<span class="green">
+						+{team.delta}
+					</span>
+				{:else if team.delta < 0}
+					<span class="red">
+						{team.delta}
+					</span>
+				{:else}
+					<span>-</span>
+				{/if}
+			</summary>
+			<div class="expanded">
+				{#each team.players as player}
+					<div>
+						<img src={player.img} alt="Photo of {player.name}" />
+						<span
+							><img
+								src="https://flagcdn.com/w20/{player.nat.toLowerCase()}.png"
+								aria-hidden="true"
+								alt=""
+							/><span>{player.name}</span></span
+						>
+					</div>
+				{/each}
+			</div>
+		</details>
+	{/each}
+	{#if $user?.role === 'admin'}
+		<button on:click={admin1}>edit</button>
+		<div class="panel" bind:this={panel}>123</div>
 	{/if}
 </main>
 

@@ -39,10 +39,10 @@
 <nav>
 	<a class="logo-anchor" href="/"><img src="/favicon{favicon}.png" alt="Logo" /></a>
 	<div class="scroll-wrapper">
-		<a href="/">News</a>
-		<a href="/ranking">Rankings</a>
-		<a href="/forum">Forums</a>
-		<a href="/fantasy">Fantasy</a>
+		<a data-sveltekit-prefetch href="/">News</a>
+		<a data-sveltekit-prefetch href="/ranking">Rankings</a>
+		<a data-sveltekit-prefetch href="/forum">Forums</a>
+		<a data-sveltekit-prefetch href="/fantasy">Fantasy</a>
 	</div>
 	{#if $user}
 		<button class="menu-btn" on:click={toggleMenu} bind:this={button}>
@@ -53,7 +53,7 @@
 			<!--  stop propagation, callback is noop -->
 			<div class="popup" bind:this={popup} on:click={(_) => 0}>
 				<div class="top-section item">
-					<a href="/profile/{$user?.name}">{$user?.name}</a>
+					<a data-sveltekit-prefetch href="/profile/{$user?.name}">{$user?.name}</a>
 					<button class="logout" on:click={(_) => supabase.auth.signOut()}>Log out</button>
 				</div>
 				<a href="/edit-profile" class="item separator"> Edit profile </a>

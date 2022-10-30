@@ -3,7 +3,7 @@
 </svelte:head>
 
 <main>
-	<p>Unfortunately the fraudhltv fantasy league isn't live yet</p>
+	<p>The FraudHTV Fantasy League is coming soon...</p>
 	<p>
 		In the meantime join the <a target="_blank" href="https://discord.com/invite/q4PJvXYG"
 			>kurrkuleague discord</a

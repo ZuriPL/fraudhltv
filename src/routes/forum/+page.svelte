@@ -1,5 +1,4 @@
 <script>
-	import GoHome from '$lib/gohome.svelte';
 	import timeAgo from '$lib/timeAgo';
 	import supabase from '$lib/supabase';
 	import user from '$lib/user';
@@ -65,87 +64,88 @@
 	<title>FraudHLTV Forum</title>
 </svelte:head>
 
-{#if import.meta.env['VITE_MODE'] === 'dev' || ($user && $user?.role === 'admin')}
-	<div class="spacer">
-		<main>
-			{#if $user?.is_banned}
-				<div class="msg">
-					<p style="margin-bottom: 1rem;">You have been banned from participating in the forums</p>
-					<p>
-						You're still able to view a post, but you're unable to create new threads and comments
-					</p>
-				</div>
-			{/if}
-			<div class="table-wrapper">
-				<table>
-					<thead>
-						<tr>
-							<th>Topic</th>
-							<th>Author</th>
-							<th>Created</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each data.data as post}
-							<tr>
-								<td><a href="forum/post/{post.id}">{post.title}</a></td>
-								<td><a href="forum/post/{post.id}">{post.author.name}</a></td>
-								<td><a href="forum/post/{post.id}">{timeAgo(post.created_at)}</a></td>
-							</tr>
-						{/each}
-					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="3">
-								<div>
-									<p>
-										Showing results {+$page.url.searchParams.get('page') +
-											1}-{+$page.url.searchParams.get('page') + data.data.length} of {data.length}
-									</p>
-									<div class="button-wrapper">
-										<button on:click={backward}>
-											<svg style="width:24px;height:auto" viewBox="0 0 24 24">
-												<path
-													fill="currentColor"
-													d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
-												/>
-											</svg>
-										</button>
-										<button on:click={forward}>
-											<svg style="width:24px;height:auto" viewBox="0 0 24 24">
-												<path
-													fill="currentColor"
-													d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-												/>
-											</svg>
-										</button>
-									</div>
-								</div>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
+<div class="spacer">
+	<main>
+		{#if $user?.is_banned}
+			<div class="msg">
+				<p style="margin-bottom: 1rem;">You have been banned from participating in the forums</p>
+				<p>
+					You're still able to view a post, but you're unable to create new threads and comments
+				</p>
 			</div>
-		</main>
-		{#if $user && !$user.is_banned}
-			<h2>Create new post</h2>
-			<form on:submit|preventDefault={createNew}>
-				<label>
-					Title
-					<input bind:this={titleInput} type="text" />
-				</label>
-				<label>
-					Content
-					<textarea bind:this={contentInput} name="new" cols="30" rows="10" />
-				</label>
-				<button>Post</button>
-				<p class="log" bind:this={log} />
-			</form>
 		{/if}
-	</div>
-{:else}
-	<GoHome msg="This page is under construction" />
-{/if}
+		{#if !$user}
+			<div class="msg">
+				<p>You need to be logged in to comment and post new threads</p>
+			</div>
+		{/if}
+		<div class="table-wrapper">
+			<table>
+				<thead>
+					<tr>
+						<th>Topic</th>
+						<th>Author</th>
+						<th>Created</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each data.data as post}
+						<tr>
+							<td><a href="forum/post/{post.id}">{post.title}</a></td>
+							<td><a href="forum/post/{post.id}">{post.author.name}</a></td>
+							<td><a href="forum/post/{post.id}">{timeAgo(post.created_at)}</a></td>
+						</tr>
+					{/each}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="3">
+							<div>
+								<p>
+									Showing results {+$page.url.searchParams.get('page') +
+										1}-{+$page.url.searchParams.get('page') + data.data.length} of {data.length}
+								</p>
+								<div class="button-wrapper">
+									<button on:click={backward}>
+										<svg style="width:24px;height:auto" viewBox="0 0 24 24">
+											<path
+												fill="currentColor"
+												d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+											/>
+										</svg>
+									</button>
+									<button on:click={forward}>
+										<svg style="width:24px;height:auto" viewBox="0 0 24 24">
+											<path
+												fill="currentColor"
+												d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+											/>
+										</svg>
+									</button>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</main>
+	{#if $user && !$user.is_banned}
+		<h2>Create new post</h2>
+		<form on:submit|preventDefault={createNew}>
+			<label>
+				Title
+				<input bind:this={titleInput} type="text" />
+			</label>
+			<label>
+				Content
+				<textarea bind:this={contentInput} name="new" cols="30" rows="10" />
+			</label>
+			<button>Post</button>
+			<p class="log" bind:this={log} />
+		</form>
+	{/if}
+</div>
 
 <style>
 	.msg {
