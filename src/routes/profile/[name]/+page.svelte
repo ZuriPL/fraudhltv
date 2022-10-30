@@ -49,14 +49,14 @@
 		{/if}
 	</div>
 	<div class="tags flex">
+		{#if data.is_banned}
+			<p>Banned</p>
+		{/if}
 		{#if $user?.role !== 'regular'}
 			<p style="text-transform: capitalize;">{data?.role}</p>
 		{/if}
 		<p>ID: {data?.id}</p>
 		<p>Joined: {data?.created_at}</p>
-		{#if data.is_banned}
-			<p>Banned</p>
-		{/if}
 		{#if data.player}
 			<p class="flex">
 				<svg style="width:auto;height:0.9rem;" viewBox="0 0 24 24">
