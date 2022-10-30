@@ -4,8 +4,6 @@
 	import { invalidateAll } from '$app/navigation';
 	export let data;
 
-	console.log(data);
-
 	async function ban() {
 		if (confirm(`Are you sure you want to ban: ${data?.name}`)) {
 			await supabase.from('users').update({ is_banned: true }).eq('id', data.id);
