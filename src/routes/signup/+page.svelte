@@ -12,16 +12,26 @@
 		bioInput,
 		playerSelect,
 		teamSelect,
+		captchaInput,
 		countrySelect;
 	let log;
 
+	const colors = ['red', 'blue', 'yellow', 'green', 'black', 'brown', 'white'];
+
+	const color = colors[Math.floor(Math.random() * colors.length)];
+
 	async function submitHandler() {
+		if (color !== captchaInput.value) return (log.textContent = "Colors don't match");
 		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
 
 		if (passwordInput.value !== confirmPasswordInput.value)
 			return (log.textContent = "Passwords don't match");
 
 		nameInput.value.trim();
+
+		let regex = /^[0-9a-zA-Z\_]+$/;
+		if (regex.test(nameInput.value))
+			return (log.textContent = "Name can't have special characters");
 
 		let {
 			data: { user },
@@ -176,6 +186,18 @@
 					</select>
 				</label>
 			</div>
+			<label id="captcha">
+				Prove you're not a robot by selecting the color
+				{#each color as letter}
+					<span>{letter}</span>
+				{/each}
+				<select name="color" bind:this={captchaInput}>
+					<option value="">--- Please choose an option ---</option>
+					{#each colors as colorpick}
+						<option value={colorpick}>{colorpick}</option>
+					{/each}
+				</select>
+			</label>
 			<hr />
 			<p class="log" bind:this={log} />
 			<button>Sign up</button>
@@ -185,6 +207,11 @@
 </main>
 
 <style>
+	#captcha,
+	#captcha span {
+		display: unset !important;
+	}
+
 	main {
 		color: var(--text-color);
 	}
@@ -245,6 +272,7 @@
 		grid-template-columns: repeat(3, 1fr);
 		grid-template-rows: repeat(3, 1fr);
 		gap: 1rem;
+		margin-bottom: 1rem;
 	}
 	.textarea-label {
 		grid-row: 1 / span 3;
