@@ -30,7 +30,7 @@
 
 		nameInput.value.trim();
 
-		let regex = /^[0-9a-zA-Z\_]+$/;
+		let regex = /[0-9a-zA-Z]/;
 		if (regex.test(nameInput.value))
 			return (log.textContent = "Name can't have special characters");
 
