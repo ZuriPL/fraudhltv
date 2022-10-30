@@ -11,6 +11,14 @@
 			invalidateAll();
 		}
 	}
+
+	async function unban() {
+		if (confirm(`Are you sure you want to unban: ${data?.name}`)) {
+			await supabase.from('users').update({ is_banned: false }).eq('id', data.id);
+
+			invalidateAll();
+		}
+	}
 </script>
 
 <svelte:head>
@@ -29,6 +37,13 @@
 				on:click={ban}
 				class="edit"
 				style="background-color: #c52216; color: var(--btn-text-color-light)">Ban this user</button
+			>
+		{/if}
+		{#if $user?.role === 'admin' && $user?.name !== data?.name && data.is_banned}
+			<button
+				on:click={unban}
+				class="edit"
+				style="background-color: #c52216; color: var(--btn-text-color-light)">Unan this user</button
 			>
 		{/if}
 	</div>
