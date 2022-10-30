@@ -152,6 +152,9 @@
 	input:checked + .block + .wrapper :global(:is(.block, .wrapper)) {
 		display: none;
 	}
+	pre {
+		white-space: pre-wrap;
+	}
 	.author-info {
 		display: flex;
 		gap: 0.5rem;
