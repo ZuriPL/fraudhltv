@@ -28,7 +28,7 @@
 		if (passwordInput.value !== confirmPasswordInput.value)
 			return (log.textContent = "Passwords don't match");
 
-		nameInput.value.trim();
+		nameInput.value = nameInput.value.trim();
 
 		let regex = /[a-zA-Z0-9]/;
 		if (!regex.test(nameInput.value)) {
