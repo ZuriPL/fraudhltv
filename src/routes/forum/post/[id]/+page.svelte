@@ -115,13 +115,15 @@
 	<div class="comments-spacer">
 		<Comments />
 
-		<form on:submit|preventDefault={replyf}>
-			<div class="comment-input">
-				<div class="flex-header">Replying to the original post</div>
-				<textarea bind:this={commentInput} placeholder="Write your comment here" />
-			</div>
-			<button>Reply</button>
-		</form>
+		{#if $user && !$user?.is_banned}
+			<form on:submit|preventDefault={replyf}>
+				<div class="comment-input">
+					<div class="flex-header">Replying to the original post</div>
+					<textarea bind:this={commentInput} placeholder="Write your comment here" />
+				</div>
+				<button>Reply</button>
+			</form>
+		{/if}
 	</div>
 </main>
 
