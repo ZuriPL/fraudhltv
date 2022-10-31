@@ -31,8 +31,6 @@ export async function load() {
 		delete data[i].players_nat;
 		delete data[i].players_img;
 	}
-	console.log(data);
-
 	const update = formatDate(new Date(data[0].timestamp));
 
 	return { data, update };

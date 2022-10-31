@@ -15,11 +15,23 @@
 		if (replied === true) return;
 		replied = true;
 
-		await supabase.from('forum-comments').insert({
-			host_thread: postData.id,
-			text: commentInput.value,
-			author: $user.id,
-			replies_to: null
+		const { data: id } = await supabase
+			.from('forum-comments')
+			.insert({
+				host_thread: postData.id,
+				text: commentInput.value,
+				author: $user.id,
+				replies_to: null
+			})
+			.select('id')
+			.single();
+
+		await supabase.from('notifications').insert({
+			by: $user.id,
+			for: postData.author.id,
+			type: 'post',
+			post: postData.id,
+			fragment: id.id
 		});
 
 		await invalidateAll();

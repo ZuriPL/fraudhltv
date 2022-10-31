@@ -104,7 +104,7 @@
 						<a
 							data-sveltekit-reload
 							data-sveltekit-prefetch
-							href="/forum/post/{comment.host_thread.id}#{comment.num}"
+							href="/forum/post/{comment.host_thread.id}#{comment.id}"
 						>
 							<p class="title">{comment?.text}</p>
 							<p class="content">

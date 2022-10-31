@@ -33,11 +33,23 @@
 		if (replied === true) return;
 		replied = true;
 
-		await supabase.from('forum-comments').insert({
-			host_thread: $page.data.data.id,
-			text: commentInput.value,
-			author: $user.id,
-			replies_to: $replyto
+		const { data: id } = await supabase
+			.from('forum-comments')
+			.insert({
+				host_thread: $page.data.data.id,
+				text: commentInput.value,
+				author: $user.id,
+				replies_to: $replyto
+			})
+			.select('id')
+			.single();
+
+		await supabase.from('notifications').insert({
+			by: $user.id,
+			for: replies.filter((el) => el.id === $replyto)[0].author.id,
+			type: 'comment',
+			post: $page.data.data.id,
+			fragment: id.id
 		});
 
 		await invalidateAll();
@@ -53,9 +65,9 @@
 
 {#each replies as reply}
 	<input type="checkbox" id="reply-{reply.id}" style="display: none;" />
-	<div class="block" id={reply?.num}>
+	<div class="block" id={reply?.id}>
 		<label for="reply-{reply.id}" class="flex header">
-			<a href={`#${reply?.num}`}>#{reply?.num}</a>
+			<a href={`#${reply?.id}`}>#{reply?.num}</a>
 			{#if reply.is_deleted}
 				<span style="font-style: italic;">[deleted]</span>
 			{:else}

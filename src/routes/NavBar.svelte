@@ -1,7 +1,19 @@
 <script>
 	import supabase from '$lib/supabase';
-	import { beforeNavigate } from '$app/navigation';
+	import { beforeNavigate, goto } from '$app/navigation';
 	import user from '$lib/user';
+
+	let data = [];
+
+	$: (async () => {
+		if (!$user) return;
+		data = (
+			await supabase
+				.from('notifications')
+				.select('id, by ( name ), post (title, id), for, fragment, type')
+				.eq('for', $user?.id)
+		).data;
+	})();
 
 	let popup, button;
 	let favicon = '';
@@ -18,6 +30,24 @@
 	function closeMenu(e = fakeEvent) {
 		if (e.composedPath().includes(button)) return;
 		popup?.classList?.remove('show');
+	}
+
+	async function handleClear() {
+		await supabase.from('notifications').delete().eq('for', $user?.id);
+		data = [];
+	}
+
+	async function handleSingleClear(notification) {
+		await supabase.from('notifications').delete().eq('id', notification.id);
+
+		data = (
+			await supabase
+				.from('notifications')
+				.select('id, by ( name ), post (title, id), for, fragment, type')
+				.eq('for', $user?.id)
+		).data;
+
+		goto(`/forum/post/${notification.post.id}#${notification.fragment}`);
 	}
 
 	beforeNavigate((_) => closeMenu());
@@ -50,13 +80,19 @@
 				<path fill="currentColor" d="M7,10L12,15L17,10H7Z" />
 			</svg>
 
+			{#if data?.length > 0}
+				<div class="badge">
+					<span>{data.length}</span>
+				</div>
+			{/if}
+
 			<!--  stop propagation, callback is noop -->
 			<div class="popup" bind:this={popup} on:click={(_) => 0}>
 				<div class="top-section item">
 					<a data-sveltekit-prefetch href="/profile/{$user?.name}">{$user?.name}</a>
 					<button class="logout" on:click={(_) => supabase.auth.signOut()}>Log out</button>
 				</div>
-				<a href="/edit-profile" class="item separator"> Edit profile </a>
+				<a href="/edit-profile" class="item separator">Edit profile</a>
 				<label on:input={handleTheme} class="item">
 					Theme <select name="theme-toggle" id="theme-toggle" value={$user.preferred_theme}>
 						<option value="auto">System preference</option>
@@ -64,6 +100,28 @@
 						<option value="dark">Dark mode</option>
 					</select>
 				</label>
+				<div class="item header">
+					<span>Notifications</span>
+					{#if data?.length > 0}
+						<button on:click={handleClear}>Clear All</button>
+					{/if}
+				</div>
+				<div>
+					<div class="list">
+						{#if data?.length > 0}
+							{#each data as notification}
+								<a
+									on:click|preventDefault={(_) => handleSingleClear(notification)}
+									href="/forum/post/{notification.post.id}#{notification.fragment}"
+									><span>{notification.by.name}</span> replied to your {notification.type} in
+									<span>{notification.post.title}</span>
+								</a>
+							{/each}
+						{:else}
+							<p>Empty</p>
+						{/if}
+					</div>
+				</div>
 				{#if $user.role === 'writer' || $user.role === 'admin'}
 					<a href="/new-post" class="item new-post separator"
 						><svg style="width:24px;height:auto" viewBox="0 0 24 24">
@@ -81,6 +139,49 @@
 <svelte:window on:click={closeMenu} />
 
 <style>
+	.header {
+		border-top: 1px solid var(--border-clr);
+		width: 100%;
+		background-color: var(--bg-header) !important;
+	}
+	.header > button {
+		all: unset;
+		color: var(--link-color);
+		font-weight: bold;
+		font-size: 12px;
+		cursor: pointer;
+	}
+	.list > a {
+		color: var(--text-color);
+		width: 100%;
+		text-align: left;
+		padding: 8px;
+		display: block;
+		border-top: 1px solid var(--border-clr);
+		font-weight: normal;
+	}
+	.list > a:hover {
+		background-color: var(--bg-hover);
+	}
+	.list > p {
+		padding: 0.5rem;
+	}
+	.list > a > span {
+		font-weight: bold;
+	}
+	.badge {
+		position: absolute;
+		right: 20%;
+		bottom: 15%;
+		border-radius: 100%;
+		height: 14px;
+		width: 14px;
+		display: grid;
+		place-items: center;
+		font-size: 10px;
+		background-color: red;
+		color: white;
+	}
 	.separator {
 		border-top: 1px solid var(--border-clr);
 	}
