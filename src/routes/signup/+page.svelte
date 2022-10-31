@@ -61,10 +61,6 @@
 			}
 		});
 
-		console.log(captchaToken);
-		console.log(user);
-		console.log(error);
-
 		captcha.reset();
 		captchaToken = undefined;
 
