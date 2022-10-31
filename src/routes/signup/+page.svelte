@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import GoHome from '$lib/gohome.svelte';
 	import user from '$lib/user';
+	import HCaptcha from 'svelte-hcaptcha';
 
 	let emailInput,
 		passwordInput,
@@ -12,16 +13,22 @@
 		bioInput,
 		playerSelect,
 		teamSelect,
-		captchaInput,
+		captcha,
 		countrySelect;
 	let log;
 
-	const colors = ['red', 'blue', 'yellow', 'green', 'black', 'brown', 'white'];
+	let captchaToken;
 
-	const color = colors[Math.floor(Math.random() * colors.length)];
+	const handleError = () => {
+		captcha.reset();
+		captchaToken = undefined;
+	};
+
+	const handleSuccess = (token) => {
+		captchaToken = token.detail.token;
+	};
 
 	async function submitHandler() {
-		if (color !== captchaInput.value) return (log.textContent = "Colors don't match");
 		if (nameInput.value.length > 40) return (log.textContent = 'Name is too long');
 		if (nameInput.value.length === 0) return (log.textContent = "Name can't be blank");
 
@@ -49,9 +56,17 @@
 					player: playerSelect.value,
 					team: teamSelect.value,
 					flag: countrySelect.value
-				}
+				},
+				captchaToken
 			}
 		});
+
+		console.log(captchaToken);
+		console.log(user);
+		console.log(error);
+
+		captcha.reset();
+		captchaToken = undefined;
 
 		if (user) return await goto('/');
 
@@ -188,18 +203,13 @@
 					</select>
 				</label>
 			</div>
-			<label id="captcha">
-				Prove you're not a robot by selecting the color
-				{#each color as letter}
-					<span>{letter}</span>
-				{/each}
-				<select name="color" bind:this={captchaInput}>
-					<option value="">--- Please choose an option ---</option>
-					{#each colors as colorpick}
-						<option value={colorpick}>{colorpick}</option>
-					{/each}
-				</select>
-			</label>
+			<HCaptcha
+				sitekey="add2a870-e348-4ecc-b1a6-3654d2857fc8"
+				on:success={handleSuccess}
+				on:error={handleError}
+				bind:this={captcha}
+				reCaptchaCompa={false}
+			/>
 			<hr />
 			<p class="log" bind:this={log} />
 			<button>Sign up</button>
@@ -209,11 +219,6 @@
 </main>
 
 <style>
-	#captcha,
-	#captcha span {
-		display: unset !important;
-	}
-
 	main {
 		color: var(--text-color);
 	}
