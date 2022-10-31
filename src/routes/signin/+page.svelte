@@ -3,9 +3,21 @@
 	import supabase from '$lib/supabase';
 	import { goto } from '$app/navigation';
 	import user from '$lib/user';
+	import HCaptcha from '../HCaptcha.svelte';
 
-	let emailInput, passwordInput;
+	let emailInput, passwordInput, captcha;
 	let log;
+
+	let captchaToken;
+
+	const handleError = () => {
+		captcha.reset();
+		captchaToken = undefined;
+	};
+
+	const handleSuccess = (token) => {
+		captchaToken = token.detail.token;
+	};
 
 	async function submitHandler() {
 		let {
@@ -13,8 +25,14 @@
 			error
 		} = await supabase.auth.signInWithPassword({
 			email: emailInput.value,
-			password: passwordInput.value
+			password: passwordInput.value,
+			options: {
+				captchaToken
+			}
 		});
+
+		captcha.reset();
+		captchaToken = undefined;
 
 		if (user) return goto('/');
 
@@ -55,6 +73,13 @@
 						required
 					/>
 				</label>
+				<HCaptcha
+					sitekey="add2a870-e348-4ecc-b1a6-3654d2857fc8"
+					on:success={handleSuccess}
+					on:error={handleError}
+					bind:this={captcha}
+					reCaptchaCompa={false}
+				/>
 			</div>
 			<p class="log" bind:this={log} />
 			<button>Log in</button>
