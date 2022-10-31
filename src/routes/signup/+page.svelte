@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import GoHome from '$lib/gohome.svelte';
 	import user from '$lib/user';
-	import HCaptcha from 'svelte-hcaptcha';
+	import HCaptcha from './HCaptcha.svelte';
 
 	let emailInput,
 		passwordInput,
